@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Financial Statements Analysis Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f3ec; --bg2:#efe9dd; --surface:#ffffff; --surface2:#faf7f1; --line:#e4dccb; --line2:#d8cdb6;
+  --ink:#16182b; --ink2:#4a4e68; --muted:#80849c;
+  --brand:#2a2f8f; --brand2:#4b52d6; --accent:#f2a516; --accent2:#ffcf5a;
+  --ok:#119a62; --ok-bg:#e3f6ec; --bad:#d63a4a; --bad-bg:#fde7e9;
+  --s1:#4b52d6; --s2:#0e9f9a; --s3:#8a3fd1; --s4:#e08a00; --s5:#2f9e44; --sx:#c2417a;
+  --shadow:0 1px 2px rgba(22,24,43,.06),0 8px 24px -12px rgba(22,24,43,.18);
+  --shadow-lg:0 30px 60px -30px rgba(22,24,43,.35);
+  --r:18px; --r-sm:12px;
+  --grid:rgba(42,47,143,.06);
+}
+[data-theme="dark"]{
+  --bg:#0b0d1a; --bg2:#10132a; --surface:#141833; --surface2:#191e3d; --line:#252b52; --line2:#323a6b;
+  --ink:#eef0ff; --ink2:#b8bce0; --muted:#7f85b3;
+  --brand:#9aa1ff; --brand2:#7c84ff; --accent:#ffbe3b; --accent2:#ffd86b;
+  --ok:#37d38c; --ok-bg:rgba(55,211,140,.12); --bad:#ff6577; --bad-bg:rgba(255,101,119,.12);
+  --s1:#8b91ff; --s2:#2fd3cc; --s3:#c08bff; --s4:#ffb02e; --s5:#5fd36f; --sx:#ff7ab3;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  --shadow-lg:0 30px 70px -30px rgba(0,0,0,.8);
+  --grid:rgba(154,161,255,.05);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Plus Jakarta Sans","Cairo",system-ui,sans-serif; font-size:16px; line-height:1.7;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:32px 32px; transition:background-color .3s,color .3s;
+  -webkit-font-smoothing:antialiased;
+}
+html[lang="ar"] body{font-family:"Cairo","Plus Jakarta Sans",system-ui,sans-serif}
+.en{direction:ltr;unicode-bidi:isolate;font-family:"Plus Jakarta Sans","Cairo",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* ===== Top bar ===== */
+.top{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+  background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;height:66px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:17px;white-space:nowrap}
+.logo-mark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;box-shadow:0 6px 16px -6px var(--brand2)}
+[data-theme="dark"] .logo-mark{color:#0b0d1a}
+.logo small{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em;line-height:1.1}
+.nav{display:flex;gap:4px;margin-inline-start:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{padding:8px 13px;border-radius:999px;font-size:14px;font-weight:700;color:var(--ink2);white-space:nowrap;transition:.2s}
+.nav button:hover{background:var(--surface2);color:var(--ink)}
+.nav button.on{background:var(--ink);color:var(--bg)}
+.tools{display:flex;gap:8px}
+.tbtn{height:40px;min-width:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:13px;transition:.2s;box-shadow:var(--shadow)}
+.tbtn:hover{border-color:var(--brand2);transform:translateY(-1px)}
+.tbtn svg{width:18px;height:18px}
+@media (max-width:860px){.nav{display:none}.top .wrap{justify-content:space-between}}
+
+/* mobile section bar */
+.mnav{display:none;gap:6px;overflow-x:auto;padding:10px 20px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.mnav::-webkit-scrollbar{display:none}
+.mnav button{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:700;white-space:nowrap}
+.mnav button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+@media (max-width:860px){.mnav{display:flex}}
+
+/* ===== Hero ===== */
+.hero{padding:56px 0 30px;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);
+  font-size:13px;font-weight:700;color:var(--ink2)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.hero h1{font-size:clamp(34px,5.6vw,64px);line-height:1.08;margin:18px 0 14px;letter-spacing:-.03em;font-weight:800}
+html[lang="ar"] .hero h1{line-height:1.3;letter-spacing:0}
+.hero h1 .hl{background:linear-gradient(120deg,var(--brand2),var(--sx) 60%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:18px;color:var(--ink2);max-width:640px;margin:0}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 18px;box-shadow:var(--shadow);min-width:130px}
+.stat b{display:block;font-size:26px;line-height:1.1;font-weight:800}
+.stat span{font-size:13px;color:var(--muted);font-weight:600}
+
+/* ===== Section cards (home) ===== */
+.secgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;padding:16px 0 30px}
+@media (max-width:760px){.secgrid{grid-template-columns:1fr}}
+.scard{--c:var(--s1);position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;overflow:hidden;
+  box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s,border-color .25s}
+.scard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+.scard::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--c)}
+.scard .num{position:absolute;inset-inline-end:18px;top:6px;font-size:96px;font-weight:800;line-height:1;color:var(--c);opacity:.10;letter-spacing:-.05em}
+.scard .tag{display:inline-block;font-size:12px;font-weight:800;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);padding:4px 10px;border-radius:999px}
+.scard h3{font-size:23px;margin:10px 0 4px;line-height:1.3}
+.scard p{margin:0 0 16px;color:var(--ink2);font-size:15px}
+.topics{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.topics span{font-size:12px;font-weight:700;padding:4px 9px;border-radius:8px;background:var(--surface2);border:1px solid var(--line);color:var(--ink2)}
+.prog{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 60%,#fff));border-radius:99px;transition:width .6s}
+.progtxt{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700;margin:8px 0 16px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:13px;font-weight:800;font-size:15px;transition:.2s;border:1px solid transparent}
+.btn svg{width:18px;height:18px}
+.btn.pri{background:var(--c,var(--brand2));color:#fff;box-shadow:0 8px 20px -10px var(--c,var(--brand2))}
+[data-theme="dark"] .btn.pri{color:#0b0d1a}
+.btn.pri:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.sec{background:var(--surface2);border-color:var(--line);color:var(--ink)}
+.btn.sec:hover{border-color:var(--c,var(--brand2))}
+.btn.ghost{color:var(--ink2)}
+.btn.ghost:hover{color:var(--ink);background:var(--surface2)}
+.btn:disabled{opacity:.4;pointer-events:none}
+
+.examcard{--c:var(--sx);background:linear-gradient(135deg,#1b1f4b,#2a2f8f 55%,#5b2a86);color:#fff;border-radius:24px;padding:30px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:40px}
+.examcard::after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;inset-inline-end:-90px;top:-120px;background:radial-gradient(circle,rgba(255,190,59,.55),transparent 65%)}
+.examcard h3{font-size:28px;margin:0 0 6px;position:relative;z-index:1}
+.examcard p{margin:0 0 18px;opacity:.85;position:relative;z-index:1;max-width:560px}
+.examcard .opts{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+.examcard label.lbl{display:block;font-size:12px;font-weight:800;opacity:.75;margin-bottom:6px;letter-spacing:.03em}
+.seg{display:inline-flex;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{padding:7px 12px;border-radius:9px;font-weight:800;font-size:13px;color:#fff;opacity:.8}
+.seg button.on{background:#fff;color:#1b1f4b;opacity:1}
+.examcard .btn.pri{background:var(--accent);color:#1b1f4b;box-shadow:0 10px 24px -10px var(--accent)}
+
+/* ===== Page head ===== */
+.phead{padding:38px 0 18px}
+.crumbs{font-size:13px;font-weight:700;color:var(--muted);display:flex;gap:8px;align-items:center}
+.crumbs button{color:var(--muted);font-weight:700}.crumbs button:hover{color:var(--ink)}
+.phead h1{font-size:clamp(28px,4vw,44px);margin:10px 0 6px;line-height:1.2;letter-spacing:-.02em}
+.phead p{margin:0;color:var(--ink2);font-size:17px}
+.subtabs{display:inline-flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-top:20px;box-shadow:var(--shadow)}
+.subtabs button{padding:9px 18px;border-radius:10px;font-weight:800;font-size:14px;color:var(--ink2);display:inline-flex;align-items:center;gap:8px}
+.subtabs button.on{background:var(--c);color:#fff}
+[data-theme="dark"] .subtabs button.on{color:#0b0d1a}
+.subtabs svg{width:16px;height:16px}
+
+/* ===== Lesson ===== */
+.lesson{padding:10px 0 60px}
+.blk{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:26px;margin-bottom:18px;box-shadow:var(--shadow)}
+.blk>h2{display:flex;align-items:center;gap:12px;margin:0 0 6px;font-size:22px;line-height:1.35}
+.blk>h2 .n{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;font-weight:800;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.blk>.sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.blk p{margin:0 0 12px}
+.term{font-weight:800;color:var(--c);direction:ltr;unicode-bidi:isolate}
+.k{font-weight:800}
+.g2,.g3,.g4{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.tile{background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:16px;position:relative}
+.tile .ic{font-size:22px;line-height:1;margin-bottom:8px}
+.tile h4{margin:0 0 4px;font-size:16px;line-height:1.35}
+.tile h4 .en{color:var(--c)}
+.tile p{margin:0;font-size:14px;color:var(--ink2);line-height:1.6}
+.tile.hl{border-color:color-mix(in srgb,var(--c) 40%,var(--line));background:color-mix(in srgb,var(--c) 7%,var(--surface2))}
+.vsbox{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
+@media (max-width:700px){.vsbox{grid-template-columns:1fr}.vsbox .vs{justify-self:center}}
+.vsbox .vs{align-self:center;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--ink);color:var(--bg);font-size:14px}
+.side{border-radius:18px;padding:20px;border:1.5px solid}
+.side.a{border-color:color-mix(in srgb,var(--s1) 40%,transparent);background:color-mix(in srgb,var(--s1) 7%,transparent)}
+.side.b{border-color:color-mix(in srgb,var(--sx) 40%,transparent);background:color-mix(in srgb,var(--sx) 7%,transparent)}
+.side h3{margin:0;font-size:20px}
+.side .q{font-size:15px;font-weight:800;margin:4px 0 12px;opacity:.9}
+.side.a h3,.side.a .q{color:var(--s1)}.side.b h3,.side.b .q{color:var(--sx)}
+ul.ck{list-style:none;padding:0;margin:0}
+ul.ck li{position:relative;padding-inline-start:26px;margin:6px 0;font-size:15px}
+ul.ck li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:14px;height:14px;border-radius:5px;background:var(--c);opacity:.85;
+  -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>') center/contain no-repeat;
+  mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>') center/contain no-repeat}
+.side.a ul.ck li::before{background:var(--s1)}.side.b ul.ck li::before{background:var(--sx)}
+.call{display:flex;gap:12px;padding:14px 16px;border-radius:14px;margin-top:14px;font-size:15px;border:1px dashed}
+.call .ci{font-size:20px;line-height:1.3;flex:none}
+.call.tip{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.call.warn{background:var(--bad-bg);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+.call.mem{background:color-mix(in srgb,var(--brand2) 9%,transparent);border-color:color-mix(in srgb,var(--brand2) 45%,transparent)}
+.call b{font-weight:800}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:s}
+@media (max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+.step{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:14px;position:relative}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--c);color:#fff;font-weight:800;font-size:13px;margin-bottom:8px}
+[data-theme="dark"] .step::before{color:#0b0d1a}
+.step b{display:block;font-size:14px;line-height:1.35}
+.step b .en{color:var(--c)}
+.step span{display:block;font-size:13px;color:var(--ink2);margin-top:4px;line-height:1.5}
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+.flow .fx{flex:1;min-width:140px;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+.flow .fx b{display:block}
+.flow .fx small{color:var(--ink2);font-size:13px}
+.flow .ar{align-self:center;color:var(--muted);font-weight:800}
+html[dir="rtl"] .flow .ar{transform:scaleX(-1)}
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+table.cmp th,table.cmp td{padding:12px 14px;text-align:start;vertical-align:top;border-bottom:1px solid var(--line)}
+table.cmp tr:last-child td{border-bottom:0}
+table.cmp thead th{background:var(--surface2);font-size:14px}
+table.cmp td:first-child{font-weight:800;white-space:nowrap;color:var(--ink2)}
+table.cmp .fs{color:var(--s1)}table.cmp .bp{color:var(--sx)}
+.tblwrap{overflow-x:auto}
+.mnemo{display:flex;gap:8px;flex-wrap:wrap;direction:ltr;justify-content:center;margin:6px 0 4px}
+.mnemo span{display:grid;place-items:center;min-width:54px;height:54px;padding:0 10px;border-radius:14px;background:var(--c);color:#fff;font-weight:800;font-size:24px;box-shadow:0 8px 18px -10px var(--c)}
+[data-theme="dark"] .mnemo span{color:#0b0d1a}
+.mnemo span small{font-size:10px;font-weight:700;display:block;line-height:1;margin-top:-6px;opacity:.9}
+.lights .tile{border-width:2px}
+.light-w{--c:#9aa3b5}.light-g{--c:#e0a100}.light-b{--c:#d63a4a}
+.lights .tile h4{color:var(--c)}
+.recap{background:linear-gradient(135deg,color-mix(in srgb,var(--c) 14%,var(--surface)),var(--surface));border:1.5px solid color-mix(in srgb,var(--c) 35%,var(--line))}
+.recap ol{margin:0;padding-inline-start:20px}
+.recap li{margin:6px 0}
+.cta{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:22px 26px;border-radius:22px;background:var(--ink);color:var(--bg);margin-top:10px}
+.cta h3{margin:0;font-size:20px}
+.cta p{margin:2px 0 0;opacity:.75;font-size:14px}
+.cta .btn.pri{background:var(--accent);color:#16182b}
+.money{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+@media (max-width:640px){.money{grid-template-columns:1fr}}
+.money div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.money b{display:block;font-size:20px;color:var(--c);direction:ltr}
+.money small{color:var(--muted);font-weight:700;font-size:12px}
+
+/* ===== Quiz ===== */
+.qz{display:grid;grid-template-columns:1fr 290px;gap:18px;padding:6px 0 60px;align-items:start}
+@media (max-width:960px){.qz{grid-template-columns:1fr}}
+.qbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.filters{display:inline-flex;gap:4px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.filters button{padding:7px 12px;border-radius:9px;font-weight:800;font-size:13px;color:var(--ink2)}
+.filters button.on{background:var(--ink);color:var(--bg)}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.qcard .meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.qno{font-weight:800;font-size:14px;color:var(--muted)}
+.qno b{color:var(--ink);font-size:18px}
+.badge{font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--c) 13%,transparent);color:var(--c)}
+.badge.gray{background:var(--surface2);color:var(--ink2);border:1px solid var(--line)}
+.qtext{font-size:21px;font-weight:700;line-height:1.55;margin:0 0 22px;direction:ltr;text-align:left;font-family:"Plus Jakarta Sans","Cairo",sans-serif}
+.opts2{display:grid;gap:10px}
+.opts2.tf{grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:14px;width:100%;padding:15px 16px;border-radius:15px;border:1.5px solid var(--line);background:var(--surface2);
+  text-align:left;direction:ltr;font-size:16px;font-weight:600;transition:transform .15s,border-color .2s,background .2s;font-family:"Plus Jakarta Sans","Cairo",sans-serif}
+.opt:hover:not(:disabled){border-color:var(--c);transform:translateY(-1px)}
+.opt .L{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--surface);border:1px solid var(--line);color:var(--ink2)}
+.opt .tx{flex:1}
+.opt .ar-t{font-family:"Cairo",sans-serif;font-size:13px;color:var(--muted);font-weight:700;margin-inline-start:6px}
+.opts2.tf .opt{justify-content:center;padding:20px;font-size:18px;font-weight:800}
+.opts2.tf .opt .L{display:none}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.ok .L{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg);animation:shake .4s}
+.opt.bad .L{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt.dim{opacity:.5}
+.opt .mk{flex:none;font-weight:800;font-size:18px}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.fb{margin-top:18px;border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;animation:pop .35s cubic-bezier(.2,.9,.3,1.3)}
+.fb.ok{background:var(--ok-bg);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.fb.bad{background:var(--bad-bg);border:1px solid color-mix(in srgb,var(--bad) 40%,transparent)}
+.fb .ico{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:20px}
+.fb.ok .ico{background:var(--ok)}.fb.bad .ico{background:var(--bad)}
+.fb h4{margin:0 0 2px;font-size:17px}
+.fb.ok h4{color:var(--ok)}.fb.bad h4{color:var(--bad)}
+.fb p{margin:0;font-size:15px;color:var(--ink)}
+.fb .right{direction:ltr;unicode-bidi:isolate;font-weight:800}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px}
+.kbd{font-size:12px;color:var(--muted);font-weight:600}
+.kbd kbd{font-family:inherit;font-size:11px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid var(--line2);background:var(--surface2);margin:0 2px}
+@media (max-width:640px){.kbd{display:none}.qcard{padding:20px}.qtext{font-size:18px}}
+.side-p{position:sticky;top:84px;display:grid;gap:14px}
+.pbox{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.pbox h4{margin:0 0 12px;font-size:14px;color:var(--ink2);display:flex;justify-content:space-between}
+.score3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.score3 div{border-radius:12px;padding:8px 4px;background:var(--surface2);border:1px solid var(--line)}
+.score3 b{display:block;font-size:22px;line-height:1.2}
+.score3 small{font-size:11px;font-weight:800;color:var(--muted)}
+.score3 .o b{color:var(--ok)}.score3 .x b{color:var(--bad)}
+.dots{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-height:300px;overflow:auto;padding:2px}
+.dot{aspect-ratio:1;border-radius:9px;font-size:12px;font-weight:800;display:grid;place-items:center;background:var(--surface2);border:1px solid var(--line);color:var(--ink2);transition:.15s}
+.dot:hover{border-color:var(--c)}
+.dot.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.dot.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.dot.cur{outline:2.5px solid var(--c);outline-offset:2px}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--muted);font-weight:700;margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:5px;vertical-align:middle}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:700;color:var(--ink2);padding:6px 0}
+.sw{width:42px;height:24px;border-radius:99px;background:var(--line2);position:relative;transition:.2s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw.on{background:var(--c)}
+.sw.on::after{inset-inline-start:21px}
+.topprog{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.topprog i{display:block;height:100%;background:var(--c);transition:width .4s}
+
+/* result */
+.result{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:34px;box-shadow:var(--shadow-lg);text-align:center}
+.ring{width:190px;height:190px;margin:0 auto 18px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:grid;place-items:center;align-content:center}
+.ring .v b{font-size:46px;line-height:1;font-weight:800}
+.ring .v small{color:var(--muted);font-weight:700;font-size:13px}
+.result h2{margin:0 0 4px;font-size:28px}
+.result p{color:var(--ink2);margin:0 0 20px}
+.result .row{justify-content:center}
+.review{margin-top:26px;text-align:start}
+.review h3{font-size:18px;margin:0 0 10px}
+.rv{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;background:var(--surface2)}
+.rv .qq{direction:ltr;text-align:left;font-weight:700;margin-bottom:6px}
+.rv .aa{font-size:14px;direction:ltr;text-align:left}
+.rv .aa .y{color:var(--bad);font-weight:800}.rv .aa .c{color:var(--ok);font-weight:800}
+.rv .ee{font-size:14px;color:var(--ink2);margin-top:6px}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+.confetti i{position:absolute;width:9px;height:14px;top:-20px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-weight:700;font-size:14px;z-index:90;animation:pop .3s}
+
+footer{padding:30px 0 40px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:20px}
+.fade{animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* formula box */
+.fm{direction:ltr;unicode-bidi:isolate;text-align:left;font-family:"Plus Jakarta Sans","Cairo",sans-serif;font-weight:800;font-size:15.5px;background:var(--surface2);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:11px 16px;margin:8px 0}
+table.cmp.en th,table.cmp.en td{text-align:left}
+ul.ck.no li::before{background:var(--bad);-webkit-mask:none;mask:none;content:"✕";color:var(--bad);background:none;font-size:13px;font-weight:800;top:.1em;width:auto;height:auto}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const TF=(q,a,ar,en)=>({t:'tf',q,a:a?0:1,ex:{ar,en}});
+const MC=(q,o,a,ar,en)=>({t:'mc',q,o,a,ex:{ar,en}});
+
+const QUESTIONS = {
+/* ======================= SECTION 1 — Introduction ======================= */
+s1:[
+MC("Which of the following is NOT listed as a type of financial ratio in the lecture outline?",["Liquidity Ratios","Solvency Ratios","Historical Cost Ratios","Valuation Ratios"],2,
+ "الأنواع الخمسة: Liquidity, Solvency, Profitability, Efficiency, Valuation. مفيش حاجة اسمها Historical Cost Ratios.","The five types are Liquidity, Solvency, Profitability, Efficiency and Valuation."),
+MC("What is the starting point for financial analysis?",["Industry research","The company's financial reports","Economic forecasts","Competitor analysis"],1,
+ "التحليل بيبدأ من التقارير المالية بتاعة الشركة نفسها، وبعدين تكمّلها ببحث عن الصناعة.","It begins with the company's own financial reports."),
+MC("Which group of investors is primarily interested in a company's profitability and share value?",["Debt investors","Equity investors","Regulators","Auditors"],1,
+ "Equity investors (المساهمين) = الربحية وقيمة السهم. Debt investors = قدرة الشركة تسدد الفوايد وأصل الدين.","Equity investors care about profitability & share value."),
+MC("What is the primary role of financial statement analysis?",["To calculate taxes owed by the company","To prepare the company's annual budget","To form predictions about a company's future performance, financial position, and risk factors","To ensure the company follows marketing trends"],2,
+ "الدور الأساسي: نتوقع أداء الشركة ومركزها المالي ومخاطرها في المستقبل — مش حساب الضرايب.","To predict future performance, position and risk."),
+MC("To complement their analysis of a company's financial statements, what should analysts use?",["Only the audited financial statements","Industry and company research","Unaudited management commentary only","Social media trends"],1,
+ "لازم المحلل يكمّل البيانات الداخلية ببحث عن الصناعة والشركة عشان يفهم البيئة الاقتصادية ونموذج البزنس.","Complement with industry & company research."),
+MC("Financial analysis is best defined as the process of:",["Recording the company's daily transactions","Critically examining accounting information in financial statements","Preparing the company's tax returns","Auditing the company's internal controls"],1,
+ "التعريف: فحص نقدي للمعلومات المحاسبية في القوايم المالية، وتقييم العلاقات بين مكوناتها.","Critically examining accounting information in the statements."),
+MC("Debt investors are primarily interested in:",["Profitability and share value","The company's ability to repay interest and principal","The company's marketing strategy","The number of employees"],1,
+ "Debt investors = الأمان المالي: هل الشركة هتقدر تسدد الفوايد وأصل القرض؟","Ability to repay interest and principal (financial safety)."),
+MC("Liquidity ratios measure:",["Long-term debt","Short-term solvency","Market value","Earning ability"],1,
+ "Liquidity = القدرة على سداد الالتزامات قصيرة الأجل (short-term solvency).","Short-term solvency."),
+MC("Solvency ratios focus on:",["Short-term obligations","Long-term debt","Asset utilization","Market value"],1,
+ "Solvency = الديون طويلة الأجل.","Long-term debt."),
+MC("Efficiency ratios are concerned with:",["Asset utilization","Market value","Earning ability","Short-term solvency"],0,
+ "Efficiency = الشركة بتستغل أصولها كويس قد إيه (asset utilization).","Asset utilization."),
+MC("Valuation ratios measure:",["Market value","Asset utilization","Long-term debt","Short-term solvency"],0,
+ "Valuation = القيمة السوقية.","Market value."),
+MC("Which of the following is NOT a primary focus of financial analysis?",["Generating a return on capital at least equal to the cost of capital","Growing operations profitably","Generating sufficient cash flow to meet obligations","Maximizing the number of employees"],3,
+ "التركيز على 3 حاجات: عائد ≥ تكلفة رأس المال، نمو مربح، تدفق نقدي كافي. عدد الموظفين مالوش علاقة.","The 3 focuses are return ≥ cost of capital, profitable growth, enough cash flow."),
+MC("Which of the following is NOT one of the sources of information for financial analysis?",["Audited financial statements","Additional regulatory disclosures","Accompanying management commentary","A competitor's confidential internal budget"],3,
+ "المصادر: القوايم المراجَعة، الإفصاحات التنظيمية، وتعليق الإدارة (غير مراجَع).","Sources: audited statements, regulatory disclosures, management commentary."),
+MC("Vertical analysis is also known as:",["Trend analysis","Common-size analysis","Ratio analysis","Inter-company analysis"],1,
+ "Vertical = Common-size. أما Horizontal = Trend.","Vertical = common-size."),
+TF("Financial analysis is solely a mathematical process of examining numbers in financial statements without considering the external economic environment.",false,
+ "غلط — التحليل بيقيّم أداء الشركة في سياق البيئة الاقتصادية اللي حواليها.","It is done within the context of the economic environment."),
+TF("Equity investors are primarily interested in a company's ability to repay interest and principal.",false,
+ "غلط — ده اهتمام Debt investors. الـ Equity investors يهمهم الربحية وقيمة السهم.","That's debt investors; equity investors care about profit & share value."),
+TF("The primary focus of financial analysis is to assess a company's ability to generate a return on capital that is at least equal to its cost of capital.",true,
+ "صح — دي أول نقطة من نقط التركيز الأساسية.","Correct — the first primary focus."),
+TF("Financial analysis begins with the economic forecasts of the industry rather than the company's own financial reports.",false,
+ "غلط — بيبدأ بالتقارير المالية بتاعة الشركة.","It begins with the company's financial reports."),
+TF("Answers to analytical questions depend solely on numerical results, and the analyst's interpretation is not required.",false,
+ "غلط — الإجابة بتعتمد على الأرقام + تفسير المحلل مع بعض.","They depend on both numbers AND interpretation."),
+TF("Financial analysis involves evaluating the relationships between different components of the financial statements.",true,
+ "صح — جزء من التعريف.","Part of the definition."),
+TF("Debt investors focus on financial safety — the company's ability to repay interest and principal.",true,
+ "صح.","Correct."),
+TF("The commentary from management that accompanies the financial reports is always audited.",false,
+ "غلط — تعليق الإدارة غير مراجَع (unaudited).","Management commentary is unaudited."),
+TF("Analysts should rely only on the company's internal data and ignore industry research.",false,
+ "غلط — لازم يكمّلوا ببحث عن الصناعة والشركة.","They must complement it with industry research."),
+TF("Generating sufficient cash flow to meet obligations and seize opportunities is one of the focuses of financial analysis.",true,
+ "صح — النقطة التالتة من التركيز الأساسي.","Correct — third primary focus."),
+TF("Liquidity ratios measure a company's long-term debt-paying ability.",false,
+ "غلط — Liquidity = قصير الأجل. طويل الأجل ده Solvency.","Liquidity is short-term; long-term is solvency."),
+TF("Profitability ratios measure a company's earning ability.",true,
+ "صح — Profitability = earning ability.","Correct."),
+TF("Horizontal analysis compares historical financial data over time.",true,
+ "صح — Horizontal = عبر الزمن.","Horizontal = over time."),
+TF("Financial statement analysis is mainly used to prepare the company's tax returns.",false,
+ "غلط — هدفه التوقع بالأداء والمخاطر، مش الضرايب.","Its role is prediction, not taxes."),
+],
+
+/* ======================= SECTION 2 — Levels & Horizontal ======================= */
+s2:[
+MC("What does horizontal analysis compare?",["A company's financials to its competitors","Historical financial information over a series of reporting periods","A company's financials to industry averages","The relationship between different items on the same financial statement"],1,
+ "Horizontal = مقارنة بيانات تاريخية على كذا فترة. (العلاقة بين بنود نفس القايمة = Vertical)","Historical info over several periods."),
+MC("In horizontal analysis, each item is expressed as a percentage of the:",["Net income amount","Stockholders' equity amount","Total assets amount","Base-year amount"],3,
+ "في الأفقي، كل بند بيتنسب لسنة الأساس (base year = 100%).","The base-year amount."),
+MC("Which of the following is a DISADVANTAGE of horizontal analysis?",["It tracks trends over time","It reveals seasonality","It can be distorted by irregular events","It supports forecasting"],2,
+ "العيب: ممكن الأرقام تتشوّه بسبب أحداث غير عادية (irregular events). الباقي مزايا.","It can be distorted by irregular events."),
+MC("Why is horizontal analysis useful for forecasting?",["It automatically predicts the exact future numbers","It calculates annual or quarterly growth rates that can be used to make assumptions about future growth","It eliminates the need for external industry research","It guarantees a company will not breach loan covenants"],1,
+ "بيحسب معدلات النمو السنوية أو الربع سنوية، ونبني عليها افتراضات للمستقبل — مش بيتوقع رقم بالظبط.","It gives growth rates to base assumptions on."),
+MC("What should an analyst monitor regarding loan covenants?",["Only the final year's numbers","Trends in measurements that could lead to a covenant breach","The company's marketing expenses","The competitor's debt-to-equity ratio"],1,
+ "Covenants = شروط القرض. نراقب اتجاه المقاييس اللي ممكن توصلنا لمخالفة الشرط.","Trends that could lead to a covenant breach."),
+MC("Horizontal analysis identifies:",["The relationship of each item to a base amount within the same financial statement","Changes in financial statement items over time","The liquidity of a company","The solvency of a company"],1,
+ "التغير في البنود عبر الزمن. (الاختيار الأول ده تعريف Vertical)","Changes over time."),
+MC("If a company's revenue increased from $400,000 to $500,000 over one year, what is the percentage increase in revenue?",["20%","25%","22%","30%"],1,
+ "(500,000 − 400,000) ÷ 400,000 = 25%. خلي بالك: بنقسم على سنة الأساس مش السنة الحالية (لو قسمت على 500 هيطلع 20% غلط).","(500k − 400k) / 400k = 25%."),
+MC("Comparing the current year's data with the previous year's data for the same organization is called:",["Intra-company analysis","Inter-company analysis","Industry average analysis","Vertical analysis"],0,
+ "Intra = جوه نفس الشركة، سنة بسنة.","Intra-company = same company, year vs year."),
+MC("Comparing an organization's data with other organizations belonging to the same parent corporate group is called:",["Intra-company analysis","Inter-company analysis","Industry average analysis","Common-size analysis"],1,
+ "Inter = بين شركات نفس المجموعة الأم.","Inter-company = same corporate group."),
+MC("Comparing a company's data with the averages published by information statistics companies is called:",["Intra-company analysis","Inter-company analysis","Industry average analysis","Trend analysis"],2,
+ "Industry average = مقارنة بمتوسط الصناعة.","Industry average analysis."),
+MC("The three tools and techniques of financial statement analysis are:",["Horizontal, vertical and ratio analysis","Intra, inter and industry analysis","Liquidity, solvency and profitability","Budgeting, auditing and forecasting"],0,
+ "الأدوات: أفقي، رأسي، ونسب. (Intra/Inter/Industry دي المستويات مش الأدوات)","Horizontal, vertical, ratio."),
+MC("Percentage change in horizontal analysis is calculated as:",["Amount change ÷ base-year amount","Amount change ÷ current-year amount","Current-year amount ÷ total assets","Base-year amount ÷ current-year amount"],0,
+ "النسبة = مقدار التغير ÷ سنة الأساس.","Amount change / base-year amount."),
+MC("Current assets increased from $945,000 (2017) to $1,020,000 (2018). Using 2017 as the base year, the percentage change is:",["7.9%","7.4%","8.5%","75%"],0,
+ "75,000 ÷ 945,000 = 7.9%.","75,000 / 945,000 = 7.9%."),
+MC("Intangible assets decreased from $17,500 (2017) to $15,000 (2018). The percentage change is:",["(14.3)%","(16.7)%","14.3%","(2.5)%"],0,
+ "(2,500) ÷ 17,500 = (14.3)% — النقص بيتكتب بين قوسين.","(2,500) / 17,500 = (14.3)%."),
+MC("Revenues grew by 20% while cost of goods sold grew by 30%, and net income stayed the same. This most likely signals:",["Reduced efficiency or weaker cost management","Improved cost control","Higher liquidity","Lower financial leverage"],0,
+ "التكلفة بتزيد أسرع من الإيرادات → الهوامش بتتضغط → كفاءة أقل في إدارة التكاليف.","Costs outgrowing revenue → squeezed margins."),
+MC("Horizontal analysis is also known as:",["Common-size analysis","Trend analysis","Ratio analysis","Vertical analysis"],1,
+ "Horizontal = Trend analysis.","Trend analysis."),
+TF("The primary role of financial statement analysis is to prepare the company's tax returns and ensure compliance with securities laws.",false,
+ "غلط.","False."),
+TF("In horizontal analysis, the baseline year is typically listed as 0%.",false,
+ "غلط — سنة الأساس بتتكتب 100%.","The baseline year is listed as 100%."),
+TF("When conducting a horizontal analysis, it is best to analyze each financial statement in isolation to avoid confusion.",false,
+ "غلط — الأفضل نحلل كل القوايم مع بعض عشان نشوف الصورة كاملة.","Analyze all statements together."),
+TF("Horizontal analysis can be used to project the amounts of various line items into the future.",true,
+ "صح — Trend projection من مزاياه.","Trend projection is an advantage."),
+TF("A key advantage of horizontal analysis is that it requires extensive experience to discern whether the numbers indicate problems.",false,
+ "غلط — بالعكس، ميزته إنه محتاج خبرة قليلة (Minimal experience requirement).","Its advantage is that little skill is required."),
+TF("Horizontal analysis considers external factors such as changes in the economic environment and industry trends.",false,
+ "غلط — الأفقي بيبص على أرقام الشركة بس، مش بياخد العوامل الخارجية في اعتباره.","It does not consider external factors."),
+TF("If a company has an excellent income statement but a declining cash balance and increasing debt on the balance sheet, it may indicate trouble funding growth.",true,
+ "صح — ده مثال السكشن على أهمية تحليل القوايم مع بعض.","That's the section's example."),
+TF("Intra-company analysis compares a company's current-year data with its own previous-year data.",true,
+ "صح.","Correct."),
+TF("Inter-company analysis compares a company's data with the industry average published by statistics companies.",false,
+ "غلط — ده Industry average. الـ Inter = شركات نفس المجموعة الأم.","That's industry average analysis."),
+TF("Amount change equals the current-year amount minus the base-year amount.",true,
+ "صح.","Correct."),
+TF("Percentage change equals the amount change divided by the current-year amount.",false,
+ "غلط — بنقسم على سنة الأساس.","Divide by the base-year amount."),
+TF("Horizontal analysis can also be applied to ratios derived from financial information.",true,
+ "صح — حسب التعريف ينفع يتطبق على النسب كمان.","Yes, per the definition."),
+TF("Little skill is required to spot anomalies in a trend using horizontal analysis.",true,
+ "صح — Minimal experience requirement.","Correct."),
+TF("Monitoring trends in measurements included in loan covenants helps anticipate a possible covenant breach.",true,
+ "صح.","Correct."),
+TF("Horizontal analysis is particularly useful when calculating key ratios or margins such as the current ratio and gross margin.",true,
+ "صح — Illuminating calculations.","Correct."),
+],
+
+/* ======================= SECTION 3 — Vertical ======================= */
+s3:[
+MC("A schedule shows: Current assets $200,000 (25%), Property, plant & equipment $600,000 (75%), Total assets $800,000 (100%). What type of analysis is this?",["Horizontal analysis","Vertical analysis","Differential analysis","Ratio analysis"],1,
+ "كل بند متنسب للإجمالي (Total assets = 100%) في سنة واحدة → Vertical.","Each item as % of total → vertical."),
+MC("In vertical analysis, the base amount for depreciation expense is generally:",["Net sales","Depreciation expense in a previous year","Gross profit","Fixed assets"],0,
+ "الإهلاك مصروف في قايمة الدخل → الأساس Net sales.","An income statement item → net sales."),
+MC("In vertical analysis, the base amount for current assets is generally:",["Net sales","Depreciation expense in a previous year","Total assets","Fixed assets"],2,
+ "بند في الميزانية → الأساس Total assets.","A balance sheet item → total assets."),
+MC("In vertical analysis, the base amount for current liabilities is generally:",["Total liabilities","Total equity","Total assets","Fixed assets"],2,
+ "في الميزانية الأساس Total assets (= Total liabilities & equity). مش Total liabilities.","Total assets (= total L&E)."),
+MC("In vertical analysis, the base amount for inventory is generally:",["Total liabilities and equity","Total current assets","Net sales","Fixed assets"],0,
+ "Total liabilities & equity = Total assets، فهو الأساس. (مش Total current assets)","Total L&E equals total assets."),
+MC("In vertical analysis of an income statement, each item is typically expressed as a percentage of:",["Net income","Total assets","Total equity","Sales revenue"],3,
+ "قايمة الدخل → الإيرادات/المبيعات = 100%.","Sales revenue."),
+MC("Comparing items with items from earlier periods is a type of:",["Vertical analysis","Horizontal analysis","Common-size analysis","Ratio analysis"],1,
+ "مقارنة بفترات سابقة = Horizontal.","Horizontal analysis."),
+MC("If a company has Cash of $50,000 and Total Assets of $1,000,000, what is the vertical analysis percentage for Cash?",["5%","25%","50%","10%"],0,
+ "50,000 ÷ 1,000,000 = 5%.","50k / 1,000k = 5%."),
+MC("What is the base figure used for vertical analysis of a Balance Sheet?",["Total Revenue","Total Assets","Net Income","Gross Profit"],1,
+ "الميزانية → Total assets.","Total assets."),
+MC("What is the primary purpose of a common-size statement?",["To calculate tax liabilities","To show the relationship of each component to the total within a single statement","To track a company's cash flow over 5 years","To determine the exact dollar amount of future sales"],1,
+ "يوضح علاقة كل بند بالإجمالي جوه قايمة واحدة.","Relationship of each component to the total."),
+MC("Revenue is $1,200,000 and cost of goods sold is $780,000. In vertical analysis, COGS equals:",["65%","60%","35%","30%"],0,
+ "780,000 ÷ 1,200,000 = 65%.","780k / 1,200k = 65%."),
+MC("Revenue is $1,200,000 and operating expenses are $220,000. In vertical analysis, operating expenses equal:",["18.3%","20%","22%","10%"],0,
+ "220,000 ÷ 1,200,000 = 18.3%.","220k / 1,200k = 18.3%."),
+MC("Revenue is $1,200,000 and net income is $200,000. In vertical analysis, net income equals:",["16.7%","20%","25%","12%"],0,
+ "200,000 ÷ 1,200,000 = 16.7%.","200k / 1,200k = 16.7%."),
+MC("Pixar's total revenue rose from $262.5M (2003) to $273.5M (2004). The percentage change is:",["4.19%","11%","4.02%","6.4%"],0,
+ "(273.5 − 262.5) ÷ 262.5 = 4.19% (ده حساب أفقي).","(273.5 − 262.5)/262.5 = 4.19%."),
+MC("Pixar's R&D rose from $15.3M to $17.4M, while revenue rose 4.19%. As a percentage of revenue, R&D:",["Increased from 5.8% to 6.4%","Decreased from 6.4% to 5.8%","Stayed the same","Decreased because revenue grew"],0,
+ "R&D زاد 13.7% وهو أسرع من نمو الإيرادات (4.19%)، فنسبته الرأسية زادت.","R&D grew faster than revenue → its % rose."),
+MC("Vertical analysis is especially useful for comparing:",["Companies of different sizes","Only companies of exactly the same size","Only the tax figures of a company","Only cash flows over 10 years"],0,
+ "لأن كل حاجة بتبقى نسب مئوية، فالحجم مبقاش فارق.","Percentages remove size differences."),
+MC("Statements prepared using vertical analysis, where all items are percentages, are called:",["Trend statements","Common-size statements","Consolidated statements","Pro forma statements"],1,
+ "Common-size statements.","Common-size statements."),
+TF("Horizontal analysis helps identify trends and growth patterns over time.",true,
+ "صح.","Correct."),
+TF("In vertical analysis, each balance sheet item is expressed as a percentage of revenue.",false,
+ "غلط — بنود الميزانية بتتنسب لـ Total assets.","Balance sheet items are % of total assets."),
+TF("Vertical analysis makes it easier to compare companies of different sizes.",true,
+ "صح.","Correct."),
+TF("A horizontal analysis always shows favorable performance when numbers increase year over year.",false,
+ "غلط — مش كل زيادة كويسة؛ زيادة المصروفات مثلًا وحشة. (كلمة always فخ)","Not all increases are favorable, e.g. rising expenses."),
+TF("Vertical analysis compares financial data of a single company over multiple years to identify trends.",false,
+ "غلط — ده Horizontal. الرأسي بيبص على فترة واحدة.","That's horizontal; vertical looks at a single period."),
+TF("In a common-size income statement, each line item is expressed as a percentage of total assets.",false,
+ "غلط — قايمة الدخل → Total revenue. (الميزانية → Total assets)","Income statement items are % of total revenue."),
+TF("Vertical analysis is useful for comparing companies of different sizes within the same industry.",true,
+ "صح — دي ميزة الـ common-size الأساسية.","Key benefit of common-size statements."),
+TF("The “Blockbuster Strategy” involves low up-front costs and high additional costs after the product is launched.",false,
+ "غلط — العكس: تكاليف كبيرة في الأول، وتكاليف إضافية قليلة بعد الإطلاق.","Large up-front costs and fewer costs after launch."),
+TF("Vertical analysis is also called common-size analysis.",true,
+ "صح.","Correct."),
+TF("On the income statement, net sales is the base amount and takes 100%.",true,
+ "صح.","Correct."),
+TF("On the balance sheet, liability and equity items can be expressed as a percentage of total liabilities and equity.",true,
+ "صح — وده نفس رقم Total assets.","Correct — same as total assets."),
+TF("If an expense grows faster than revenue, its vertical analysis percentage decreases.",false,
+ "غلط — بتزيد. زي الـ R&D في بيكسار.","It increases (like Pixar's R&D)."),
+TF("Pixar's gross profit margin declined from 85.5% in 2003 to 89.1% in 2004.",false,
+ "غلط — الهامش اتحسن (زاد) من 85.5% لـ 89.1% — إشارة إيجابية.","It improved from 85.5% to 89.1%."),
+TF("In the example, COGS rose from 60% to 65% of revenue, meaning direct costs took a larger share of each sales dollar.",true,
+ "صح — وعشان كده صافي الربح نزل من 20% لـ 16.7%.","Correct — net income fell from 20% to 16.7%."),
+],
+
+/* ======================= SECTION 4 — Ratio analysis & profitability ======================= */
+s4:[
+MC("Which of the following is a profitability ratio used to evaluate how effectively a company uses its assets to generate income?",["Return on Equity (ROE)","Return on Assets (ROA)","Asset Turnover","Working Capital"],1,
+ "ROA = صافي الربح ÷ الأصول → كفاءة استخدام الأصول في تحقيق ربح.","ROA."),
+MC("The DuPont Analysis breaks down Return on Equity (ROE) into all of the following EXCEPT:",["Asset Turnover","Current Ratio","Equity Multiplier","Net Profit Margin"],1,
+ "مكونات دوبونت: Net Profit Margin × Asset Turnover × Equity Multiplier. الـ Current Ratio نسبة سيولة.","Current ratio is not part of DuPont."),
+MC("In the comprehensive ratio formula (ROE = ROA × Leverage), how is Leverage calculated?",["Net Income / Average Total Assets","Net Sales / Average Total Assets","Average Total Assets / Average Stockholders' Equity","Average Stockholders' Equity / Average Total Assets"],2,
+ "Leverage (Equity Multiplier) = متوسط الأصول ÷ متوسط حقوق الملكية.","Avg total assets / avg equity."),
+MC("If a company has a Net Income of $100,000, Net Sales of $500,000, and Average Total Assets of $250,000, what is its Profit Margin?",["20%","40%","50%","10%"],0,
+ "Profit margin = 100,000 ÷ 500,000 = 20%. (الأصول هنا رقم مشتّت)","100k / 500k = 20%."),
+MC("The DuPont formula (ROA = Profit Margin × Assets Turnover) is useful because it:",["Calculates the exact market price of the stock","Shows how debt affects the balance sheet","Breaks down ROA into profitability and asset-efficiency components","Determines the number of days' sales in inventory"],2,
+ "بيقسم الـ ROA لجزء ربحية (Margin) وجزء كفاءة (Turnover).","Splits ROA into profitability & efficiency."),
+MC("Nike had current assets of $13,626M and current liabilities of $3,926M. Expressed as a rate, the relationship is:",["3.47 times","347 times","0.29 times","34.7 times"],0,
+ "13,626 ÷ 3,926 = 3.47 مرة. (كنسبة مئوية 347%، وكتناسب 3.47:1)","3.47 times (= 347% = 3.47:1)."),
+MC("Return on Equity (ROE) is calculated as:",["Net Income / Shareholders' Equity","Net Income / Total Assets","Net Income / Revenues","Gross Profit / Revenues"],0,
+ "ROE = صافي الربح ÷ حقوق الملكية.","Net income / equity."),
+MC("Which ratio shows the percentage of revenue that remains as profit after ALL expenses, including interest and taxes?",["Gross Profit Margin","Operating Profit Margin","Net Profit Margin","Return on Assets"],2,
+ "Net Profit Margin = المقياس النهائي للربحية بعد كل المصاريف.","Net profit margin."),
+MC("Which ratio measures the percentage of revenue left after covering operating expenses, excluding interest and taxes?",["Operating Profit Margin","Net Profit Margin","Gross Profit Margin","ROE"],0,
+ "Operating margin = الربح قبل الفوايد والضرايب ÷ المبيعات.","Operating profit margin."),
+MC("Gross Profit Margin mainly indicates:",["Production efficiency and pricing strategy","Financial leverage","Short-term liquidity","Market value of shares"],0,
+ "بعد خصم تكلفة البضاعة → بيوضح كفاءة الإنتاج وسياسة التسعير.","Production efficiency & pricing."),
+MC("According to DuPont, ROE equals:",["Net Profit Margin × Asset Turnover × Equity Multiplier","Net Profit Margin + Asset Turnover + Equity Multiplier","ROA ÷ Equity Multiplier","Asset Turnover × Current Ratio"],0,
+ "ROE = NPM × AT × EM (ضرب مش جمع).","NPM × AT × EM."),
+MC("Beginning total assets are $1,200,000, ending are $1,800,000, and net income is $150,000. ROA (using average assets) is:",["10%","8.3%","12.5%","18.75%"],0,
+ "متوسط الأصول = 1,500,000 → 150,000 ÷ 1,500,000 = 10%.","Avg assets 1.5M → 10%."),
+MC("Beginning equity is $600,000, ending equity is $1,000,000, and net income is $150,000. ROE (using average equity) is:",["18.75%","15%","25%","10%"],0,
+ "متوسط حقوق الملكية = 800,000 → 150,000 ÷ 800,000 = 18.75%.","Avg equity 800k → 18.75%."),
+MC("Assets Turnover is calculated as:",["Net Sales / Average Total Assets","Net Income / Average Total Assets","Average Total Assets / Equity","Net Sales / Net Income"],0,
+ "Asset turnover = المبيعات ÷ متوسط الأصول.","Net sales / avg total assets."),
+MC("Company A (no debt) has ROE of 10.5%; Company B (same operations, financed with debt) has ROE of 17.85%. The difference is mainly due to:",["Positive financial leverage","Higher net income for Company B","Lower assets for Company B","Higher tax rate for Company A"],0,
+ "B صافي ربحه أقل، بس حقوق ملكيته أقل بكتير → الدين كبّر العائد للمساهمين (Positive leverage) — مع مخاطرة أعلى.","Debt magnified returns to shareholders."),
+MC("Retail Corp has a 4% net margin and 2.5 asset turnover; Tech Innovators has an 8% margin and 2.0 turnover. Retail Corp's model is best described as:",["Low margin, high volume","High margin, low volume","High leverage, low turnover","No leverage, high margin"],0,
+ "هامش قليل + دوران عالي = تجزئة (يبيع كتير بربح قليل في كل وحدة).","Low margin, high volume (retail)."),
+MC("A company has Net Income $150,000, Revenues $1,000,000, Total Assets $750,000 and Equity $500,000. Its ROE is:",["30%","20%","15%","13.3%"],0,
+ "150,000 ÷ 500,000 = 30%. وبدوبونت: 15% × 1.33 × 1.5 ≈ 30%.","150k / 500k = 30%."),
+MC("Firm X and Firm Y both have a 6% net margin and an equity multiplier of 2, but Firm X has a higher ROE. The key driver is:",["Higher asset turnover (2 vs 1.25)","Higher net profit margin","Higher leverage","Lower revenues"],0,
+ "الهامش والرافعة زي بعض، فالفرق جاي من دوران الأصول: X بيعمل مبيعات أكتر لكل جنيه أصول.","Higher asset turnover."),
+MC("An ROA above 20% is most common in:",["Asset-light businesses such as software and consulting","Utilities","Heavy manufacturing","Asset-intensive industries"],0,
+ "أقل من 5% = صناعات كثيفة الأصول، 5–20% = متوسط لقوي، فوق 20% = شركات خفيفة الأصول (سوفتوير، استشارات).","Asset-light businesses."),
+TF("A higher Return on Equity (ROE) indicates greater efficiency in using capital to generate profits.",true,
+ "صح.","Correct."),
+TF("Average Stockholders' Equity is calculated by adding the beginning and ending balances and dividing by two.",true,
+ "صح — (أول المدة + آخر المدة) ÷ 2.","(Beginning + ending) / 2."),
+TF("According to the ROE = ROA × Leverage formula, a company with high leverage will always have a lower ROE.",false,
+ "غلط — الرافعة العالية بتكبّر الـ ROE (لو الـ ROA موجب). وكلمة always فخ.","High leverage magnifies ROE when ROA is positive."),
+TF("The DuPont formula states that Return on Assets is the product of Profit Margin and Asset Turnover.",true,
+ "صح — ROA = PM × AT.","ROA = PM × AT."),
+TF("Return on Equity (ROE) measures profitability relative to the shareholders' investment.",true,
+ "صح.","Correct."),
+TF("It is very useful to compare the ROA of a utility company directly with that of a consulting firm.",false,
+ "غلط — الـ ROA بيختلف حسب الصناعة، فالمقارنة دي مضللة. قارن جوه نفس الصناعة.","ROA is industry-specific; misleading comparison."),
+TF("A declining ROE over time can indicate that management is making poor reinvestment decisions.",true,
+ "صح.","Correct."),
+TF("The Equity Multiplier in the DuPont formula is a measure of a company's financial leverage.",true,
+ "صح — Equity multiplier = Financial leverage.","Correct."),
+TF("A ratio can be expressed as a percentage, a rate, or a simple proportion.",true,
+ "صح — زي مثال Nike: 347% أو 3.47 مرة أو 3.47:1.","Like Nike: 347%, 3.47 times, 3.47:1."),
+TF("Ratio analysis relies on a single metric to evaluate a company.",false,
+ "غلط — بيحلل مجموعة كبيرة من البيانات مش مقياس واحد.","It analyzes a range of data, not one metric."),
+TF("For profitability ratios, lower ratios generally signal better performance.",false,
+ "غلط — في نسب الربحية: الأعلى أحسن.","Higher is better."),
+TF("Operating profit margin is calculated after deducting interest and taxes.",false,
+ "غلط — بيستبعد الفوايد والضرايب (قبل الفوايد والضرايب).","It excludes interest and taxes."),
+TF("An ROA below 5% is common in asset-intensive industries such as utilities and manufacturing.",true,
+ "صح.","Correct."),
+TF("Positive financial leverage uses debt to magnify shareholders' returns, but it also increases financial risk.",true,
+ "صح — زي Company B.","Correct, like Company B."),
+TF("Two firms with identical net profit margins must have the same ROE.",false,
+ "غلط — ممكن يختلفوا بسبب دوران الأصول أو الرافعة (Firm X و Y).","They can differ via turnover or leverage."),
+TF("A sustainable and increasing ROE should be compared with the company's cost of equity.",true,
+ "صح — حسب السلايد.","Correct per the slides."),
+],
+
+/* ======================= SECTION 5 — Efficiency, liquidity, solvency ======================= */
+s5:[
+MC("Which of the following formulas correctly calculates the Accounts Receivable Turnover?",["Net Sales / Ending Accounts Receivable","Cost of Goods Sold / Average Accounts Receivable","Net Sales / Average Accounts Receivable","Average Accounts Receivable / Daily Net Sales"],2,
+ "AR turnover = صافي المبيعات ÷ متوسط المدينين. (الاختيار D ده عدد أيام التحصيل)","Net sales / average AR."),
+MC("When calculating the Quick Ratio, which of the following assets is typically excluded?",["Cash","Accounts Receivable","Temporary Investments","Merchandise Inventory"],3,
+ "المخزون بيتشال لأنه مش سهل يتحول لكاش بسرعة.","Inventory is excluded."),
+MC("The Number of Days' Sales in Inventory is calculated as:",["Average Inventory / Cost of Goods Sold","Average Inventory / Daily Cost of Goods Sold","Cost of Goods Sold / Average Inventory","Net Sales / Average Inventory"],1,
+ "متوسط المخزون ÷ تكلفة المبيعات اليومية. (C ده Inventory turnover)","Avg inventory / daily COGS."),
+MC("The Acid-Test (Quick) Ratio is considered a more rigorous test of liquidity than the Current Ratio because it:",["Includes all current assets","Focuses only on long-term investments","Excludes inventory and prepaid expenses","Uses total liabilities in the denominator"],2,
+ "أصرم لأنه بيشيل المخزون والمصروفات المدفوعة مقدمًا.","Excludes inventory & prepaid expenses."),
+MC("Which ratio measures how efficiently a company uses its property, plant, and equipment to generate sales?",["Fixed Assets Turnover","Inventory Turnover","Ratio of Fixed Assets to Long-Term Liabilities","Current Ratio"],0,
+ "Fixed assets turnover = المبيعات ÷ متوسط صافي الأصول الثابتة.","Fixed assets turnover."),
+MC("The “Number of Times Interest Charges Earned” ratio is calculated by dividing:",["Net Income by Interest Expense","Income Before Income Tax by Interest Expense","(Income Before Income Tax + Interest Expense) by Interest Expense","Income Before Income Tax by Long-Term Liabilities"],2,
+ "(الربح قبل الضريبة + الفوايد) ÷ الفوايد. لازم ترجّع الفوايد للبسط.","(Income before tax + interest) / interest."),
+MC("A company has current assets of $800,000 and current liabilities of $400,000. If it uses $100,000 of cash to pay off $100,000 of long-term debt, the new current ratio is:",["1.75","2.0","2.25","2.5"],0,
+ "الأصول المتداولة نزلت لـ 700,000، والخصوم المتداولة زي ما هي (الدين طويل الأجل). 700 ÷ 400 = 1.75.","700k / 400k = 1.75."),
+MC("If a company has a Times Interest Earned (TIE) ratio of 0.8, this indicates that:",["The company is excellent at covering its interest payments","The company's earnings are insufficient to cover its interest expenses","The company has no debt","The company has a very low level of debt"],1,
+ "TIE أقل من 1 = الأرباح قبل الفوايد والضرايب أقل من الفوايد نفسها.","TIE < 1 → earnings don't cover interest."),
+MC("A Debt-to-Asset ratio of 0.75 means that:",["75% of the company's assets are financed by equity","The company has $0.75 in assets for every $1 of debt","75% of the company's assets are financed by debt","The company has a low level of financial risk"],2,
+ "75% من الأصول ممولة بالديون → مخاطرة مالية عالية.","75% of assets financed by debt."),
+MC("Which of the following is a key difference between solvency and liquidity ratios?",["Solvency ratios focus on short-term obligations, while liquidity ratios focus on long-term obligations","Solvency ratios are only used by stockholders, while liquidity ratios are only used by creditors","Solvency ratios focus on long-term financial health, while liquidity ratios focus on short-term debt-paying ability","Solvency ratios measure profitability, while liquidity ratios measure efficiency"],2,
+ "Solvency = طويل الأجل، Liquidity = قصير الأجل. (الاختيار A عكسها — فخ)","Solvency = long-term; liquidity = short-term."),
+MC("A company has an Equity Multiplier of 3.0. This implies that:",["For every $1 of equity, the company has $3 in assets","For every $1 of assets, the company has $3 in equity","The company is entirely funded by equity","The company has a very low level of financial leverage"],0,
+ "Equity multiplier = الأصول ÷ حقوق الملكية = 3 → كل 1 جنيه ملكية قصاده 3 جنيه أصول.","$3 of assets per $1 of equity."),
+MC("Gross sales are $1,250,000 and sales returns and allowances are $50,000. Net sales equal:",["$1,200,000","$1,300,000","$1,250,000","$1,150,000"],0,
+ "1,250,000 − 50,000 = 1,200,000.","1,250k − 50k = 1,200k."),
+MC("Net sales are $1,200,000; AR was $150,000 on Jan. 1 and $250,000 on Dec. 31. The Accounts Receivable Turnover is:",["6 times","4.8 times","8 times","5 times"],0,
+ "متوسط المدينين = 200,000 → 1,200,000 ÷ 200,000 = 6 مرات.","Avg AR 200k → 6 times."),
+MC("Using the same data (net sales $1,200,000; average AR $200,000; 365 days), the number of days' sales in receivables is about:",["61 days","46 days","30 days","73 days"],0,
+ "المبيعات اليومية = 3,287.67 → 200,000 ÷ 3,287.67 ≈ 60.8 ≈ 61 يوم.","≈ 60.8 ≈ 61 days."),
+MC("COGS is $720,000; inventory was $80,000 on Jan. 1 and $100,000 on Dec. 31. The Inventory Turnover is:",["8 times","7.2 times","9 times","6 times"],0,
+ "متوسط المخزون = 90,000 → 720,000 ÷ 90,000 = 8 مرات.","Avg inventory 90k → 8 times."),
+MC("Using the same data (COGS $720,000; average inventory $90,000; 365 days), the number of days' sales in inventory is about:",["46 days","40 days","61 days","8 days"],0,
+ "COGS اليومية = 1,972.60 → 90,000 ÷ 1,972.60 ≈ 45.6 ≈ 46 يوم.","≈ 45.6 ≈ 46 days."),
+MC("Nova Inc.: Cash $40,000, Temporary investments $30,000, AR $110,000, Inventory $150,000, Current liabilities $120,000. Working capital is:",["$210,000","$330,000","$60,000","$180,000"],0,
+ "الأصول المتداولة = 330,000 → 330,000 − 120,000 = 210,000.","330k − 120k = 210k."),
+MC("Using Nova Inc.'s data, the current ratio is:",["2.75","1.5","2.0","3.3"],0,
+ "330,000 ÷ 120,000 = 2.75.","330k / 120k = 2.75."),
+MC("Using Nova Inc.'s data, the quick (acid-test) ratio is:",["1.5","2.75","1.25","0.58"],0,
+ "الأصول السريعة = 40 + 30 + 110 = 180,000 (من غير المخزون) → 180 ÷ 120 = 1.5.","Quick assets 180k / 120k = 1.5."),
+MC("Orion: Income before income tax $200,000 and interest expense $25,000. Number of times interest charges earned is:",["9 times","8 times","7 times","10 times"],0,
+ "(200,000 + 25,000) ÷ 25,000 = 9 مرات. (لو نسيت ترجّع الفوايد هيطلع 8 — ده فخ)","225k / 25k = 9 times."),
+MC("Orion: COGS $730,000, beginning inventory $70,000, ending inventory $90,000. Number of days' sales in inventory is:",["40 days","45 days","36 days","9 days"],0,
+ "متوسط المخزون 80,000، COGS اليومية = 2,000 → 80,000 ÷ 2,000 = 40 يوم.","80k / 2k = 40 days."),
+MC("The Ratio of Liabilities to Stockholders' Equity measures:",["The proportion of debt-to-equity financing","The ability to pay short-term debts","How quickly inventory is sold","The return on shareholders' investment"],0,
+ "نسبة التمويل بالدين مقابل الملكية — نسبة ملاءة (Solvency).","Proportion of debt vs equity financing."),
+TF("The Current Ratio is generally considered a stricter test of liquidity than the Quick Ratio.",false,
+ "غلط — الـ Quick Ratio هو الأصرم لأنه بيشيل المخزون.","The quick ratio is stricter."),
+TF("A high Inventory Turnover ratio generally indicates that the company is selling its inventory quickly.",true,
+ "صح.","Correct."),
+TF("Working Capital is calculated by adding Total Current Assets and Total Current Liabilities.",false,
+ "غلط — بالطرح: الأصول المتداولة − الخصوم المتداولة.","It's CA minus CL."),
+TF("Daily Net Sales is calculated by dividing Net Sales by 365 days.",true,
+ "صح.","Correct."),
+TF("The Ratio of Liabilities to Stockholders' Equity measures a company's ability to pay its short-term debts.",false,
+ "غلط — دي نسبة ملاءة طويلة الأجل (Solvency) مش سيولة.","It's a solvency (long-term) ratio."),
+TF("A higher Accounts Receivable Turnover generally means the company collects its receivables faster.",true,
+ "صح.","Correct."),
+TF("The Number of Days' Sales in Receivables is also called Days Sales Outstanding.",true,
+ "صح — DSO.","Correct — DSO."),
+TF("Inventory Turnover is calculated as Net Sales divided by Average Inventory.",false,
+ "غلط — بنستخدم تكلفة البضاعة المباعة (COGS) مش المبيعات.","It uses COGS, not net sales."),
+TF("Quick assets include merchandise inventory and prepaid expenses.",false,
+ "غلط — الاتنين دول بالظبط اللي بيتشالوا.","Those are exactly what's excluded."),
+TF("The Number of Times Interest Charges Earned measures a company's ability to meet its interest payments.",true,
+ "صح.","Correct."),
+TF("The Ratio of Fixed Assets to Long-Term Liabilities is a solvency ratio.",true,
+ "صح — بيوضح الأصول الثابتة ممولة بديون طويلة قد إيه.","Correct."),
+TF("Using cash to pay off long-term debt leaves the current ratio unchanged.",false,
+ "غلط — الأصول المتداولة بتقل والخصوم المتداولة ثابتة، فالنسبة بتتغير (من 2.0 لـ 1.75 في المثال).","CA falls while CL stays → ratio changes (2.0 → 1.75)."),
+TF("Daily Cost of Goods Sold is calculated by dividing COGS by 365 days.",true,
+ "صح.","Correct."),
+TF("Efficiency (activity) ratios measure how effectively a company manages its assets to generate sales.",true,
+ "صح.","Correct."),
+TF("Average Accounts Receivable is calculated as (Beginning AR + Ending AR) ÷ 2.",true,
+ "صح.","Correct."),
+],
+};
+
+const SECTIONS = [
+{ id:'s1', n:'01', c:'var(--s1)',
+  title:{ar:'مقدمة في التحليل المالي', en:'Introduction to Financial Analysis'},
+  desc:{ar:'يعني إيه تحليل مالي، بيركز على إيه، مين بيستخدمه، مصادر المعلومات، وأنواع التحليل والنسب.', en:'What financial analysis is, its focus, its users, sources of information and types of analysis.'},
+  topics:['Definition','Focus','Debt vs Equity','Sources','Ratio types'],
+  lesson:(L)=>`
+  <div class="blk"><h2><span class="n">1</span>${L('يعني إيه تحليل مالي؟','What is financial analysis?')}</h2>
+   <p class="sub">${L('أول سؤال في المادة — وأسئلة صح وغلط كتير بتلعب على كلمة <b>solely</b>.','The first idea in the course — many T/F questions play on the word <b>solely</b>.')}</p>
+   <div class="g2">
+    <div class="tile hl"><h4>📖 ${L('التعريف','Definition')}</h4><p>${L('هو <b>فحص نقدي</b> للمعلومات المحاسبية في القوايم المالية، وتقييم <b>العلاقات بين مكوناتها</b> عشان نفهم المركز المالي للشركة وأداءها.','<b>Critically examining</b> accounting information in the statements and evaluating the <b>relationships between components</b> to understand position and performance.')}</p></div>
+    <div class="tile hl"><h4>🌍 ${L('مش في الفراغ','Not in isolation')}</h4><p>${L('التحليل بيتعمل <b>في سياق البيئة الاقتصادية</b> اللي الشركة شغالة فيها — مش أرقام وحسابات وبس.','It is done <b>within the economic environment</b> — not just maths on numbers.')}</p></div>
+   </div>
+   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>فخ الامتحان:</b> أي جملة بتقول إن التحليل "<b>solely mathematical</b>" أو إن الإجابة بتعتمد على "<b>الأرقام بس</b>" من غير تفسير المحلل → <b>غلط</b>. الإجابة = أرقام + تفسير.','<b>Exam trap:</b> “solely mathematical” or “numbers only, no interpretation” → <b>False</b>. Answer = numbers + interpretation.')}</div></div>
+   <div class="call tip"><span class="ci">🎯</span><div>${L('<b>الدور الأساسي:</b> إننا <b>نتوقع</b> أداء الشركة ومركزها المالي ومخاطرها في المستقبل — مش حساب الضرايب ولا عمل الميزانية التقديرية.','<b>Primary role:</b> to <b>predict</b> future performance, financial position and risk — not taxes or budgeting.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">2</span>${L('التحليل بيركز على إيه؟ (3 حاجات)','The primary focus (3 abilities)')}</h2>
+   <div class="g3">
+    <div class="tile"><div class="ic">💹</div><h4>${L('عائد ≥ تكلفة رأس المال','Return ≥ cost of capital')}</h4><p class="en">Generate a return on capital at least equal to its cost of capital</p></div>
+    <div class="tile"><div class="ic">📈</div><h4>${L('نمو مربح','Profitable growth')}</h4><p class="en">Grow its operations profitably</p></div>
+    <div class="tile"><div class="ic">💵</div><h4>${L('تدفق نقدي كافي','Enough cash flow')}</h4><p class="en">Generate sufficient cash flow to meet obligations and seize opportunities</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">3</span>${L('مين بيستخدم التحليل؟ وكل واحد عايز إيه؟','Who uses it, and what do they want?')}</h2>
+   <div class="vsbox">
+    <div class="side a"><h3 class="en">Debt Investors</h3><div class="q">${L('المقرضين: هترجّعلي فلوسي؟','Lenders: will I get paid back?')}</div>
+     <ul class="ck">
+      <li>${L('قدرة الشركة تسدد <b>الفوايد وأصل الدين</b>','Ability to repay <b>interest & principal</b>')}</li>
+      <li>${L('اهتمامهم: <b>الأمان المالي</b> (financial safety)','Focus: <b>financial safety</b>')}</li>
+     </ul></div>
+    <div class="vs">VS</div>
+    <div class="side b"><h3 class="en">Equity Investors</h3><div class="q">${L('المساهمين: هكسب قد إيه؟','Shareholders: how much will I earn?')}</div>
+     <ul class="ck">
+      <li>${L('<b>الربحية</b> و<b>قيمة السهم</b>','<b>Profitability</b> & <b>share value</b>')}</li>
+      <li>${L('اهتمامهم: <b>النمو والعوائد</b>','Focus: <b>growth & returns</b>')}</li>
+     </ul></div>
+   </div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Debt</b> = دين = "رجّعلي فلوسي" · <b>Equity</b> = ملكية = "كبّرلي فلوسي".','<b>Debt</b> = “pay me back” · <b>Equity</b> = “grow my money”.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">4</span>${L('مصادر المعلومات','Sources of information')}</h2>
+   <p class="sub">${L('التحليل <b>بيبدأ</b> من التقارير المالية بتاعة الشركة نفسها:','Analysis <b>begins</b> with the company’s own financial reports:')}</p>
+   <div class="flow">
+    <div class="fx"><b>✅ ${L('قوايم مالية مراجَعة','Audited statements')}</b><small class="en">Audited financial statements</small></div>
+    <div class="ar">+</div>
+    <div class="fx"><b>📑 ${L('إفصاحات تنظيمية','Regulatory disclosures')}</b><small class="en">Additional regulatory disclosures</small></div>
+    <div class="ar">+</div>
+    <div class="fx"><b>🗣️ ${L('تعليق الإدارة','Management commentary')}</b><small class="en">Accompanying <b>(unaudited)</b> commentary</small></div>
+   </div>
+   <div class="call tip"><span class="ci">🔎</span><div>${L('وبعدين المحلل لازم <b>يكمّل</b> البيانات دي ببحث عن <b>الصناعة والشركة</b> (industry & company research) عشان يفهم البيئة الاقتصادية ونموذج البزنس. وخلي بالك: تعليق الإدارة <b>غير مراجَع</b>.','Then <b>complement</b> it with <b>industry & company research</b>. Note: management commentary is <b>unaudited</b>.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">5</span>${L('أنواع التحليل المالي','Types of financial analysis')}</h2>
+   <div class="g2">
+    <div class="tile"><h4>↔️ <span class="en">Horizontal Analysis</span></h4><p>${L('مقارنة البيانات التاريخية <b>عبر الزمن</b> (Trend).','Compare historical data <b>over time</b> (trend).')}</p></div>
+    <div class="tile"><h4>↕️ <span class="en">Vertical Analysis</span></h4><p>${L('<b>Common-size</b> — كل بند نسبة من إجمالي.','<b>Common-size</b> — each item as % of a total.')}</p></div>
+   </div>
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('أنواع النسب المالية (5)','The 5 ratio types')}</h3>
+   <div class="tblwrap"><table class="cmp"><tbody>
+    <tr><td class="en">💧 Liquidity</td><td>${L('السيولة — القدرة على السداد <b>قصير الأجل</b>','<b>Short-term</b> solvency')}</td></tr>
+    <tr><td class="en">🏦 Solvency</td><td>${L('الملاءة — الديون <b>طويلة الأجل</b>','<b>Long-term</b> debt')}</td></tr>
+    <tr><td class="en">💰 Profitability</td><td>${L('الربحية — القدرة على تحقيق أرباح','Earning ability')}</td></tr>
+    <tr><td class="en">⚙️ Efficiency</td><td>${L('الكفاءة — استغلال الأصول','Asset utilization')}</td></tr>
+    <tr><td class="en">🏷️ Valuation</td><td>${L('التقييم — القيمة السوقية','Market value')}</td></tr>
+   </tbody></table></div>
+   <div class="call warn"><span class="ci">🚫</span><div>${L('<b class="en">Historical Cost Ratios</b> <b>مش</b> من الأنواع — سؤال "Which is NOT" مشهور.','<b>Historical Cost Ratios</b> is <b>NOT</b> a type — classic “Which is NOT”.')}</div></div>
+  </div>
+
+  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة في 5 نقط','Recap in 5 points')}</h2><ol>
+   <li>${L('التحليل = فحص نقدي للقوايم + علاقات بين البنود، <b>في سياق البيئة الاقتصادية</b>.','Analysis = critical examination + relationships, <b>in economic context</b>.')}</li>
+   <li>${L('بيركز على: عائد ≥ تكلفة رأس المال، نمو مربح، كاش كفاية.','Focus: return ≥ cost of capital, profitable growth, enough cash.')}</li>
+   <li>${L('Debt = السداد · Equity = الربحية وقيمة السهم.','Debt = repayment · Equity = profit & share value.')}</li>
+   <li>${L('بيبدأ من تقارير الشركة، ويتكمّل ببحث عن الصناعة.','Starts with company reports, complemented by industry research.')}</li>
+   <li>${L('أفقي، رأسي، و5 أنواع نسب — ومفيش Historical Cost Ratios.','Horizontal, vertical, 5 ratio types — no historical cost ratios.')}</li></ol></div>`
+},
+{ id:'s2', n:'02', c:'var(--s2)',
+  title:{ar:'مستويات التحليل والتحليل الأفقي', en:'Levels of Analysis & Horizontal Analysis'},
+  desc:{ar:'مستويات التحليل التلاتة، أدوات التحليل، التحليل الأفقي: المعادلات، الاعتبارات، المزايا، وأمثلة محلولة.', en:'The 3 levels, the 3 tools, and horizontal analysis: formulas, considerations, advantages and solved examples.'},
+  topics:['Intra · Inter · Industry','Amount change','% change','Base year 100%','Covenants'],
+  lesson:(L)=>`
+  <div class="blk"><h2><span class="n">1</span>${L('مستويات التحليل التلاتة','The 3 levels of analysis')}</h2>
+   <p class="sub">${L('بنقارن الشركة بمين؟ — التلاتة أساميهم قريبة جدًا، ركّز.','Compare the company with whom? — the names are close, focus.')}</p>
+   <div class="g3">
+    <div class="tile hl"><div class="ic">🔁</div><h4><span class="en">Intra-company</span></h4><p>${L('<b>نفس الشركة</b>: السنة دي قصاد السنة اللي فاتت.','<b>Same company</b>: this year vs last year.')}</p></div>
+    <div class="tile hl"><div class="ic">🏢</div><h4><span class="en">Inter-company</span></h4><p>${L('الشركة قصاد شركات تانية في <b>نفس المجموعة الأم</b> (corporate group).','Company vs others in the <b>same parent group</b>.')}</p></div>
+    <div class="tile hl"><div class="ic">📊</div><h4><span class="en">Industry average</span></h4><p>${L('الشركة قصاد <b>متوسط الصناعة</b> اللي بتنشره شركات المعلومات والإحصاء.','Company vs the <b>industry average</b> published by statistics companies.')}</p></div>
+   </div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Intra</b> = جوه (inside) الشركة · <b>Inter</b> = بين (between) شركات المجموعة · <b>Industry</b> = متوسط القطاع كله.','<b>Intra</b> = inside · <b>Inter</b> = between group companies · <b>Industry</b> = sector average.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">2</span>${L('أدوات التحليل التلاتة','The 3 tools of analysis')}</h2>
+   <div class="flow">
+    <div class="fx"><b>① <span class="en">Horizontal</span></b><small>${L('أفقي (Trend) — السكشن ده','Trend — this section')}</small></div><div class="ar">→</div>
+    <div class="fx"><b>② <span class="en">Vertical</span></b><small>${L('رأسي (Common-size) — سكشن 3','Common-size — section 3')}</small></div><div class="ar">→</div>
+    <div class="fx"><b>③ <span class="en">Ratio</span></b><small>${L('النسب — سكشن 4 و 5','Ratios — sections 4 & 5')}</small></div>
+   </div>
+   <div class="call warn"><span class="ci">⚠️</span><div>${L('متخلطش: <b>Intra/Inter/Industry</b> = <b>مستويات</b>. <b>Horizontal/Vertical/Ratio</b> = <b>أدوات</b>.','Don’t mix: Intra/Inter/Industry = <b>levels</b>; Horizontal/Vertical/Ratio = <b>tools</b>.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">3</span>${L('التحليل الأفقي (Trend analysis)','Horizontal (trend) analysis')}</h2>
+   <p>${L('بيقيّم سلسلة من بيانات القوايم المالية <b>على مدار فترة زمنية</b>، وهدفه نعرف <b>التغير</b> (زيادة أو نقص). والتغير بيتكتب <b>كمبلغ</b> أو <b>كنسبة</b>. وممكن يتطبق كمان على <b>النسب المالية</b> نفسها.','Evaluates a series of statement data <b>over time</b> to find the <b>change</b>, as an <b>amount</b> or a <b>percentage</b>. It can also apply to <b>ratios</b>.')}</p>
+   <div class="fm">Amount change = Current year − Base year</div>
+   <div class="fm">% change = Amount change ÷ <u>Base year</u></div>
+   <div class="g2" style="margin-top:12px">
+    <div class="tile"><h4>📌 <span class="en">Baseline year = 100%</span></h4><p>${L('سنة الأساس بتتكتب <b>100%</b> (مش 0%)، وكل سنة بعدها بتتنسب ليها.','The base year is <b>100%</b> (not 0%); later years are a % of it.')}</p></div>
+    <div class="tile"><h4>🧮 ${L('مثال سريع','Quick example')}</h4><p>${L('إيرادات من 400,000 لـ 500,000 → (100,000 ÷ <b>400,000</b>) = <b>25%</b>. لو قسمت على 500,000 هيطلع 20% وده <b>غلط</b>.','400k → 500k: 100k ÷ <b>400k</b> = <b>25%</b> (not 20%).')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">4</span>${L('اعتبارات مهمة في التحليل الأفقي','Key considerations')}</h2>
+   <div class="g3">
+    <div class="tile"><div class="ic">🧩</div><h4><span class="en">Analyze all statements together</span></h4><p>${L('حلل كل القوايم <b>مع بعض</b> مش كل واحدة لوحدها. قايمة دخل ممتازة ممكن تخبّي إن الميزانية فيها مشكلة في تمويل النمو (كاش بيقل، دائنين وديون بتزيد).','Analyze <b>all together</b>. A great income statement can hide balance-sheet trouble funding growth.')}</p></div>
+    <div class="tile"><div class="ic">💡</div><h4><span class="en">Illuminating calculations</span></h4><p>${L('مفيد جدًا مع النسب والهوامش: current ratio، interest coverage، gross margin، net profit margin.','Very useful for ratios & margins.')}</p></div>
+    <div class="tile"><div class="ic">📜</div><h4><span class="en">Covenants</span></h4><p>${L('راقب <b>اتجاه</b> المقاييس اللي في شروط القرض (loan covenants) عشان تلحق قبل ما يحصل <b>covenant breach</b>.','Monitor <b>trends</b> in covenant measures to catch a possible <b>breach</b>.')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">5</span>${L('المزايا والعيوب والتنبؤ','Advantages, limits & forecasting')}</h2>
+   <div class="g2">
+    <div class="tile"><h4 style="color:var(--ok)">✔ ${L('المزايا','Advantages')}</h4><ul class="ck">
+     <li>${L('<b>Trend analysis</b>: تشوف الشذوذ عن الاتجاه بالعين','<b>Trend analysis</b>: spot anomalies visually')}</li>
+     <li>${L('<b>Trend projection</b>: أسهل تمد الاتجاه للمستقبل','<b>Trend projection</b> into the future')}</li>
+     <li>${L('<b>Competitor analysis</b>: تقارن بالمنافسين أو متوسط الصناعة','<b>Competitor analysis</b> vs rivals or industry')}</li>
+     <li>${L('<b>Minimal experience</b>: محتاج خبرة <b>قليلة</b>','<b>Minimal experience</b> required')}</li>
+    </ul></div>
+    <div class="tile"><h4 style="color:var(--bad)">✘ ${L('خلي بالك','Watch out')}</h4><ul class="ck no">
+     <li>${L('ممكن يتشوّه بسبب <b>أحداث غير عادية</b> (irregular events)','Can be <b>distorted by irregular events</b>')}</li>
+     <li>${L('<b>مش</b> بياخد العوامل الخارجية (الاقتصاد، الصناعة) في اعتباره','Does <b>not</b> consider external factors')}</li>
+     <li>${L('<b>مش كل زيادة كويسة</b> — زيادة المصروفات وحشة','<b>Not every increase is good</b> (expenses)')}</li>
+    </ul></div>
+   </div>
+   <div class="call tip"><span class="ci">🔮</span><div>${L('<b>Forecasting:</b> بنحسب معدلات نمو سنوية أو ربع سنوية من البيانات التاريخية، ونبني عليها <b>افتراضات</b> للمستقبل (نمو المبيعات، تكلفة البضاعة…). هو <b>مش</b> بيتوقع الرقم بالظبط.','<b>Forecasting:</b> compute growth rates and build <b>assumptions</b> — it does <b>not</b> predict exact numbers.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">6</span>${L('مثال محلول: ميزانية (سنة الأساس 2017)','Solved example: balance sheet (base 2017)')}</h2>
+   <div class="tblwrap"><table class="cmp en">
+    <thead><tr><th>Item</th><th>2018</th><th>2017</th><th>Amount change</th><th>% change</th></tr></thead><tbody>
+    <tr><td>Current assets</td><td>1,020,000</td><td>945,000</td><td>75,000</td><td>7.9%</td></tr>
+    <tr><td>Long-term assets (net)</td><td>800,000</td><td>632,500</td><td>167,500</td><td>26.5%</td></tr>
+    <tr><td>Intangible assets</td><td>15,000</td><td>17,500</td><td>(2,500)</td><td>(14.3)%</td></tr>
+    <tr><td><b>Total assets</b></td><td><b>1,835,000</b></td><td><b>1,595,000</b></td><td><b>240,000</b></td><td><b>15%</b></td></tr>
+    <tr><td>Current liabilities</td><td>344,500</td><td>303,000</td><td>41,500</td><td>13.7%</td></tr>
+    <tr><td>Long-term liabilities</td><td>487,500</td><td>497,000</td><td>(9,500)</td><td>(1.9)%</td></tr>
+    <tr><td><b>Total liabilities</b></td><td><b>832,000</b></td><td><b>800,000</b></td><td><b>32,000</b></td><td><b>4%</b></td></tr>
+    <tr><td>Common stock</td><td>275,400</td><td>270,000</td><td>5,400</td><td>2%</td></tr>
+    <tr><td>Retained earnings</td><td>727,600</td><td>525,000</td><td>202,600</td><td>38.6%</td></tr>
+    <tr><td><b>Total equity</b></td><td><b>1,003,000</b></td><td><b>795,000</b></td><td><b>208,000</b></td><td><b>26.2%</b></td></tr>
+    <tr><td><b>Total L &amp; E</b></td><td><b>1,835,000</b></td><td><b>1,595,000</b></td><td><b>240,000</b></td><td><b>15%</b></td></tr>
+   </tbody></table></div>
+   <div class="call warn"><span class="ci">📝</span><div>${L('<b>تنبيه:</b> السلايد فيه 3 غلطات مطبعية وأنا صححتها هنا: الخصوم طويلة الأجل 487,500 (مش 4,875,000)، تغير الخصوم المتداولة 41,500 (مش 415,000)، وتغير الأرباح المحتجزة 202,600 = 38.6% (مش 207,600 = 38.2%). والنقص بيتكتب <b>بين قوسين</b>.','<b>Note:</b> 3 typos in the slide are corrected here (LTL 487,500; CL change 41,500; RE change 202,600 = 38.6%). Decreases go in <b>parentheses</b>.')}</div></div>
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('مثال قايمة دخل (2024 ← 2025)','Income statement example (2024 → 2025)')}</h3>
+   <div class="money">
+    <div><small>${L('الإيرادات','Revenues')}</small><b>+20%</b></div>
+    <div><small>${L('تكلفة البضاعة المباعة','COGS')}</small><b>+30%</b></div>
+    <div><small>${L('صافي الربح','Net income')}</small><b>0%</b></div>
+   </div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>التفسير:</b> الإيرادات زادت 20% بس التكلفة زادت <b>أسرع</b> (30%) → الهوامش اتضغطت، والمصروفات التشغيلية زادت 10% بس. صافي الربح ثابت رغم النمو → <b>كفاءة أقل في إدارة التكاليف</b>.','<b>Interpretation:</b> costs grew faster than revenue → squeezed margins → <b>reduced cost efficiency</b>.')}</div></div>
+  </div>
+
+  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة','Recap')}</h2><ol>
+   <li>${L('المستويات: Intra (نفس الشركة)، Inter (نفس المجموعة)، Industry (متوسط الصناعة).','Levels: intra, inter, industry average.')}</li>
+   <li>${L('الأدوات: أفقي، رأسي، نسب.','Tools: horizontal, vertical, ratio.')}</li>
+   <li>${L('% التغير = مقدار التغير ÷ <b>سنة الأساس</b> — وسنة الأساس = 100%.','% change = amount ÷ <b>base year</b>; base = 100%.')}</li>
+   <li>${L('حلل القوايم مع بعض، وراقب الـ covenants.','Analyze statements together; watch covenants.')}</li>
+   <li>${L('مزاياه: trend، projection، منافسين، خبرة قليلة — وعيبه: الأحداث غير العادية.','Pros: trend, projection, competitors, little skill — con: irregular events.')}</li></ol></div>`
+},
+{ id:'s3', n:'03', c:'var(--s3)',
+  title:{ar:'التحليل الرأسي (Common-size)', en:'Vertical (Common-Size) Analysis'},
+  desc:{ar:'الأساس اللي بننسب ليه في كل قايمة، القوايم ذات الحجم المشترك، الفرق بين الأفقي والرأسي، وحالة Pixar.', en:'Base amounts per statement, common-size statements, horizontal vs vertical, and the Pixar case.'},
+  topics:['Base = 100%','Net sales','Total assets','Common-size','Pixar case'],
+  lesson:(L)=>`
+  <div class="blk"><h2><span class="n">1</span>${L('يعني إيه تحليل رأسي؟','What is vertical analysis?')}</h2>
+   <p>${L('بنعبّر عن كل بند في القايمة <b>كنسبة مئوية من رقم أساس</b> جوه نفس القايمة. اسمه "رأسي" لأنه بيوضح علاقة كل بند بالإجمالي <b>في قايمة واحدة وفترة واحدة</b>.','Each item is a <b>% of a base amount</b> in the same statement — relationships within <b>a single statement and period</b>.')}</p>
+   <div class="vsbox">
+    <div class="side a"><h3 class="en">Income Statement</h3><div class="q">${L('الأساس = صافي المبيعات (100%)','Base = Net sales (100%)')}</div>
+     <div class="fm">% = Item ÷ Net sales (Revenue)</div>
+     <ul class="ck"><li>${L('تكلفة البضاعة، المصروفات، الإهلاك، صافي الربح… كله ÷ المبيعات','COGS, expenses, depreciation, net income… ÷ sales')}</li></ul></div>
+    <div class="vs">VS</div>
+    <div class="side b"><h3 class="en">Balance Sheet</h3><div class="q">${L('الأساس = إجمالي الأصول (100%)','Base = Total assets (100%)')}</div>
+     <div class="fm">% = Item ÷ Total assets</div>
+     <ul class="ck"><li>${L('والخصوم وحقوق الملكية ممكن ÷ Total liabilities &amp; equity (نفس الرقم)','L&amp;E items may use total L&amp;E (same figure)')}</li></ul></div>
+   </div>
+   <div class="call tip"><span class="ci">🧮</span><div>${L('<b>مثال:</b> كاش 50,000 وإجمالي أصول 1,000,000 → الكاش = <b>5%</b> من الأصول.','<b>Example:</b> cash 50,000 / total assets 1,000,000 = <b>5%</b>.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">2</span>${L('البند ده أساسه إيه؟ (أسئلة مضمونة)','What is the base for this item?')}</h2>
+   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('البند','Item')}</th><th>${L('القايمة','Statement')}</th><th>${L('الأساس الصح','Correct base')}</th></tr></thead><tbody>
+    <tr><td class="en">Depreciation expense</td><td>${L('دخل','Income')}</td><td class="en"><b>Net sales</b></td></tr>
+    <tr><td class="en">COGS / Operating expenses</td><td>${L('دخل','Income')}</td><td class="en"><b>Net sales</b></td></tr>
+    <tr><td class="en">Current assets</td><td>${L('ميزانية','Balance sheet')}</td><td class="en"><b>Total assets</b></td></tr>
+    <tr><td class="en">Current liabilities</td><td>${L('ميزانية','Balance sheet')}</td><td class="en"><b>Total assets</b> (${L('مش Total liabilities','not total liabilities')})</td></tr>
+    <tr><td class="en">Inventory</td><td>${L('ميزانية','Balance sheet')}</td><td class="en"><b>Total liabilities &amp; equity</b> (= Total assets)</td></tr>
+   </tbody></table></div>
+   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>القاعدة الذهبية:</b> اسأل نفسك البند ده في أنهي قايمة؟ <b>دخل → المبيعات</b>، <b>ميزانية → إجمالي الأصول</b>. الاختيارات زي "Total current assets" أو "Total liabilities" أو "Fixed assets" فخ.','<b>Golden rule:</b> income statement → sales; balance sheet → total assets. “Total current assets / total liabilities / fixed assets” are traps.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">3</span>${L('القوايم ذات الحجم المشترك','Common-size statements')}</h2>
+   <p>${L('لما نطبق التحليل الرأسي، القوايم اللي بتطلع اسمها <b>Common-Size Statements</b> — كل البنود فيها <b>نسب مئوية</b>.','Applying vertical analysis produces <b>common-size statements</b> — all items in <b>percentages</b>.')}</p>
+   <div class="g3">
+    <div class="tile"><div class="ic">⚖️</div><h4>${L('مقارنة شركات مختلفة الحجم','Compare different sizes')}</h4><p>${L('لأن كله نسب، الحجم مبقاش فارق — دي <b>أهم ميزة</b>.','Percentages remove size — the <b>key benefit</b>.')}</p></div>
+    <div class="tile"><div class="ic">🗓️</div><h4>${L('مقارنة فترات','Compare periods')}</h4><p>${L('ممكن نقارن هيكل التكاليف من فترة لفترة.','Compare cost structure across periods.')}</p></div>
+    <div class="tile"><div class="ic">🎯</div><h4>${L('الغرض','Purpose')}</h4><p>${L('يوضح <b>علاقة كل بند بالإجمالي</b> جوه قايمة واحدة.','Show each <b>component’s relationship to the total</b>.')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">4</span>${L('الأفقي ضد الرأسي','Horizontal vs Vertical')}</h2>
+   <div class="tblwrap"><table class="cmp">
+    <thead><tr><th></th><th class="fs en">Horizontal</th><th class="bp en">Vertical</th></tr></thead><tbody>
+    <tr><td>${L('الاسم التاني','Also called')}</td><td class="en">Trend analysis</td><td class="en">Common-size analysis</td></tr>
+    <tr><td>${L('بيقارن','Compares')}</td><td>${L('نفس البند <b>عبر سنين</b>','Same item <b>across years</b>')}</td><td>${L('كل بند <b>بالإجمالي</b> في نفس السنة','Each item <b>to the total</b>, same year')}</td></tr>
+    <tr><td>${L('الأساس','Base')}</td><td>${L('سنة الأساس','Base year')}</td><td>${L('المبيعات / إجمالي الأصول','Net sales / total assets')}</td></tr>
+    <tr><td>${L('الفترات','Periods')}</td><td>${L('كذا فترة','Multiple periods')}</td><td>${L('فترة واحدة','Single period')}</td></tr>
+   </tbody></table></div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>أفقي ↔️</b> = بتمشي بعينك يمين وشمال على السنين. <b>رأسي ↕️</b> = بتمشي فوق وتحت جوه نفس العمود.','<b>Horizontal ↔️</b> = across years. <b>Vertical ↕️</b> = down one column.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">5</span>${L('مثال محلول (2024 و 2025)','Solved example (2024 & 2025)')}</h2>
+   <div class="tblwrap"><table class="cmp en">
+    <thead><tr><th>Item</th><th>2024</th><th>%</th><th>2025</th><th>%</th></tr></thead><tbody>
+    <tr><td>Revenue</td><td>1,000,000</td><td><b>100%</b></td><td>1,200,000</td><td><b>100%</b></td></tr>
+    <tr><td>Cost of goods sold</td><td>600,000</td><td>60%</td><td>780,000</td><td>65%</td></tr>
+    <tr><td>Operating expenses</td><td>200,000</td><td>20%</td><td>220,000</td><td>18.3%</td></tr>
+    <tr><td>Net income</td><td>200,000</td><td>20%</td><td>200,000</td><td>16.7%</td></tr>
+   </tbody></table></div>
+   <div class="call tip"><span class="ci">💡</span><div>${L('تكلفة البضاعة بقت بتاكل <b>65%</b> من كل جنيه مبيعات بدل 60% → صافي الربح نزل من 20% لـ <b>16.7%</b>. ولو مصروف زاد <b>أسرع</b> من الإيرادات، نسبته الرأسية <b>بتزيد</b>.','COGS now takes <b>65%</b> → net income fell to <b>16.7%</b>. An expense growing faster than revenue → its % <b>rises</b>.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">6</span>${L('حالة Pixar (2003 ← 2004)','Pixar case (2003 → 2004)')}</h2>
+   <div class="money">
+    <div><small>${L('نمو الإيرادات (أفقي)','Revenue growth (horizontal)')}</small><b>+4.19%</b></div>
+    <div><small>${L('R&amp;D كنسبة من الإيرادات','R&amp;D as % of revenue')}</small><b>5.8% → 6.4%</b></div>
+    <div><small>${L('هامش مجمل الربح','Gross profit margin')}</small><b>85.5% → 89.1%</b></div>
+   </div>
+   <div class="g2" style="margin-top:12px">
+    <div class="tile"><h4>🔬 ${L('ليه نسبة R&amp;D زادت؟','Why did R&amp;D % rise?')}</h4><p>${L('R&amp;D زاد <b>13.7%</b> (من 15.3 لـ 17.4 مليون) والإيرادات زادت <b>4.19%</b> بس → المصروف نمي أسرع → نسبته زادت.','R&amp;D grew <b>13.7%</b> vs revenue <b>4.19%</b> → its share rose.')}</p></div>
+    <div class="tile"><h4>🟢 ${L('نقلق من الـ Gross margin؟','Worry about gross margin?')}</h4><p>${L('<b>لأ</b> — الهامش <b>اتحسن</b> لـ 89.1%: كل جنيه إيراد بيفضل منه 89.1 قرش بعد التكاليف المباشرة، والتكلفة نزلت من 14.5% لـ 10.9% → تحكم أفضل في التكاليف أو قوة تسعير.','<b>No</b> — it <b>improved</b> to 89.1%; COGS fell from 14.5% to 10.9%.')}</p></div>
+   </div>
+   <div class="call mem"><span class="ci">🎬</span><div>${L('<b class="en">Blockbuster Strategy</b> = تكاليف <b>كبيرة في الأول</b> (up-front) وتكاليف إضافية <b>قليلة</b> بعد الإطلاق — مش العكس.','<b>Blockbuster Strategy</b> = <b>large up-front</b> costs, <b>few</b> costs after launch.')}</div></div>
+  </div>
+
+  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة','Recap')}</h2><ol>
+   <li>${L('رأسي = Common-size = كل بند ÷ رقم أساس في نفس القايمة.','Vertical = common-size = item ÷ base in the same statement.')}</li>
+   <li>${L('قايمة دخل → <b>المبيعات</b> 100% · ميزانية → <b>إجمالي الأصول</b> 100%.','Income → <b>sales</b> 100% · balance sheet → <b>total assets</b> 100%.')}</li>
+   <li>${L('أهم ميزة: مقارنة شركات <b>مختلفة الحجم</b>.','Key benefit: compare <b>different sizes</b>.')}</li>
+   <li>${L('رأسي = فترة واحدة · أفقي = كذا فترة.','Vertical = one period · horizontal = many.')}</li>
+   <li>${L('مصروف بينمو أسرع من الإيرادات → نسبته الرأسية بتزيد (Pixar R&amp;D).','Expense outgrowing revenue → its % rises.')}</li></ol></div>`
+},
+{ id:'s4', n:'04', c:'var(--s4)',
+  title:{ar:'تحليل النسب ونسب الربحية', en:'Ratio Analysis & Profitability'},
+  desc:{ar:'يعني إيه نسبة، نسب الربحية الخمسة، ROE و ROA، تحليل DuPont، والرافعة المالية مع تمارين محلولة.', en:'Ratios, the 5 profitability ratios, ROE & ROA, DuPont analysis and financial leverage with solved exercises.'},
+  topics:['ROE','ROA','Margins','DuPont','Leverage'],
+  lesson:(L)=>`
+  <div class="blk"><h2><span class="n">1</span>${L('يعني إيه تحليل نسب؟','What is ratio analysis?')}</h2>
+   <p>${L('بيوضح <b>العلاقة الرياضية</b> بين بندين من القوايم المالية، عشان نعرف السيولة والكفاءة التشغيلية والربحية. وهو <b>مش مقياس واحد</b> — ده مجموعة كبيرة من المقاييس.','Expresses the <b>mathematical relationship</b> between statement items to learn about liquidity, efficiency and profitability — <b>not a single metric</b>.')}</p>
+   <p class="sub">${L('مثال Nike: أصول متداولة 13,626 مليون وخصوم متداولة 3,926 مليون — العلاقة ممكن تتكتب 3 طرق:','Nike: CA $13,626M, CL $3,926M — three ways to express it:')}</p>
+   <div class="money">
+    <div><small>Percentage</small><b>347%</b></div>
+    <div><small>Rate</small><b>3.47 times</b></div>
+    <div><small>Proportion</small><b>3.47 : 1</b></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">2</span>${L('نسب الربحية الخمسة','The 5 profitability ratios')}</h2>
+   <p class="sub">${L('بتقيس قدرة الشركة تحقق ربح — وفيها كلها <b>الأعلى أحسن</b>.','Measure ability to generate profit — <b>higher is better</b>.')}</p>
+   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('النسبة','Ratio')}</th><th>${L('المعادلة','Formula')}</th><th>${L('بتقيس إيه','Meaning')}</th></tr></thead><tbody>
+    <tr><td class="en">ROE</td><td class="en">Net Income ÷ Equity</td><td>${L('العائد على فلوس المساهمين — الإدارة بتستخدم التمويل بالملكية كويس؟','Return on shareholders’ money')}</td></tr>
+    <tr><td class="en">ROA</td><td class="en">Net Income ÷ Total Assets</td><td>${L('ربح كل جنيه أصول — كفاءة استخدام الأصول','Profit per dollar of assets')}</td></tr>
+    <tr><td class="en">Net Profit Margin</td><td class="en">Net Income ÷ Revenues</td><td>${L('اللي بيفضل بعد <b>كل</b> المصاريف (حتى الفوايد والضرايب) — <b>المقياس النهائي</b>','After <b>all</b> expenses — the <b>ultimate</b> measure')}</td></tr>
+    <tr><td class="en">Gross Profit Margin</td><td class="en">Gross Profit ÷ Revenues</td><td>${L('بعد تكلفة البضاعة — كفاءة الإنتاج والتسعير','After COGS — production & pricing')}</td></tr>
+    <tr><td class="en">Operating Profit Margin</td><td class="en">EBIT ÷ Sales</td><td>${L('بعد المصروفات التشغيلية، <b>قبل</b> الفوايد والضرايب','After operating costs, <b>before</b> interest & tax')}</td></tr>
+   </tbody></table></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">3</span>${L('ROE و ROA بالتفصيل','ROE & ROA in depth')}</h2>
+   <div class="fm">Average = (Beginning + Ending) ÷ 2</div>
+   <div class="g2" style="margin-top:12px">
+    <div class="tile hl"><h4><span class="en">ROE = NI ÷ Average Equity</span></h4><p>${L('ROE مستقر وبيزيد = إدارة كويسة وقيمة للمساهمين، ويتقارن بـ <b>تكلفة حقوق الملكية</b>. ROE بينزل مع الوقت ممكن يعني قرارات إعادة استثمار وحشة.','Stable, rising ROE = good management; compare to <b>cost of equity</b>. Declining ROE may mean poor reinvestment.')}</p></div>
+    <div class="tile hl"><h4><span class="en">ROA = NI ÷ Average Total Assets</span></h4><p>${L('<b>بيعتمد جدًا على الصناعة</b> — قارنه جوه نفس الصناعة بس. (مقارنة شركة كهربا بشركة استشارات = مضللة)','<b>Highly industry-dependent</b> — compare within one industry only.')}</p></div>
+   </div>
+   <div class="g3 lights" style="margin-top:12px">
+    <div class="tile light-b"><div class="ic">🏭</div><h4 class="en">ROA &lt; 5%</h4><p>${L('صناعات كثيفة الأصول (كهربا، تصنيع)','Asset-intensive (utilities, manufacturing)')}</p></div>
+    <div class="tile light-g"><div class="ic">📊</div><h4 class="en">5% – 20%</h4><p>${L('أداء متوسط لقوي','Average to strong')}</p></div>
+    <div class="tile" style="--c:var(--ok)"><div class="ic">💻</div><h4 class="en" style="color:var(--ok)">ROA &gt; 20%</h4><p>${L('ممتاز — شركات خفيفة الأصول (سوفتوير، استشارات)','Excellent — asset-light (software, consulting)')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">4</span>${L('تحليل DuPont','DuPont analysis')}</h2>
+   <p class="sub">${L('بيفكك الـ ROE عشان نعرف هو جاي منين: ربحية؟ كفاءة؟ ولا رافعة مالية؟','Breaks ROE down: profitability, efficiency or leverage?')}</p>
+   <div class="mnemo"><span>NPM<small>Margin</small></span><span>×</span><span>AT<small>Turnover</small></span><span>×</span><span>EM<small>Leverage</small></span></div>
+   <div class="fm">ROE = Net Profit Margin × Assets Turnover × Equity Multiplier</div>
+   <div class="g3" style="margin-top:12px">
+    <div class="tile"><h4 class="en">Net Profit Margin</h4><p class="en">Net Income ÷ Net Sales</p><p>${L('الربحية','Profitability')}</p></div>
+    <div class="tile"><h4 class="en">Assets Turnover</h4><p class="en">Net Sales ÷ Avg Total Assets</p><p>${L('كفاءة الأصول','Asset efficiency')}</p></div>
+    <div class="tile"><h4 class="en">Equity Multiplier</h4><p class="en">Avg Total Assets ÷ Avg Equity</p><p>${L('الرافعة المالية (Leverage)','Financial leverage')}</p></div>
+   </div>
+   <div class="fm" style="margin-top:12px">ROA = Profit Margin × Assets Turnover &nbsp;&nbsp;|&nbsp;&nbsp; ROE = ROA × Leverage</div>
+   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>Current Ratio مش من مكونات دوبونت</b> (دي نسبة سيولة). والرافعة العالية <b>بتكبّر</b> الـ ROE (لو ROA موجب) — مش "دايمًا بتقلله".','<b>Current ratio is not in DuPont.</b> High leverage <b>magnifies</b> ROE (if ROA &gt; 0) — never “always lower”.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">5</span>${L('تمارين محلولة','Solved exercises')}</h2>
+   <h3 style="margin:4px 0 10px;font-size:17px">${L('تمرين 1 — المتوسطات','Exercise 1 — averages')}</h3>
+   <div class="money">
+    <div><small>Avg assets (1.2M + 1.8M) ÷ 2</small><b>1,500,000</b></div>
+    <div><small>ROA = 150k ÷ 1.5M</small><b>10%</b></div>
+    <div><small>ROE = 150k ÷ 800k</small><b>18.75%</b></div>
+   </div>
+   <p style="margin-top:10px">${L('وبالمبيعات 1,500,000: Margin = 10% و Turnover = 1 → ROA = 10% × 1 = <b>10%</b> ✔ نفس الإجابة.','With sales of 1.5M: margin 10% × turnover 1 = <b>10%</b> ✔')}</p>
+
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 2 — أثر الرافعة المالية','Exercise 2 — financial leverage')}</h3>
+   <div class="tblwrap"><table class="cmp en"><thead><tr><th></th><th>Company A (no debt)</th><th>Company B (debt 1.2M)</th></tr></thead><tbody>
+    <tr><td>EBIT</td><td>300,000</td><td>300,000</td></tr>
+    <tr><td>Interest (8%)</td><td>0</td><td>(96,000)</td></tr>
+    <tr><td>Income before tax</td><td>300,000</td><td>204,000</td></tr>
+    <tr><td>Tax (30%)</td><td>(90,000)</td><td>(61,200)</td></tr>
+    <tr><td>Net income</td><td>210,000</td><td>142,800</td></tr>
+    <tr><td>Equity</td><td>2,000,000</td><td>800,000</td></tr>
+    <tr><td><b>ROE</b></td><td><b>10.5%</b></td><td><b>17.85%</b></td></tr>
+   </tbody></table></div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('B صافي ربحه <b>أقل</b> بس الـ ROE <b>أعلى</b> → ده <b>Positive financial leverage</b>: الدين كبّر عائد المساهمين، بس معاه <b>مخاطرة أعلى</b> لو الأرباح نزلت.','B earns <b>less</b> but has <b>higher</b> ROE → <b>positive leverage</b>, with <b>higher risk</b>.')}</div></div>
+
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 3 — نموذج البزنس من دوبونت','Exercise 3 — business models')}</h3>
+   <div class="tblwrap"><table class="cmp en"><thead><tr><th></th><th>Net margin</th><th>Assets turnover</th><th>Equity multiplier</th><th>ROE</th></tr></thead><tbody>
+    <tr><td>Retail Corp</td><td>4%</td><td>2.5</td><td>1.67</td><td>16.7%</td></tr>
+    <tr><td>Tech Innovators</td><td>8%</td><td>2.0</td><td>1.67</td><td>26.7%</td></tr>
+   </tbody></table></div>
+   <p style="margin-top:10px">${L('التجزئة = <b>هامش قليل + حجم مبيعات عالي</b>. التكنولوجيا = <b>ربح أعلى في كل بيعة</b> بس دوران أقل. والاتنين نفس الرافعة.','Retail = <b>low margin, high volume</b>; tech = <b>higher margin</b>, lower turnover; same leverage.')}</p>
+
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 4 و 5','Exercises 4 & 5')}</h3>
+   <div class="g2">
+    <div class="tile"><h4>${L('تمرين 4','Exercise 4')}</h4><p class="en">ROE = 150k ÷ 500k = <b>30%</b><br>DuPont = 15% × 1.33 × 1.5 ≈ <b>30%</b> ✔</p></div>
+    <div class="tile"><h4>${L('تمرين 5 — Firm X ضد Y','Exercise 5 — Firm X vs Y')}</h4><p>${L('نفس الهامش (6%) ونفس الرافعة (2)، بس X دوران أصوله <b>2</b> و Y <b>1.25</b> → ROE لـ X = 24% و Y = 15%. السبب: <b>دوران الأصول</b>.','Same margin & leverage; X turnover <b>2</b> vs <b>1.25</b> → ROE 24% vs 15%. Driver: <b>turnover</b>.')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk recap"><h2><span class="n">★</span>${L('5 حاجات لازم تفتكرها','5 things to remember')}</h2><ol>
+   <li>${L('النسبة ممكن تتكتب: % أو مرات أو تناسب (347% = 3.47 = 3.47:1).','A ratio: %, rate or proportion.')}</li>
+   <li>${L('نسب الربحية: ROE، ROA، Net/Gross/Operating margin — الأعلى أحسن.','Profitability ratios — higher is better.')}</li>
+   <li>${L('المتوسط = (أول + آخر) ÷ 2، والـ ROA بيتقارن جوه نفس الصناعة.','Average = (begin + end)/2; compare ROA within an industry.')}</li>
+   <li>${L('DuPont: ROE = Margin × Turnover × Equity Multiplier — من غير Current ratio.','DuPont: margin × turnover × multiplier — no current ratio.')}</li>
+   <li>${L('الرافعة بتكبّر الـ ROE وبتزود المخاطرة.','Leverage magnifies ROE and risk.')}</li></ol></div>`
+},
+{ id:'s5', n:'05', c:'var(--s5)',
+  title:{ar:'نسب الكفاءة والسيولة والملاءة', en:'Efficiency, Liquidity & Solvency Ratios'},
+  desc:{ar:'معدلات الدوران وعدد الأيام، رأس المال العامل والنسبة السريعة، نسب الملاءة وتغطية الفوايد، مع تمارين محلولة.', en:'Turnovers and days, working capital and quick ratio, solvency and interest coverage, with solved exercises.'},
+  topics:['AR Turnover','Inventory days','Current · Quick','TIE','Debt / Equity'],
+  lesson:(L)=>`
+  <div class="blk"><h2><span class="n">1</span>${L('3 عيلات من النسب','3 families of ratios')}</h2>
+   <div class="g3">
+    <div class="tile hl"><div class="ic">⚙️</div><h4><span class="en">Efficiency (Activity)</span></h4><p>${L('الشركة بتدير أصولها كويس عشان تبيع؟','How well assets generate sales')}</p></div>
+    <div class="tile hl"><div class="ic">💧</div><h4><span class="en">Liquidity</span></h4><p>${L('تقدر تسدد التزاماتها <b>قصيرة الأجل</b>؟','Pay <b>short-term</b> obligations?')}</p></div>
+    <div class="tile hl"><div class="ic">🏦</div><h4><span class="en">Solvency (Leverage)</span></h4><p>${L('تقدر تسدد ديونها <b>طويلة الأجل</b>؟ وهيكل تمويلها إيه؟','<b>Long-term</b> debt-paying ability & structure')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">2</span>${L('نسب الكفاءة (Efficiency)','Efficiency ratios')}</h2>
+   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('النسبة','Ratio')}</th><th>${L('المعادلة','Formula')}</th><th>${L('بتقيس','Measures')}</th></tr></thead><tbody>
+    <tr><td class="en">AR Turnover</td><td class="en">Net Sales ÷ Avg Net AR</td><td>${L('بنحصّل المدينين كام مرة في السنة','Times AR is collected per year')}</td></tr>
+    <tr><td class="en">Days’ Sales in Receivables</td><td class="en">Avg Net AR ÷ Daily Net Sales</td><td>${L('متوسط أيام التحصيل (DSO)','Average days to collect (DSO)')}</td></tr>
+    <tr><td class="en">Inventory Turnover</td><td class="en"><b>COGS</b> ÷ Avg Inventory</td><td>${L('بنبيع ونجدد المخزون كام مرة','Times inventory is sold & replaced')}</td></tr>
+    <tr><td class="en">Days’ Sales in Inventory</td><td class="en">Avg Inventory ÷ Daily COGS</td><td>${L('المخزون بياخد كام يوم عشان يتباع','Days to sell average inventory')}</td></tr>
+    <tr><td class="en">Fixed Assets Turnover</td><td class="en">Net Sales ÷ Avg Net Fixed Assets</td><td>${L('كفاءة استخدام الأصول الثابتة (PP&amp;E)','Efficiency of PP&amp;E')}</td></tr>
+   </tbody></table></div>
+   <div class="fm" style="margin-top:12px">Daily Net Sales = Net Sales ÷ 365 &nbsp;&nbsp;|&nbsp;&nbsp; Daily COGS = COGS ÷ 365</div>
+   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>فخ مشهور:</b> المدينين → <b>المبيعات</b>. المخزون → <b>تكلفة البضاعة المباعة (COGS)</b>. ودايمًا استخدم <b>المتوسط</b> مش رصيد آخر المدة.','<b>Trap:</b> receivables → <b>sales</b>; inventory → <b>COGS</b>. Always use the <b>average</b>.')}</div></div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Turnover عالي</b> = سريع وكويس (بيحصّل أو بيبيع بسرعة). <b>عدد أيام قليل</b> = كويس.','<b>High turnover</b> = fast = good. <b>Fewer days</b> = good.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">3</span>${L('نسب السيولة (Liquidity)','Liquidity ratios')}</h2>
+   <div class="g3">
+    <div class="tile"><h4 class="en">Working Capital</h4><p class="en">CA − CL</p><p>${L('بالطرح مش بالجمع!','Subtraction, not addition!')}</p></div>
+    <div class="tile"><h4 class="en">Current Ratio</h4><p class="en">CA ÷ CL</p><p>${L('كل الأصول المتداولة','All current assets')}</p></div>
+    <div class="tile hl"><h4 class="en">Quick (Acid-Test) Ratio</h4><p class="en">Quick Assets ÷ CL</p><p>${L('<b>أصرم</b> من الـ Current','<b>Stricter</b> than current')}</p></div>
+   </div>
+   <div class="vsbox" style="margin-top:14px">
+    <div class="side a" style="--s1:var(--ok)"><h3>✅ ${L('Quick assets (بتدخل)','Quick assets (in)')}</h3>
+     <ul class="ck"><li class="en">Cash</li><li class="en">Marketable securities</li><li class="en">Temporary investments</li><li class="en">Accounts receivable</li><li class="en">Notes receivable</li></ul></div>
+    <div class="vs">≠</div>
+    <div class="side b" style="--sx:var(--bad)"><h3>❌ ${L('بتتشال','Excluded')}</h3>
+     <ul class="ck no"><li class="en">Merchandise inventory</li><li class="en">Prepaid expenses</li></ul>
+     <p style="margin-top:8px;font-size:14px">${L('لأنهم مش سهل يتحولوا لكاش بسرعة.','Not quickly convertible to cash.')}</p></div>
+   </div>
+  </div>
+
+  <div class="blk"><h2><span class="n">4</span>${L('نسب الملاءة (Solvency)','Solvency ratios')}</h2>
+   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('النسبة','Ratio')}</th><th>${L('المعادلة','Formula')}</th><th>${L('بتقيس','Measures')}</th></tr></thead><tbody>
+    <tr><td class="en">Fixed Assets to LT Liabilities</td><td class="en">Net Fixed Assets ÷ LT Liabilities</td><td>${L('الأصول الثابتة ممولة بديون طويلة قد إيه','Fixed assets vs long-term debt')}</td></tr>
+    <tr><td class="en">Liabilities to Equity</td><td class="en">Total Liabilities ÷ Total Equity</td><td>${L('نسبة التمويل بالدين مقابل الملكية','Debt vs equity financing')}</td></tr>
+    <tr><td class="en">Times Interest Earned</td><td class="en">(Income before tax <b>+ Interest</b>) ÷ Interest</td><td>${L('قدرة الشركة تدفع الفوايد','Ability to pay interest')}</td></tr>
+   </tbody></table></div>
+   <div class="g3" style="margin-top:12px">
+    <div class="tile"><h4 class="en">TIE = 0.8</h4><p>${L('أقل من 1 → الأرباح <b>مش مكفية</b> الفوايد 🔴','&lt; 1 → earnings <b>don’t cover</b> interest 🔴')}</p></div>
+    <div class="tile"><h4 class="en">Debt-to-Assets = 0.75</h4><p>${L('<b>75% من الأصول ممولة بديون</b> → مخاطرة عالية','<b>75% of assets financed by debt</b>')}</p></div>
+    <div class="tile"><h4 class="en">Equity Multiplier = 3</h4><p>${L('كل <b>1 جنيه ملكية</b> قصاده <b>3 جنيه أصول</b>','<b>$3 assets</b> per <b>$1 equity</b>')}</p></div>
+   </div>
+   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Liquidity = قصير</b> الأجل · <b>Solvency = طويل</b> الأجل. أي سؤال بيقول إن Liabilities/Equity بتقيس الديون قصيرة الأجل → غلط.','<b>Liquidity = short</b> · <b>Solvency = long</b> term.')}</div></div>
+  </div>
+
+  <div class="blk"><h2><span class="n">5</span>${L('تمارين محلولة','Solved exercises')}</h2>
+   <h3 style="margin:4px 0 10px;font-size:17px">${L('تمرين 1 — Apex Trading','Exercise 1 — Apex Trading')}</h3>
+   <div class="tblwrap"><table class="cmp en"><tbody>
+    <tr><td>Net sales</td><td>1,250,000 − 50,000</td><td><b>1,200,000</b></td></tr>
+    <tr><td>Average AR</td><td>(150,000 + 250,000) ÷ 2</td><td>200,000</td></tr>
+    <tr><td>AR turnover</td><td>1,200,000 ÷ 200,000</td><td><b>6 times</b></td></tr>
+    <tr><td>Days’ sales in AR</td><td>200,000 ÷ (1,200,000 ÷ 365 = 3,287.67)</td><td><b>≈ 61 days</b></td></tr>
+    <tr><td>Average inventory</td><td>(80,000 + 100,000) ÷ 2</td><td>90,000</td></tr>
+    <tr><td>Inventory turnover</td><td>720,000 ÷ 90,000</td><td><b>8 times</b></td></tr>
+    <tr><td>Days’ sales in inventory</td><td>90,000 ÷ (720,000 ÷ 365 = 1,972.60)</td><td><b>≈ 46 days</b></td></tr>
+   </tbody></table></div>
+
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 2 — Nova Inc.','Exercise 2 — Nova Inc.')}</h3>
+   <div class="money">
+    <div><small>Working capital = 330k − 120k</small><b>210,000</b></div>
+    <div><small>Current ratio = 330k ÷ 120k</small><b>2.75</b></div>
+    <div><small>Quick ratio = 180k ÷ 120k</small><b>1.5</b></div>
+   </div>
+
+   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 3 — Orion','Exercise 3 — Orion')}</h3>
+   <div class="money">
+    <div><small>Inventory turnover = 730k ÷ 80k</small><b>9.125×</b></div>
+    <div><small>Days in inventory = 80k ÷ 2,000</small><b>40 days</b></div>
+    <div><small>TIE = (200k + 25k) ÷ 25k</small><b>9×</b></div>
+   </div>
+
+   <div class="call tip"><span class="ci">🎯</span><div>${L('<b>سؤال الـ Current ratio المشهور:</b> CA = 800k و CL = 400k (النسبة 2.0). استخدمنا 100k كاش نسدد دين <b>طويل الأجل</b> → CA تبقى 700k والـ CL <b>زي ما هي</b> (الدين مش متداول) → 700 ÷ 400 = <b>1.75</b>.','<b>Classic:</b> paying 100k of <b>long-term</b> debt with cash → CA 700k, CL unchanged → <b>1.75</b>.')}</div></div>
+  </div>
+
+  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة','Recap')}</h2><ol>
+   <li>${L('المدينين ÷ <b>المبيعات</b>، المخزون ÷ <b>COGS</b>، واستخدم المتوسط والـ 365 يوم.','AR uses <b>sales</b>, inventory uses <b>COGS</b>; use averages & 365.')}</li>
+   <li>${L('Working capital = CA − CL، و Current = CA ÷ CL.','WC = CA − CL; current = CA ÷ CL.')}</li>
+   <li>${L('Quick أصرم: من غير المخزون والمصروفات المقدمة.','Quick is stricter: no inventory or prepaids.')}</li>
+   <li>${L('TIE = (ربح قبل الضريبة + الفوايد) ÷ الفوايد، وأقل من 1 = خطر.','TIE = (EBT + interest) ÷ interest; &lt; 1 = danger.')}</li>
+   <li>${L('Liquidity قصير الأجل · Solvency طويل الأجل.','Liquidity short-term · solvency long-term.')}</li></ol></div>`
+},
+];
+
+
+/* ================= i18n ================= */
+const T = {
+  ar:{brand:'مراجعة التحليل المالي',brandSub:'Financial Statements Analysis · 2026/2027',home:'الرئيسية',sec:'سكشن',
+    heroEyebrow:'مراجعة تفاعلية شاملة',heroA:'ذاكر',heroB:'التحليل المالي',heroC:'وامتحن نفسك صح',
+    heroLead:'السكاشن الخمسة في مكان واحد: شرح مبسّط ومترتب بالمعادلات والتمارين المحلولة، وبعدين بنك أسئلة تفاعلي — تختار إجابتك وتعرف فورًا صح ولا غلط وليه.',
+    stSec:'سكاشن',stQ:'سؤال',stTF:'صح وغلط',stMC:'اختيار من متعدد',
+    learn:'ذاكر الشرح',quiz:'امتحن نفسك',qcount:'سؤال',answered:'اتحل',correctPct:'صح',
+    examTitle:'🎯 الامتحان الشامل',examDesc:'أسئلة عشوائية من السكاشن اللي تختارها — زي الامتحان الحقيقي بالظبط.',
+    examSecs:'السكاشن',examCount:'عدد الأسئلة',all:'الكل',start:'ابدأ الامتحان',
+    lesson:'الشرح',practice:'الأسئلة',
+    fAll:'الكل',fTF:'صح وغلط',fMC:'اختيار متعدد',
+    q:'سؤال',of:'من',tf:'صح أو غلط',mc:'اختيار من متعدد',T:'True',F:'False',Tar:'صح',Far:'غلط',
+    right:'إجابة صحيحة! 🎉',wrong:'إجابة غلط',theRight:'الإجابة الصح:',
+    prev:'السابق',next:'التالي',finish:'إنهاء وعرض النتيجة',
+    score:'النتيجة',ok:'صح',bad:'غلط',left:'باقي',map:'خريطة الأسئلة',
+    shuffleQ:'ترتيب عشوائي للأسئلة',shuffleO:'ترتيب عشوائي للاختيارات',reset:'ابدأ من الأول',
+    lgOk:'صح',lgBad:'غلط',lgNone:'لسه',
+    resTitle:['محتاج مراجعة 💪','كويس، كمّل! 👍','ممتاز جدًا! 🌟','أسطورة! 🏆'],
+    resSub:'جاوبت صح على {c} من {t} سؤال',
+    retryAll:'أعيد كل الأسئلة',retryWrong:'أعيد الغلط بس',backLesson:'ارجع للشرح',goHome:'الرئيسية',
+    reviewWrong:'راجع الأسئلة اللي غلطت فيها',yourAns:'إجابتك:',corrAns:'الصح:',
+    ctaT:'خلصت الشرح؟',ctaP:'يلا اختبر نفسك على أسئلة السكشن ده',ctaB:'ابدأ الأسئلة',
+    keys:'اختصارات:',noQ:'مفيش أسئلة هنا',notAnswered:'لسه مجاوبتش على {n} سؤال — تحب تنهي؟',
+    footer:'Financial Statements Analysis · Sections 1–5 · Dr. Moustafa AL-saman · TA Ahmed Hamed',
+    langBtn:'EN',resetDone:'تم المسح'},
+  en:{brand:'Financial Statements Analysis Review',brandSub:'Academic Year 2026/2027',home:'Home',sec:'Section',
+    heroEyebrow:'Complete interactive review',heroA:'Study',heroB:'Financial Analysis',heroC:'and test yourself',
+    heroLead:'All five sections in one place: clear lessons with formulas and solved exercises, then an interactive question bank — pick your answer and instantly see if you are right, and why.',
+    stSec:'Sections',stQ:'Questions',stTF:'True / False',stMC:'Multiple choice',
+    learn:'Study lesson',quiz:'Take quiz',qcount:'questions',answered:'answered',correctPct:'correct',
+    examTitle:'🎯 Full Exam',examDesc:'Random questions from the sections you pick — just like the real exam.',
+    examSecs:'Sections',examCount:'Questions',all:'All',start:'Start exam',
+    lesson:'Lesson',practice:'Questions',
+    fAll:'All',fTF:'True/False',fMC:'MCQ',
+    q:'Question',of:'of',tf:'True or False',mc:'Multiple choice',T:'True',F:'False',Tar:'',Far:'',
+    right:'Correct! 🎉',wrong:'Not quite',theRight:'Correct answer:',
+    prev:'Previous',next:'Next',finish:'Finish & see result',
+    score:'Score',ok:'Right',bad:'Wrong',left:'Left',map:'Question map',
+    shuffleQ:'Shuffle questions',shuffleO:'Shuffle options',reset:'Start over',
+    lgOk:'Right',lgBad:'Wrong',lgNone:'Unanswered',
+    resTitle:['Needs review 💪','Good, keep going! 👍','Excellent! 🌟','Legend! 🏆'],
+    resSub:'You got {c} of {t} right',
+    retryAll:'Retry all',retryWrong:'Retry wrong only',backLesson:'Back to lesson',goHome:'Home',
+    reviewWrong:'Review your mistakes',yourAns:'Your answer:',corrAns:'Correct:',
+    ctaT:'Done with the lesson?',ctaP:'Test yourself on this section',ctaB:'Start questions',
+    keys:'Shortcuts:',noQ:'No questions here',notAnswered:'{n} questions unanswered — finish anyway?',
+    footer:'Financial Statements Analysis · Sections 1–5 · Dr. Moustafa AL-saman · TA Ahmed Hamed',
+    langBtn:'ع',resetDone:'Cleared'}
+};
+
+/* ================= storage ================= */
+const store={get(k,d){try{const v=localStorage.getItem('fsa_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('fsa_'+k,JSON.stringify(v))}catch(e){}}};
+
+/* ================= state ================= */
+const ALLQ={}; // id -> question
+SECTIONS.forEach(s=>QUESTIONS[s.id].forEach((q,i)=>{q.id=s.id+'-'+i;q.sec=s.id;ALLQ[q.id]=q}));
+const sysDark=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
+const S={
+  lang:store.get('lang','ar'),
+  theme:store.get('theme',sysDark?'dark':'light'),
+  view:{name:'home'},
+  stats:store.get('stats',{}), // qid -> 1 correct / 0 wrong (latest)
+  shuffleQ:store.get('shuffleQ',false),
+  shuffleO:store.get('shuffleO',true),
+  exam:{secs:SECTIONS.map(s=>s.id),count:20},
+  sess:null
+};
+const t=k=>T[S.lang][k];
+const L=(ar,en)=>S.lang==='ar'?ar:en;
+const secById=id=>SECTIONS.find(s=>s.id===id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ================= icons ================= */
+const I={
+ sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+ moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+ book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
+ pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+ globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>',
+ logo:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>',
+};
+
+/* ================= helpers ================= */
+function secProgress(id){
+  const qs=QUESTIONS[id];let a=0,c=0;
+  qs.forEach(q=>{if(q.id in S.stats){a++;if(S.stats[q.id]===1)c++}});
+  return {total:qs.length,a,c};
+}
+function saveStats(){store.set('stats',S.stats)}
+function go(view){S.view=view;render();window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'})}
+
+/* ================= session ================= */
+function makeSession(key,title,ids,c,meta={}){
+  const list=S.shuffleQ||meta.random?shuffle(ids):ids.slice();
+  const orders={};
+  list.forEach(id=>{const q=ALLQ[id];orders[id]=q.t==='mc'?(S.shuffleO?shuffle(q.o.map((_,i)=>i)):q.o.map((_,i)=>i)):[0,1]});
+  S.sess={key,title,ids:list,all:ids,orders,ans:{},idx:0,c,filter:'all',done:false,...meta};
+}
+function sessView(){
+  const s=S.sess; if(!s) return [];
+  if(s.filter==='all') return s.ids;
+  return s.ids.filter(id=>ALLQ[id].t===s.filter);
+}
+function startSectionQuiz(id,filter='all'){
+  const sec=secById(id);
+  makeSession(id,sec.title,QUESTIONS[id].map(q=>q.id),sec.c);
+  S.sess.filter=filter;
+  go({name:'sec',id,tab:'quiz'});
+}
+function startExam(){
+  const pool=[];S.exam.secs.forEach(id=>QUESTIONS[id].forEach(q=>pool.push(q.id)));
+  if(!pool.length) return;
+  const n=S.exam.count==='all'?pool.length:Math.min(S.exam.count,pool.length);
+  const ids=shuffle(pool).slice(0,n);
+  makeSession('exam',{ar:'الامتحان الشامل',en:'Full Exam'},ids,'var(--sx)',{exam:true});
+  S.sess.ids=ids; // already random
+  go({name:'exam'});
+}
+
+/* ================= render: chrome ================= */
+function renderTop(){
+  const v=S.view;
+  const navBtns=[`<button class="${v.name==='home'?'on':''}" data-go="home">${t('home')}</button>`]
+    .concat(SECTIONS.map(s=>`<button class="${v.id===s.id?'on':''}" data-go="sec" data-id="${s.id}">${t('sec')} ${+s.n}</button>`))
+    .concat([`<button class="${v.name==='exam'?'on':''}" data-act="exam-home">${L('الامتحان الشامل','Full exam')}</button>`]).join('');
+  return `<header class="top"><div class="wrap">
+    <div class="logo"><div class="logo-mark">${I.logo}</div><div>${t('brand')}<small>${t('brandSub')}</small></div></div>
+    <nav class="nav">${navBtns}</nav>
+    <div class="tools">
+      <button class="tbtn" data-act="lang" title="Language">${I.globe}<span>${t('langBtn')}</span></button>
+      <button class="tbtn" data-act="theme" title="Theme">${S.theme==='dark'?I.sun:I.moon}</button>
+    </div></div></header>
+    <div class="mnav">${navBtns}</div>`;
+}
+
+/* ================= render: home ================= */
+function renderHome(){
+  const tot=Object.values(QUESTIONS).reduce((a,b)=>a+b.length,0);
+  const tf=Object.values(QUESTIONS).flat().filter(q=>q.t==='tf').length;
+  const cards=SECTIONS.map(s=>{const p=secProgress(s.id);const pct=p.total?Math.round(p.a/p.total*100):0;
+    return `<article class="scard fade" style="--c:${s.c}">
+      <div class="num">${s.n}</div>
+      <span class="tag">${t('sec')} ${s.n}</span>
+      <h3>${s.title[S.lang]}</h3><p>${s.desc[S.lang]}</p>
+      <div class="topics">${s.topics.map(x=>`<span class="en">${x}</span>`).join('')}</div>
+      <div class="prog"><i style="width:${pct}%"></i></div>
+      <div class="progtxt"><span>${p.a}/${p.total} ${t('answered')}</span><span>${p.a?Math.round(p.c/p.a*100):0}% ${t('correctPct')}</span></div>
+      <div class="row"><button class="btn pri" data-go="sec" data-id="${s.id}">${I.book}${t('learn')}</button>
+      <button class="btn sec" data-act="quiz" data-id="${s.id}">${I.pen}${t('quiz')} · ${p.total}</button></div>
+    </article>`}).join('');
+  return `<main class="wrap">
+   <section class="hero fade"><span class="eyebrow"><i></i>${t('heroEyebrow')}</span>
+    <h1>${t('heroA')} <span class="hl">${t('heroB')}</span><br>${t('heroC')}</h1>
+    <p class="lead">${t('heroLead')}</p>
+    <div class="stats"><div class="stat"><b>${SECTIONS.length}</b><span>${t('stSec')}</span></div>
+     <div class="stat"><b>${tot}</b><span>${t('stQ')}</span></div>
+     <div class="stat"><b>${tf}</b><span>${t('stTF')}</span></div>
+     <div class="stat"><b>${tot-tf}</b><span>${t('stMC')}</span></div></div>
+   </section>
+   <section class="secgrid">${cards}</section>
+   ${renderExamCard()}
+  </main>`;
+}
+function renderExamCard(){
+  const counts=[10,20,40,'all'];
+  return `<section class="examcard fade" id="examcard"><h3>${t('examTitle')}</h3><p>${t('examDesc')}</p>
+   <div class="opts">
+    <div><label class="lbl">${t('examSecs')}</label><div class="seg">${SECTIONS.map(s=>`<button class="${S.exam.secs.includes(s.id)?'on':''}" data-act="exsec" data-id="${s.id}">${t('sec')} ${+s.n}</button>`).join('')}</div></div>
+    <div><label class="lbl">${t('examCount')}</label><div class="seg">${counts.map(c=>`<button class="${S.exam.count===c?'on':''}" data-act="excount" data-v="${c}">${c==='all'?t('all'):c}</button>`).join('')}</div></div>
+    <button class="btn pri" data-act="exam" ${S.exam.secs.length?'':'disabled'}>${I.pen}${t('start')}</button>
+   </div></section>`;
+}
+
+/* ================= render: section ================= */
+function renderSection(){
+  const s=secById(S.view.id);const tab=S.view.tab||'lesson';
+  const head=`<div class="phead fade"><div class="crumbs"><button data-go="home">${t('home')}</button><span>›</span><span>${t('sec')} ${s.n}</span></div>
+   <h1>${s.title[S.lang]}</h1><p>${s.desc[S.lang]}</p>
+   <div class="subtabs"><button class="${tab==='lesson'?'on':''}" data-go="sec" data-id="${s.id}" data-tab="lesson">${I.book}${t('lesson')}</button>
+   <button class="${tab==='quiz'?'on':''}" data-act="quiz" data-id="${s.id}">${I.pen}${t('practice')} · ${QUESTIONS[s.id].length}</button></div></div>`;
+  let body='';
+  if(tab==='lesson'){
+    body=`<div class="lesson fade">${s.lesson(L)}
+     <div class="cta"><div><h3>${t('ctaT')}</h3><p>${t('ctaP')} (${QUESTIONS[s.id].length} ${t('qcount')})</p></div>
+     <button class="btn pri" data-act="quiz" data-id="${s.id}">${I.pen}${t('ctaB')}</button></div></div>`;
+  } else {
+    if(!S.sess||S.sess.key!==s.id) makeSession(s.id,s.title,QUESTIONS[s.id].map(q=>q.id),s.c);
+    body=renderQuiz();
+  }
+  return `<main class="wrap" style="--c:${s.c}">${head}${body}</main>`;
+}
+function renderExamPage(){
+  if(!S.sess||!S.sess.exam) return `<main class="wrap" style="padding-top:30px">${renderExamCard()}</main>`;
+  return `<main class="wrap" style="--c:var(--sx)"><div class="phead fade"><div class="crumbs"><button data-go="home">${t('home')}</button><span>›</span><span>${t('examTitle').replace('🎯 ','')}</span></div>
+   <h1>${t('examTitle')}</h1><p>${S.sess.ids.length} ${t('qcount')}</p></div>${renderQuiz()}</main>`;
+}
+
+/* ================= render: quiz ================= */
+function renderQuiz(){
+  const s=S.sess;const list=sessView();
+  if(s.done) return renderResult();
+  if(!list.length) return `<div class="qcard">${t('noQ')}</div>`;
+  if(s.idx>=list.length) s.idx=list.length-1;
+  const id=list[s.idx];const q=ALLQ[id];const ord=s.orders[id];const ans=s.ans[id];const answered=ans!==undefined;
+  const nOk=list.filter(x=>s.ans[x]!==undefined&&s.ans[x]===ALLQ[x].a).length;
+  const nBad=list.filter(x=>s.ans[x]!==undefined&&s.ans[x]!==ALLQ[x].a).length;
+  const nLeft=list.length-nOk-nBad;
+  const letters='ABCD';
+  let opts='';
+  if(q.t==='tf'){
+    opts=`<div class="opts2 tf">${[0,1].map(i=>{let cls='';if(answered){if(i===q.a)cls='ok';else if(i===ans)cls='bad';else cls='dim'}
+      const lbl=i===0?t('T'):t('F');const ar=i===0?t('Tar'):t('Far');
+      return `<button class="opt ${cls}" data-act="ans" data-i="${i}" ${answered?'disabled':''}>${cls==='ok'?'<span class="mk">✓</span>':cls==='bad'?'<span class="mk">✗</span>':''}<span>${lbl}${ar?`<span class="ar-t">${ar}</span>`:''}</span></button>`}).join('')}</div>`;
+  } else {
+    opts=`<div class="opts2">${ord.map((oi,pos)=>{let cls='';if(answered){if(oi===q.a)cls='ok';else if(oi===ans)cls='bad';else cls='dim'}
+      return `<button class="opt ${cls}" data-act="ans" data-i="${oi}" ${answered?'disabled':''}><span class="L">${letters[pos]}</span><span class="tx">${esc(q.o[oi])}</span>${cls==='ok'?'<span class="mk" style="color:var(--ok)">✓</span>':cls==='bad'?'<span class="mk" style="color:var(--bad)">✗</span>':''}</button>`}).join('')}</div>`;
+  }
+  let fb='';
+  if(answered){const good=ans===q.a;const rightTxt=q.t==='tf'?(q.a===0?'True':'False'):q.o[q.a];
+    fb=`<div class="fb ${good?'ok':'bad'}"><div class="ico">${good?'✓':'✗'}</div><div><h4>${good?t('right'):t('wrong')}</h4>
+     ${good?'':`<p style="margin-bottom:4px">${t('theRight')} <span class="right">${esc(rightTxt)}</span></p>`}
+     <p>${esc(q.ex[S.lang])}</p></div></div>`}
+  const last=s.idx===list.length-1;
+  const secTag=s.exam?`<span class="badge gray">${t('sec')} ${secById(q.sec).n}</span>`:'';
+  const filters=s.exam?'':`<div class="filters">${[['all','fAll'],['tf','fTF'],['mc','fMC']].map(([f,k])=>`<button class="${s.filter===f?'on':''}" data-act="filter" data-f="${f}">${t(k)}</button>`).join('')}</div>`;
+  const dots=list.map((x,i)=>{let c='';if(s.ans[x]!==undefined)c=s.ans[x]===ALLQ[x].a?'ok':'bad';return `<button class="dot ${c} ${i===s.idx?'cur':''}" data-act="jump" data-i="${i}">${i+1}</button>`}).join('');
+  const pct=Math.round((nOk+nBad)/list.length*100);
+  return `<div class="qz">
+   <div>
+    <div class="qbar">${filters}<span class="kbd">${t('keys')} ${q.t==='tf'?'<kbd>T</kbd><kbd>F</kbd>':'<kbd>A</kbd>–<kbd>D</kbd>'} · <kbd>Enter</kbd> ${t('next')}</span></div>
+    <div class="topprog"><i style="width:${pct}%"></i></div>
+    <div class="qcard fade" id="qcard">
+     <div class="meta"><span class="qno">${t('q')} <b>${s.idx+1}</b> ${t('of')} ${list.length}</span><span class="badge">${q.t==='tf'?t('tf'):t('mc')}</span>${secTag}</div>
+     <p class="qtext">${esc(q.q)}</p>
+     ${opts}${fb}
+     <div class="qnav"><button class="btn ghost" data-act="prev" ${s.idx===0?'disabled':''}>${S.lang==='ar'?'→':'←'} ${t('prev')}</button>
+      ${last?`<button class="btn pri" data-act="finish">${t('finish')}</button>`:`<button class="btn ${answered?'pri':'sec'}" data-act="next">${t('next')} ${S.lang==='ar'?'←':'→'}</button>`}</div>
+    </div>
+   </div>
+   <aside class="side-p">
+    <div class="pbox"><h4><span>${t('score')}</span><span>${pct}%</span></h4>
+     <div class="score3"><div class="o"><b>${nOk}</b><small>${t('ok')}</small></div><div class="x"><b>${nBad}</b><small>${t('bad')}</small></div><div><b>${nLeft}</b><small>${t('left')}</small></div></div></div>
+    <div class="pbox"><h4><span>${t('map')}</span><span>${list.length}</span></h4><div class="dots">${dots}</div>
+     <div class="legend"><span><i style="background:var(--ok)"></i>${t('lgOk')}</span><span><i style="background:var(--bad)"></i>${t('lgBad')}</span><span><i style="background:var(--line2)"></i>${t('lgNone')}</span></div></div>
+    <div class="pbox">
+     ${s.exam?'':`<div class="toggle" data-act="tq"><span>${t('shuffleQ')}</span><span class="sw ${S.shuffleQ?'on':''}"></span></div>`}
+     <div class="toggle" data-act="to"><span>${t('shuffleO')}</span><span class="sw ${S.shuffleO?'on':''}"></span></div>
+     <button class="btn sec" style="width:100%;margin-top:8px" data-act="reset">↺ ${t('reset')}</button>
+    </div>
+   </aside></div>`;
+}
+
+function renderResult(){
+  const s=S.sess;const list=sessView();
+  const c=list.filter(x=>s.ans[x]===ALLQ[x].a).length;const tot=list.length;const pct=tot?Math.round(c/tot*100):0;
+  const lvl=pct<50?0:pct<75?1:pct<90?2:3;
+  const R=80,C=2*Math.PI*R;
+  const col=pct<50?'var(--bad)':pct<75?'var(--accent)':'var(--ok)';
+  const wrong=list.filter(x=>s.ans[x]!==undefined&&s.ans[x]!==ALLQ[x].a);
+  const fmt=q=>i=>q.t==='tf'?(i===0?'True':'False'):q.o[i];
+  const rv=wrong.map(x=>{const q=ALLQ[x];const f=fmt(q);return `<div class="rv"><div class="qq">${esc(q.q)}</div>
+    <div class="aa"><span>${t('yourAns')}</span> <span class="y">${esc(f(s.ans[x]))}</span> · <span>${t('corrAns')}</span> <span class="c">${esc(f(q.a))}</span></div>
+    <div class="ee">💡 ${esc(q.ex[S.lang])}</div></div>`}).join('');
+  return `<div class="result fade" style="margin-bottom:60px">
+   <div class="ring"><svg width="190" height="190"><circle cx="95" cy="95" r="${R}" fill="none" stroke="var(--surface2)" stroke-width="16"/>
+    <circle cx="95" cy="95" r="${R}" fill="none" stroke="${col}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" id="ringc" data-off="${C*(1-pct/100)}" style="transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)"/></svg>
+    <div class="v"><b>${pct}%</b><small>${c} / ${tot}</small></div></div>
+   <h2>${t('resTitle')[lvl]}</h2><p>${t('resSub').replace('{c}',c).replace('{t}',tot)}</p>
+   <div class="row">
+    ${wrong.length?`<button class="btn pri" data-act="retry-wrong">${t('retryWrong')} (${wrong.length})</button>`:''}
+    <button class="btn sec" data-act="retry-all">${t('retryAll')}</button>
+    ${s.exam?`<button class="btn ghost" data-go="home">${t('goHome')}</button>`:`<button class="btn ghost" data-go="sec" data-id="${s.key}" data-tab="lesson">${t('backLesson')}</button>`}
+   </div>
+   ${wrong.length?`<div class="review"><h3>${t('reviewWrong')}</h3>${rv}</div>`:''}
+  </div>`;
+}
+
+/* ================= main render ================= */
+function render(){
+  document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
+  document.documentElement.dataset.theme=S.theme;
+  document.title=t('brand');
+  const v=S.view;let main='';
+  if(v.name==='home') main=renderHome();
+  else if(v.name==='sec') main=renderSection();
+  else if(v.name==='exam') main=renderExamPage();
+  document.getElementById('app').innerHTML=renderTop()+main+`<footer>${t('footer')}</footer>`;
+  const ring=document.getElementById('ringc');
+  if(ring) requestAnimationFrame(()=>requestAnimationFrame(()=>ring.style.strokeDashoffset=ring.dataset.off));
+}
+function rerenderQuiz(scrollCard){render();if(scrollCard){const c=document.getElementById('qcard');if(c){const r=c.getBoundingClientRect();if(r.top<70||r.top>window.innerHeight*.5)window.scrollTo({top:window.scrollY+r.top-90,behavior:'smooth'})}}}
+
+/* ================= actions ================= */
+function answer(i){
+  const s=S.sess;if(!s||s.done)return;const list=sessView();const id=list[s.idx];if(s.ans[id]!==undefined)return;
+  s.ans[id]=i;const ok=i===ALLQ[id].a;S.stats[id]=ok?1:0;saveStats();
+  render();
+  if(ok) burst(14);
+}
+function finish(){
+  const s=S.sess;const list=sessView();const left=list.filter(x=>s.ans[x]===undefined).length;
+  if(left&&!confirm(t('notAnswered').replace('{n}',left)))return;
+  s.done=true;render();window.scrollTo({top:0,behavior:'smooth'});
+  const c=list.filter(x=>s.ans[x]===ALLQ[x].a).length;if(list.length&&c/list.length>=.75)burst(80);
+}
+function burst(n){
+  const box=document.createElement('div');box.className='confetti';const cols=['#4b52d6','#ffbe3b','#2fd3cc','#ff7ab3','#37d38c'];
+  for(let i=0;i<n;i++){const e=document.createElement('i');e.style.left=Math.random()*100+'vw';e.style.background=cols[i%cols.length];
+    e.style.animationDuration=(1.4+Math.random()*1.6)+'s';e.style.animationDelay=Math.random()*.3+'s';e.style.transform=`rotate(${Math.random()*360}deg)`;box.appendChild(e)}
+  document.body.appendChild(box);setTimeout(()=>box.remove(),3500);
+}
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),1600)}
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-go],[data-act]');if(!b)return;
+  if(b.dataset.go){const v={name:b.dataset.go};if(b.dataset.id)v.id=b.dataset.id;v.tab=b.dataset.tab||'lesson';go(v);return}
+  const a=b.dataset.act;const s=S.sess;
+  switch(a){
+    case 'lang':S.lang=S.lang==='ar'?'en':'ar';store.set('lang',S.lang);render();break;
+    case 'theme':S.theme=S.theme==='dark'?'light':'dark';store.set('theme',S.theme);render();break;
+    case 'quiz':startSectionQuiz(b.dataset.id);break;
+    case 'exam-home':go({name:'exam'});break;
+    case 'exsec':{const id=b.dataset.id;const i=S.exam.secs.indexOf(id);i>=0?S.exam.secs.splice(i,1):S.exam.secs.push(id);render();break}
+    case 'excount':S.exam.count=b.dataset.v==='all'?'all':+b.dataset.v;render();break;
+    case 'exam':startExam();break;
+    case 'ans':answer(+b.dataset.i);break;
+    case 'next':s.idx=Math.min(s.idx+1,sessView().length-1);rerenderQuiz(true);break;
+    case 'prev':s.idx=Math.max(s.idx-1,0);rerenderQuiz(true);break;
+    case 'jump':s.idx=+b.dataset.i;rerenderQuiz(true);break;
+    case 'finish':finish();break;
+    case 'filter':s.filter=b.dataset.f;s.idx=0;render();break;
+    case 'tq':S.shuffleQ=!S.shuffleQ;store.set('shuffleQ',S.shuffleQ);{const f=s.filter;makeSession(s.key,s.title,s.all,s.c);S.sess.filter=f}render();break;
+    case 'to':S.shuffleO=!S.shuffleO;store.set('shuffleO',S.shuffleO);Object.keys(s.orders).forEach(id=>{const q=ALLQ[id];if(q.t==='mc'&&s.ans[id]===undefined)s.orders[id]=S.shuffleO?shuffle(q.o.map((_,i)=>i)):q.o.map((_,i)=>i)});render();break;
+    case 'reset':{const f=s.filter;if(s.exam){startExam()}else{makeSession(s.key,s.title,s.all,s.c);S.sess.filter=f;render()}toast(t('resetDone'));break}
+    case 'retry-all':{const f=s.filter;if(s.exam){const ids=shuffle(s.ids);makeSession('exam',s.title,ids,s.c,{exam:true,random:true})}else{makeSession(s.key,s.title,s.all,s.c);S.sess.filter=f}render();window.scrollTo({top:0});break}
+    case 'retry-wrong':{const list=sessView();const w=list.filter(x=>s.ans[x]!==undefined&&s.ans[x]!==ALLQ[x].a);
+      makeSession(s.key,s.title,w,s.c,{exam:s.exam});S.sess.filter='all';render();window.scrollTo({top:0});break}
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  const s=S.sess;if(!s||s.done)return;if(!document.getElementById('qcard'))return;
+  const list=sessView();const id=list[s.idx];const q=ALLQ[id];const k=e.key.toLowerCase();
+  if(q.t==='tf'){if(k==='t'||k==='1'){answer(0);return}if(k==='f'||k==='2'){answer(1);return}}
+  else{const m={a:0,b:1,c:2,d:3,'1':0,'2':1,'3':2,'4':3}[k];if(m!==undefined&&m<q.o.length){answer(s.orders[id][m]);return}}
+  if(k==='enter'){e.preventDefault();if(s.idx===list.length-1){if(s.ans[id]!==undefined)finish()}else{s.idx++;rerenderQuiz(true)}}
+  const nextKey=S.lang==='ar'?'arrowleft':'arrowright',prevKey=S.lang==='ar'?'arrowright':'arrowleft';
+  if(k===nextKey&&s.idx<list.length-1){s.idx++;rerenderQuiz(true)}
+  if(k===prevKey&&s.idx>0){s.idx--;rerenderQuiz(true)}
+});
+render();
+
+</script>
+</body>
+</html>
