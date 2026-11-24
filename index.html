@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl" data-theme="light">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Financial Statements Analysis Review</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Auditing Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +12,7 @@
   --ink:#16182b; --ink2:#4a4e68; --muted:#80849c;
   --brand:#2a2f8f; --brand2:#4b52d6; --accent:#f2a516; --accent2:#ffcf5a;
   --ok:#119a62; --ok-bg:#e3f6ec; --bad:#d63a4a; --bad-bg:#fde7e9;
-  --s1:#4b52d6; --s2:#0e9f9a; --s3:#8a3fd1; --s4:#e08a00; --s5:#2f9e44; --sx:#c2417a;
+  --s1:#4b52d6; --s2:#0e9f9a; --s4:#e08a00; --s5:#2f9e44; --sx:#c2417a;
   --shadow:0 1px 2px rgba(22,24,43,.06),0 8px 24px -12px rgba(22,24,43,.18);
   --shadow-lg:0 30px 60px -30px rgba(22,24,43,.35);
   --r:18px; --r-sm:12px;
@@ -23,7 +23,7 @@
   --ink:#eef0ff; --ink2:#b8bce0; --muted:#7f85b3;
   --brand:#9aa1ff; --brand2:#7c84ff; --accent:#ffbe3b; --accent2:#ffd86b;
   --ok:#37d38c; --ok-bg:rgba(55,211,140,.12); --bad:#ff6577; --bad-bg:rgba(255,101,119,.12);
-  --s1:#8b91ff; --s2:#2fd3cc; --s3:#c08bff; --s4:#ffb02e; --s5:#5fd36f; --sx:#ff7ab3;
+  --s1:#8b91ff; --s2:#2fd3cc; --s4:#ffb02e; --s5:#5fd36f; --sx:#ff7ab3;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
   --shadow-lg:0 30px 70px -30px rgba(0,0,0,.8);
   --grid:rgba(154,161,255,.05);
@@ -315,811 +315,158 @@ footer{padding:30px 0 40px;text-align:center;color:var(--muted);font-size:13px;b
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* formula box */
-.fm{direction:ltr;unicode-bidi:isolate;text-align:left;font-family:"Plus Jakarta Sans","Cairo",sans-serif;font-weight:800;font-size:15.5px;background:var(--surface2);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:11px 16px;margin:8px 0}
-table.cmp.en th,table.cmp.en td{text-align:left}
 ul.ck.no li::before{background:var(--bad);-webkit-mask:none;mask:none;content:"✕";color:var(--bad);background:none;font-size:13px;font-weight:800;top:.1em;width:auto;height:auto}
+
+
+.formula{direction:ltr;unicode-bidi:isolate;text-align:center;font-family:"Plus Jakarta Sans","Cairo",sans-serif;font-weight:800;font-size:clamp(17px,2.4vw,22px);padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--c) 9%,var(--surface2));border:1.5px dashed color-mix(in srgb,var(--c) 45%,var(--line));color:var(--ink);margin:12px 0}
+.calc{direction:ltr;unicode-bidi:isolate;text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;line-height:1.75;white-space:pre-wrap;margin-top:6px;color:var(--ink)}
+.calc .ans{color:var(--c);font-weight:800}
+
+.es{background:var(--surface);border:1px solid var(--line);border-radius:22px;margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
+.es summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;gap:14px;align-items:center;font-weight:800;font-size:18px;direction:ltr;text-align:left}
+.es summary::-webkit-details-marker{display:none}
+.es summary::after{content:"+";margin-inline-start:auto;font-size:24px;color:var(--muted)}
+.es[open] summary::after{content:"\2212"}
+.es .qn{flex:none;padding:6px 12px;border-radius:10px;background:var(--accent);color:#16182b;font-weight:800}
+.es .bd{padding:0 22px 22px}
+.es table.cmp td ol{margin:0;padding-inline-start:20px}
+.es table.cmp td:last-child{direction:ltr;text-align:left}
+.ecard{--c:var(--sx);border-style:dashed;border-width:2px;margin-bottom:18px}
 
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-const TF=(q,a,ar,en)=>({t:'tf',q,a:a?0:1,ex:{ar,en}});
-const MC=(q,o,a,ar,en)=>({t:'mc',q,o,a,ex:{ar,en}});
-
-const QUESTIONS = {
-/* ======================= SECTION 1 — Introduction ======================= */
-s1:[
-MC("Which of the following is NOT listed as a type of financial ratio in the lecture outline?",["Liquidity Ratios","Solvency Ratios","Historical Cost Ratios","Valuation Ratios"],2,
- "الأنواع الخمسة: Liquidity, Solvency, Profitability, Efficiency, Valuation. مفيش حاجة اسمها Historical Cost Ratios.","The five types are Liquidity, Solvency, Profitability, Efficiency and Valuation."),
-MC("What is the starting point for financial analysis?",["Industry research","The company's financial reports","Economic forecasts","Competitor analysis"],1,
- "التحليل بيبدأ من التقارير المالية بتاعة الشركة نفسها، وبعدين تكمّلها ببحث عن الصناعة.","It begins with the company's own financial reports."),
-MC("Which group of investors is primarily interested in a company's profitability and share value?",["Debt investors","Equity investors","Regulators","Auditors"],1,
- "Equity investors (المساهمين) = الربحية وقيمة السهم. Debt investors = قدرة الشركة تسدد الفوايد وأصل الدين.","Equity investors care about profitability & share value."),
-MC("What is the primary role of financial statement analysis?",["To calculate taxes owed by the company","To prepare the company's annual budget","To form predictions about a company's future performance, financial position, and risk factors","To ensure the company follows marketing trends"],2,
- "الدور الأساسي: نتوقع أداء الشركة ومركزها المالي ومخاطرها في المستقبل — مش حساب الضرايب.","To predict future performance, position and risk."),
-MC("To complement their analysis of a company's financial statements, what should analysts use?",["Only the audited financial statements","Industry and company research","Unaudited management commentary only","Social media trends"],1,
- "لازم المحلل يكمّل البيانات الداخلية ببحث عن الصناعة والشركة عشان يفهم البيئة الاقتصادية ونموذج البزنس.","Complement with industry & company research."),
-MC("Financial analysis is best defined as the process of:",["Recording the company's daily transactions","Critically examining accounting information in financial statements","Preparing the company's tax returns","Auditing the company's internal controls"],1,
- "التعريف: فحص نقدي للمعلومات المحاسبية في القوايم المالية، وتقييم العلاقات بين مكوناتها.","Critically examining accounting information in the statements."),
-MC("Debt investors are primarily interested in:",["Profitability and share value","The company's ability to repay interest and principal","The company's marketing strategy","The number of employees"],1,
- "Debt investors = الأمان المالي: هل الشركة هتقدر تسدد الفوايد وأصل القرض؟","Ability to repay interest and principal (financial safety)."),
-MC("Liquidity ratios measure:",["Long-term debt","Short-term solvency","Market value","Earning ability"],1,
- "Liquidity = القدرة على سداد الالتزامات قصيرة الأجل (short-term solvency).","Short-term solvency."),
-MC("Solvency ratios focus on:",["Short-term obligations","Long-term debt","Asset utilization","Market value"],1,
- "Solvency = الديون طويلة الأجل.","Long-term debt."),
-MC("Efficiency ratios are concerned with:",["Asset utilization","Market value","Earning ability","Short-term solvency"],0,
- "Efficiency = الشركة بتستغل أصولها كويس قد إيه (asset utilization).","Asset utilization."),
-MC("Valuation ratios measure:",["Market value","Asset utilization","Long-term debt","Short-term solvency"],0,
- "Valuation = القيمة السوقية.","Market value."),
-MC("Which of the following is NOT a primary focus of financial analysis?",["Generating a return on capital at least equal to the cost of capital","Growing operations profitably","Generating sufficient cash flow to meet obligations","Maximizing the number of employees"],3,
- "التركيز على 3 حاجات: عائد ≥ تكلفة رأس المال، نمو مربح، تدفق نقدي كافي. عدد الموظفين مالوش علاقة.","The 3 focuses are return ≥ cost of capital, profitable growth, enough cash flow."),
-MC("Which of the following is NOT one of the sources of information for financial analysis?",["Audited financial statements","Additional regulatory disclosures","Accompanying management commentary","A competitor's confidential internal budget"],3,
- "المصادر: القوايم المراجَعة، الإفصاحات التنظيمية، وتعليق الإدارة (غير مراجَع).","Sources: audited statements, regulatory disclosures, management commentary."),
-MC("Vertical analysis is also known as:",["Trend analysis","Common-size analysis","Ratio analysis","Inter-company analysis"],1,
- "Vertical = Common-size. أما Horizontal = Trend.","Vertical = common-size."),
-TF("Financial analysis is solely a mathematical process of examining numbers in financial statements without considering the external economic environment.",false,
- "غلط — التحليل بيقيّم أداء الشركة في سياق البيئة الاقتصادية اللي حواليها.","It is done within the context of the economic environment."),
-TF("Equity investors are primarily interested in a company's ability to repay interest and principal.",false,
- "غلط — ده اهتمام Debt investors. الـ Equity investors يهمهم الربحية وقيمة السهم.","That's debt investors; equity investors care about profit & share value."),
-TF("The primary focus of financial analysis is to assess a company's ability to generate a return on capital that is at least equal to its cost of capital.",true,
- "صح — دي أول نقطة من نقط التركيز الأساسية.","Correct — the first primary focus."),
-TF("Financial analysis begins with the economic forecasts of the industry rather than the company's own financial reports.",false,
- "غلط — بيبدأ بالتقارير المالية بتاعة الشركة.","It begins with the company's financial reports."),
-TF("Answers to analytical questions depend solely on numerical results, and the analyst's interpretation is not required.",false,
- "غلط — الإجابة بتعتمد على الأرقام + تفسير المحلل مع بعض.","They depend on both numbers AND interpretation."),
-TF("Financial analysis involves evaluating the relationships between different components of the financial statements.",true,
- "صح — جزء من التعريف.","Part of the definition."),
-TF("Debt investors focus on financial safety — the company's ability to repay interest and principal.",true,
- "صح.","Correct."),
-TF("The commentary from management that accompanies the financial reports is always audited.",false,
- "غلط — تعليق الإدارة غير مراجَع (unaudited).","Management commentary is unaudited."),
-TF("Analysts should rely only on the company's internal data and ignore industry research.",false,
- "غلط — لازم يكمّلوا ببحث عن الصناعة والشركة.","They must complement it with industry research."),
-TF("Generating sufficient cash flow to meet obligations and seize opportunities is one of the focuses of financial analysis.",true,
- "صح — النقطة التالتة من التركيز الأساسي.","Correct — third primary focus."),
-TF("Liquidity ratios measure a company's long-term debt-paying ability.",false,
- "غلط — Liquidity = قصير الأجل. طويل الأجل ده Solvency.","Liquidity is short-term; long-term is solvency."),
-TF("Profitability ratios measure a company's earning ability.",true,
- "صح — Profitability = earning ability.","Correct."),
-TF("Horizontal analysis compares historical financial data over time.",true,
- "صح — Horizontal = عبر الزمن.","Horizontal = over time."),
-TF("Financial statement analysis is mainly used to prepare the company's tax returns.",false,
- "غلط — هدفه التوقع بالأداء والمخاطر، مش الضرايب.","Its role is prediction, not taxes."),
-],
-
-/* ======================= SECTION 2 — Levels & Horizontal ======================= */
-s2:[
-MC("What does horizontal analysis compare?",["A company's financials to its competitors","Historical financial information over a series of reporting periods","A company's financials to industry averages","The relationship between different items on the same financial statement"],1,
- "Horizontal = مقارنة بيانات تاريخية على كذا فترة. (العلاقة بين بنود نفس القايمة = Vertical)","Historical info over several periods."),
-MC("In horizontal analysis, each item is expressed as a percentage of the:",["Net income amount","Stockholders' equity amount","Total assets amount","Base-year amount"],3,
- "في الأفقي، كل بند بيتنسب لسنة الأساس (base year = 100%).","The base-year amount."),
-MC("Which of the following is a DISADVANTAGE of horizontal analysis?",["It tracks trends over time","It reveals seasonality","It can be distorted by irregular events","It supports forecasting"],2,
- "العيب: ممكن الأرقام تتشوّه بسبب أحداث غير عادية (irregular events). الباقي مزايا.","It can be distorted by irregular events."),
-MC("Why is horizontal analysis useful for forecasting?",["It automatically predicts the exact future numbers","It calculates annual or quarterly growth rates that can be used to make assumptions about future growth","It eliminates the need for external industry research","It guarantees a company will not breach loan covenants"],1,
- "بيحسب معدلات النمو السنوية أو الربع سنوية، ونبني عليها افتراضات للمستقبل — مش بيتوقع رقم بالظبط.","It gives growth rates to base assumptions on."),
-MC("What should an analyst monitor regarding loan covenants?",["Only the final year's numbers","Trends in measurements that could lead to a covenant breach","The company's marketing expenses","The competitor's debt-to-equity ratio"],1,
- "Covenants = شروط القرض. نراقب اتجاه المقاييس اللي ممكن توصلنا لمخالفة الشرط.","Trends that could lead to a covenant breach."),
-MC("Horizontal analysis identifies:",["The relationship of each item to a base amount within the same financial statement","Changes in financial statement items over time","The liquidity of a company","The solvency of a company"],1,
- "التغير في البنود عبر الزمن. (الاختيار الأول ده تعريف Vertical)","Changes over time."),
-MC("If a company's revenue increased from $400,000 to $500,000 over one year, what is the percentage increase in revenue?",["20%","25%","22%","30%"],1,
- "(500,000 − 400,000) ÷ 400,000 = 25%. خلي بالك: بنقسم على سنة الأساس مش السنة الحالية (لو قسمت على 500 هيطلع 20% غلط).","(500k − 400k) / 400k = 25%."),
-MC("Comparing the current year's data with the previous year's data for the same organization is called:",["Intra-company analysis","Inter-company analysis","Industry average analysis","Vertical analysis"],0,
- "Intra = جوه نفس الشركة، سنة بسنة.","Intra-company = same company, year vs year."),
-MC("Comparing an organization's data with other organizations belonging to the same parent corporate group is called:",["Intra-company analysis","Inter-company analysis","Industry average analysis","Common-size analysis"],1,
- "Inter = بين شركات نفس المجموعة الأم.","Inter-company = same corporate group."),
-MC("Comparing a company's data with the averages published by information statistics companies is called:",["Intra-company analysis","Inter-company analysis","Industry average analysis","Trend analysis"],2,
- "Industry average = مقارنة بمتوسط الصناعة.","Industry average analysis."),
-MC("The three tools and techniques of financial statement analysis are:",["Horizontal, vertical and ratio analysis","Intra, inter and industry analysis","Liquidity, solvency and profitability","Budgeting, auditing and forecasting"],0,
- "الأدوات: أفقي، رأسي، ونسب. (Intra/Inter/Industry دي المستويات مش الأدوات)","Horizontal, vertical, ratio."),
-MC("Percentage change in horizontal analysis is calculated as:",["Amount change ÷ base-year amount","Amount change ÷ current-year amount","Current-year amount ÷ total assets","Base-year amount ÷ current-year amount"],0,
- "النسبة = مقدار التغير ÷ سنة الأساس.","Amount change / base-year amount."),
-MC("Current assets increased from $945,000 (2017) to $1,020,000 (2018). Using 2017 as the base year, the percentage change is:",["7.9%","7.4%","8.5%","75%"],0,
- "75,000 ÷ 945,000 = 7.9%.","75,000 / 945,000 = 7.9%."),
-MC("Intangible assets decreased from $17,500 (2017) to $15,000 (2018). The percentage change is:",["(14.3)%","(16.7)%","14.3%","(2.5)%"],0,
- "(2,500) ÷ 17,500 = (14.3)% — النقص بيتكتب بين قوسين.","(2,500) / 17,500 = (14.3)%."),
-MC("Revenues grew by 20% while cost of goods sold grew by 30%, and net income stayed the same. This most likely signals:",["Reduced efficiency or weaker cost management","Improved cost control","Higher liquidity","Lower financial leverage"],0,
- "التكلفة بتزيد أسرع من الإيرادات → الهوامش بتتضغط → كفاءة أقل في إدارة التكاليف.","Costs outgrowing revenue → squeezed margins."),
-MC("Horizontal analysis is also known as:",["Common-size analysis","Trend analysis","Ratio analysis","Vertical analysis"],1,
- "Horizontal = Trend analysis.","Trend analysis."),
-TF("The primary role of financial statement analysis is to prepare the company's tax returns and ensure compliance with securities laws.",false,
- "غلط.","False."),
-TF("In horizontal analysis, the baseline year is typically listed as 0%.",false,
- "غلط — سنة الأساس بتتكتب 100%.","The baseline year is listed as 100%."),
-TF("When conducting a horizontal analysis, it is best to analyze each financial statement in isolation to avoid confusion.",false,
- "غلط — الأفضل نحلل كل القوايم مع بعض عشان نشوف الصورة كاملة.","Analyze all statements together."),
-TF("Horizontal analysis can be used to project the amounts of various line items into the future.",true,
- "صح — Trend projection من مزاياه.","Trend projection is an advantage."),
-TF("A key advantage of horizontal analysis is that it requires extensive experience to discern whether the numbers indicate problems.",false,
- "غلط — بالعكس، ميزته إنه محتاج خبرة قليلة (Minimal experience requirement).","Its advantage is that little skill is required."),
-TF("Horizontal analysis considers external factors such as changes in the economic environment and industry trends.",false,
- "غلط — الأفقي بيبص على أرقام الشركة بس، مش بياخد العوامل الخارجية في اعتباره.","It does not consider external factors."),
-TF("If a company has an excellent income statement but a declining cash balance and increasing debt on the balance sheet, it may indicate trouble funding growth.",true,
- "صح — ده مثال السكشن على أهمية تحليل القوايم مع بعض.","That's the section's example."),
-TF("Intra-company analysis compares a company's current-year data with its own previous-year data.",true,
- "صح.","Correct."),
-TF("Inter-company analysis compares a company's data with the industry average published by statistics companies.",false,
- "غلط — ده Industry average. الـ Inter = شركات نفس المجموعة الأم.","That's industry average analysis."),
-TF("Amount change equals the current-year amount minus the base-year amount.",true,
- "صح.","Correct."),
-TF("Percentage change equals the amount change divided by the current-year amount.",false,
- "غلط — بنقسم على سنة الأساس.","Divide by the base-year amount."),
-TF("Horizontal analysis can also be applied to ratios derived from financial information.",true,
- "صح — حسب التعريف ينفع يتطبق على النسب كمان.","Yes, per the definition."),
-TF("Little skill is required to spot anomalies in a trend using horizontal analysis.",true,
- "صح — Minimal experience requirement.","Correct."),
-TF("Monitoring trends in measurements included in loan covenants helps anticipate a possible covenant breach.",true,
- "صح.","Correct."),
-TF("Horizontal analysis is particularly useful when calculating key ratios or margins such as the current ratio and gross margin.",true,
- "صح — Illuminating calculations.","Correct."),
-],
-
-/* ======================= SECTION 3 — Vertical ======================= */
-s3:[
-MC("A schedule shows: Current assets $200,000 (25%), Property, plant & equipment $600,000 (75%), Total assets $800,000 (100%). What type of analysis is this?",["Horizontal analysis","Vertical analysis","Differential analysis","Ratio analysis"],1,
- "كل بند متنسب للإجمالي (Total assets = 100%) في سنة واحدة → Vertical.","Each item as % of total → vertical."),
-MC("In vertical analysis, the base amount for depreciation expense is generally:",["Net sales","Depreciation expense in a previous year","Gross profit","Fixed assets"],0,
- "الإهلاك مصروف في قايمة الدخل → الأساس Net sales.","An income statement item → net sales."),
-MC("In vertical analysis, the base amount for current assets is generally:",["Net sales","Depreciation expense in a previous year","Total assets","Fixed assets"],2,
- "بند في الميزانية → الأساس Total assets.","A balance sheet item → total assets."),
-MC("In vertical analysis, the base amount for current liabilities is generally:",["Total liabilities","Total equity","Total assets","Fixed assets"],2,
- "في الميزانية الأساس Total assets (= Total liabilities & equity). مش Total liabilities.","Total assets (= total L&E)."),
-MC("In vertical analysis, the base amount for inventory is generally:",["Total liabilities and equity","Total current assets","Net sales","Fixed assets"],0,
- "Total liabilities & equity = Total assets، فهو الأساس. (مش Total current assets)","Total L&E equals total assets."),
-MC("In vertical analysis of an income statement, each item is typically expressed as a percentage of:",["Net income","Total assets","Total equity","Sales revenue"],3,
- "قايمة الدخل → الإيرادات/المبيعات = 100%.","Sales revenue."),
-MC("Comparing items with items from earlier periods is a type of:",["Vertical analysis","Horizontal analysis","Common-size analysis","Ratio analysis"],1,
- "مقارنة بفترات سابقة = Horizontal.","Horizontal analysis."),
-MC("If a company has Cash of $50,000 and Total Assets of $1,000,000, what is the vertical analysis percentage for Cash?",["5%","25%","50%","10%"],0,
- "50,000 ÷ 1,000,000 = 5%.","50k / 1,000k = 5%."),
-MC("What is the base figure used for vertical analysis of a Balance Sheet?",["Total Revenue","Total Assets","Net Income","Gross Profit"],1,
- "الميزانية → Total assets.","Total assets."),
-MC("What is the primary purpose of a common-size statement?",["To calculate tax liabilities","To show the relationship of each component to the total within a single statement","To track a company's cash flow over 5 years","To determine the exact dollar amount of future sales"],1,
- "يوضح علاقة كل بند بالإجمالي جوه قايمة واحدة.","Relationship of each component to the total."),
-MC("Revenue is $1,200,000 and cost of goods sold is $780,000. In vertical analysis, COGS equals:",["65%","60%","35%","30%"],0,
- "780,000 ÷ 1,200,000 = 65%.","780k / 1,200k = 65%."),
-MC("Revenue is $1,200,000 and operating expenses are $220,000. In vertical analysis, operating expenses equal:",["18.3%","20%","22%","10%"],0,
- "220,000 ÷ 1,200,000 = 18.3%.","220k / 1,200k = 18.3%."),
-MC("Revenue is $1,200,000 and net income is $200,000. In vertical analysis, net income equals:",["16.7%","20%","25%","12%"],0,
- "200,000 ÷ 1,200,000 = 16.7%.","200k / 1,200k = 16.7%."),
-MC("Pixar's total revenue rose from $262.5M (2003) to $273.5M (2004). The percentage change is:",["4.19%","11%","4.02%","6.4%"],0,
- "(273.5 − 262.5) ÷ 262.5 = 4.19% (ده حساب أفقي).","(273.5 − 262.5)/262.5 = 4.19%."),
-MC("Pixar's R&D rose from $15.3M to $17.4M, while revenue rose 4.19%. As a percentage of revenue, R&D:",["Increased from 5.8% to 6.4%","Decreased from 6.4% to 5.8%","Stayed the same","Decreased because revenue grew"],0,
- "R&D زاد 13.7% وهو أسرع من نمو الإيرادات (4.19%)، فنسبته الرأسية زادت.","R&D grew faster than revenue → its % rose."),
-MC("Vertical analysis is especially useful for comparing:",["Companies of different sizes","Only companies of exactly the same size","Only the tax figures of a company","Only cash flows over 10 years"],0,
- "لأن كل حاجة بتبقى نسب مئوية، فالحجم مبقاش فارق.","Percentages remove size differences."),
-MC("Statements prepared using vertical analysis, where all items are percentages, are called:",["Trend statements","Common-size statements","Consolidated statements","Pro forma statements"],1,
- "Common-size statements.","Common-size statements."),
-TF("Horizontal analysis helps identify trends and growth patterns over time.",true,
- "صح.","Correct."),
-TF("In vertical analysis, each balance sheet item is expressed as a percentage of revenue.",false,
- "غلط — بنود الميزانية بتتنسب لـ Total assets.","Balance sheet items are % of total assets."),
-TF("Vertical analysis makes it easier to compare companies of different sizes.",true,
- "صح.","Correct."),
-TF("A horizontal analysis always shows favorable performance when numbers increase year over year.",false,
- "غلط — مش كل زيادة كويسة؛ زيادة المصروفات مثلًا وحشة. (كلمة always فخ)","Not all increases are favorable, e.g. rising expenses."),
-TF("Vertical analysis compares financial data of a single company over multiple years to identify trends.",false,
- "غلط — ده Horizontal. الرأسي بيبص على فترة واحدة.","That's horizontal; vertical looks at a single period."),
-TF("In a common-size income statement, each line item is expressed as a percentage of total assets.",false,
- "غلط — قايمة الدخل → Total revenue. (الميزانية → Total assets)","Income statement items are % of total revenue."),
-TF("Vertical analysis is useful for comparing companies of different sizes within the same industry.",true,
- "صح — دي ميزة الـ common-size الأساسية.","Key benefit of common-size statements."),
-TF("The “Blockbuster Strategy” involves low up-front costs and high additional costs after the product is launched.",false,
- "غلط — العكس: تكاليف كبيرة في الأول، وتكاليف إضافية قليلة بعد الإطلاق.","Large up-front costs and fewer costs after launch."),
-TF("Vertical analysis is also called common-size analysis.",true,
- "صح.","Correct."),
-TF("On the income statement, net sales is the base amount and takes 100%.",true,
- "صح.","Correct."),
-TF("On the balance sheet, liability and equity items can be expressed as a percentage of total liabilities and equity.",true,
- "صح — وده نفس رقم Total assets.","Correct — same as total assets."),
-TF("If an expense grows faster than revenue, its vertical analysis percentage decreases.",false,
- "غلط — بتزيد. زي الـ R&D في بيكسار.","It increases (like Pixar's R&D)."),
-TF("Pixar's gross profit margin declined from 85.5% in 2003 to 89.1% in 2004.",false,
- "غلط — الهامش اتحسن (زاد) من 85.5% لـ 89.1% — إشارة إيجابية.","It improved from 85.5% to 89.1%."),
-TF("In the example, COGS rose from 60% to 65% of revenue, meaning direct costs took a larger share of each sales dollar.",true,
- "صح — وعشان كده صافي الربح نزل من 20% لـ 16.7%.","Correct — net income fell from 20% to 16.7%."),
-],
-
-/* ======================= SECTION 4 — Ratio analysis & profitability ======================= */
-s4:[
-MC("Which of the following is a profitability ratio used to evaluate how effectively a company uses its assets to generate income?",["Return on Equity (ROE)","Return on Assets (ROA)","Asset Turnover","Working Capital"],1,
- "ROA = صافي الربح ÷ الأصول → كفاءة استخدام الأصول في تحقيق ربح.","ROA."),
-MC("The DuPont Analysis breaks down Return on Equity (ROE) into all of the following EXCEPT:",["Asset Turnover","Current Ratio","Equity Multiplier","Net Profit Margin"],1,
- "مكونات دوبونت: Net Profit Margin × Asset Turnover × Equity Multiplier. الـ Current Ratio نسبة سيولة.","Current ratio is not part of DuPont."),
-MC("In the comprehensive ratio formula (ROE = ROA × Leverage), how is Leverage calculated?",["Net Income / Average Total Assets","Net Sales / Average Total Assets","Average Total Assets / Average Stockholders' Equity","Average Stockholders' Equity / Average Total Assets"],2,
- "Leverage (Equity Multiplier) = متوسط الأصول ÷ متوسط حقوق الملكية.","Avg total assets / avg equity."),
-MC("If a company has a Net Income of $100,000, Net Sales of $500,000, and Average Total Assets of $250,000, what is its Profit Margin?",["20%","40%","50%","10%"],0,
- "Profit margin = 100,000 ÷ 500,000 = 20%. (الأصول هنا رقم مشتّت)","100k / 500k = 20%."),
-MC("The DuPont formula (ROA = Profit Margin × Assets Turnover) is useful because it:",["Calculates the exact market price of the stock","Shows how debt affects the balance sheet","Breaks down ROA into profitability and asset-efficiency components","Determines the number of days' sales in inventory"],2,
- "بيقسم الـ ROA لجزء ربحية (Margin) وجزء كفاءة (Turnover).","Splits ROA into profitability & efficiency."),
-MC("Nike had current assets of $13,626M and current liabilities of $3,926M. Expressed as a rate, the relationship is:",["3.47 times","347 times","0.29 times","34.7 times"],0,
- "13,626 ÷ 3,926 = 3.47 مرة. (كنسبة مئوية 347%، وكتناسب 3.47:1)","3.47 times (= 347% = 3.47:1)."),
-MC("Return on Equity (ROE) is calculated as:",["Net Income / Shareholders' Equity","Net Income / Total Assets","Net Income / Revenues","Gross Profit / Revenues"],0,
- "ROE = صافي الربح ÷ حقوق الملكية.","Net income / equity."),
-MC("Which ratio shows the percentage of revenue that remains as profit after ALL expenses, including interest and taxes?",["Gross Profit Margin","Operating Profit Margin","Net Profit Margin","Return on Assets"],2,
- "Net Profit Margin = المقياس النهائي للربحية بعد كل المصاريف.","Net profit margin."),
-MC("Which ratio measures the percentage of revenue left after covering operating expenses, excluding interest and taxes?",["Operating Profit Margin","Net Profit Margin","Gross Profit Margin","ROE"],0,
- "Operating margin = الربح قبل الفوايد والضرايب ÷ المبيعات.","Operating profit margin."),
-MC("Gross Profit Margin mainly indicates:",["Production efficiency and pricing strategy","Financial leverage","Short-term liquidity","Market value of shares"],0,
- "بعد خصم تكلفة البضاعة → بيوضح كفاءة الإنتاج وسياسة التسعير.","Production efficiency & pricing."),
-MC("According to DuPont, ROE equals:",["Net Profit Margin × Asset Turnover × Equity Multiplier","Net Profit Margin + Asset Turnover + Equity Multiplier","ROA ÷ Equity Multiplier","Asset Turnover × Current Ratio"],0,
- "ROE = NPM × AT × EM (ضرب مش جمع).","NPM × AT × EM."),
-MC("Beginning total assets are $1,200,000, ending are $1,800,000, and net income is $150,000. ROA (using average assets) is:",["10%","8.3%","12.5%","18.75%"],0,
- "متوسط الأصول = 1,500,000 → 150,000 ÷ 1,500,000 = 10%.","Avg assets 1.5M → 10%."),
-MC("Beginning equity is $600,000, ending equity is $1,000,000, and net income is $150,000. ROE (using average equity) is:",["18.75%","15%","25%","10%"],0,
- "متوسط حقوق الملكية = 800,000 → 150,000 ÷ 800,000 = 18.75%.","Avg equity 800k → 18.75%."),
-MC("Assets Turnover is calculated as:",["Net Sales / Average Total Assets","Net Income / Average Total Assets","Average Total Assets / Equity","Net Sales / Net Income"],0,
- "Asset turnover = المبيعات ÷ متوسط الأصول.","Net sales / avg total assets."),
-MC("Company A (no debt) has ROE of 10.5%; Company B (same operations, financed with debt) has ROE of 17.85%. The difference is mainly due to:",["Positive financial leverage","Higher net income for Company B","Lower assets for Company B","Higher tax rate for Company A"],0,
- "B صافي ربحه أقل، بس حقوق ملكيته أقل بكتير → الدين كبّر العائد للمساهمين (Positive leverage) — مع مخاطرة أعلى.","Debt magnified returns to shareholders."),
-MC("Retail Corp has a 4% net margin and 2.5 asset turnover; Tech Innovators has an 8% margin and 2.0 turnover. Retail Corp's model is best described as:",["Low margin, high volume","High margin, low volume","High leverage, low turnover","No leverage, high margin"],0,
- "هامش قليل + دوران عالي = تجزئة (يبيع كتير بربح قليل في كل وحدة).","Low margin, high volume (retail)."),
-MC("A company has Net Income $150,000, Revenues $1,000,000, Total Assets $750,000 and Equity $500,000. Its ROE is:",["30%","20%","15%","13.3%"],0,
- "150,000 ÷ 500,000 = 30%. وبدوبونت: 15% × 1.33 × 1.5 ≈ 30%.","150k / 500k = 30%."),
-MC("Firm X and Firm Y both have a 6% net margin and an equity multiplier of 2, but Firm X has a higher ROE. The key driver is:",["Higher asset turnover (2 vs 1.25)","Higher net profit margin","Higher leverage","Lower revenues"],0,
- "الهامش والرافعة زي بعض، فالفرق جاي من دوران الأصول: X بيعمل مبيعات أكتر لكل جنيه أصول.","Higher asset turnover."),
-MC("An ROA above 20% is most common in:",["Asset-light businesses such as software and consulting","Utilities","Heavy manufacturing","Asset-intensive industries"],0,
- "أقل من 5% = صناعات كثيفة الأصول، 5–20% = متوسط لقوي، فوق 20% = شركات خفيفة الأصول (سوفتوير، استشارات).","Asset-light businesses."),
-TF("A higher Return on Equity (ROE) indicates greater efficiency in using capital to generate profits.",true,
- "صح.","Correct."),
-TF("Average Stockholders' Equity is calculated by adding the beginning and ending balances and dividing by two.",true,
- "صح — (أول المدة + آخر المدة) ÷ 2.","(Beginning + ending) / 2."),
-TF("According to the ROE = ROA × Leverage formula, a company with high leverage will always have a lower ROE.",false,
- "غلط — الرافعة العالية بتكبّر الـ ROE (لو الـ ROA موجب). وكلمة always فخ.","High leverage magnifies ROE when ROA is positive."),
-TF("The DuPont formula states that Return on Assets is the product of Profit Margin and Asset Turnover.",true,
- "صح — ROA = PM × AT.","ROA = PM × AT."),
-TF("Return on Equity (ROE) measures profitability relative to the shareholders' investment.",true,
- "صح.","Correct."),
-TF("It is very useful to compare the ROA of a utility company directly with that of a consulting firm.",false,
- "غلط — الـ ROA بيختلف حسب الصناعة، فالمقارنة دي مضللة. قارن جوه نفس الصناعة.","ROA is industry-specific; misleading comparison."),
-TF("A declining ROE over time can indicate that management is making poor reinvestment decisions.",true,
- "صح.","Correct."),
-TF("The Equity Multiplier in the DuPont formula is a measure of a company's financial leverage.",true,
- "صح — Equity multiplier = Financial leverage.","Correct."),
-TF("A ratio can be expressed as a percentage, a rate, or a simple proportion.",true,
- "صح — زي مثال Nike: 347% أو 3.47 مرة أو 3.47:1.","Like Nike: 347%, 3.47 times, 3.47:1."),
-TF("Ratio analysis relies on a single metric to evaluate a company.",false,
- "غلط — بيحلل مجموعة كبيرة من البيانات مش مقياس واحد.","It analyzes a range of data, not one metric."),
-TF("For profitability ratios, lower ratios generally signal better performance.",false,
- "غلط — في نسب الربحية: الأعلى أحسن.","Higher is better."),
-TF("Operating profit margin is calculated after deducting interest and taxes.",false,
- "غلط — بيستبعد الفوايد والضرايب (قبل الفوايد والضرايب).","It excludes interest and taxes."),
-TF("An ROA below 5% is common in asset-intensive industries such as utilities and manufacturing.",true,
- "صح.","Correct."),
-TF("Positive financial leverage uses debt to magnify shareholders' returns, but it also increases financial risk.",true,
- "صح — زي Company B.","Correct, like Company B."),
-TF("Two firms with identical net profit margins must have the same ROE.",false,
- "غلط — ممكن يختلفوا بسبب دوران الأصول أو الرافعة (Firm X و Y).","They can differ via turnover or leverage."),
-TF("A sustainable and increasing ROE should be compared with the company's cost of equity.",true,
- "صح — حسب السلايد.","Correct per the slides."),
-],
-
-/* ======================= SECTION 5 — Efficiency, liquidity, solvency ======================= */
-s5:[
-MC("Which of the following formulas correctly calculates the Accounts Receivable Turnover?",["Net Sales / Ending Accounts Receivable","Cost of Goods Sold / Average Accounts Receivable","Net Sales / Average Accounts Receivable","Average Accounts Receivable / Daily Net Sales"],2,
- "AR turnover = صافي المبيعات ÷ متوسط المدينين. (الاختيار D ده عدد أيام التحصيل)","Net sales / average AR."),
-MC("When calculating the Quick Ratio, which of the following assets is typically excluded?",["Cash","Accounts Receivable","Temporary Investments","Merchandise Inventory"],3,
- "المخزون بيتشال لأنه مش سهل يتحول لكاش بسرعة.","Inventory is excluded."),
-MC("The Number of Days' Sales in Inventory is calculated as:",["Average Inventory / Cost of Goods Sold","Average Inventory / Daily Cost of Goods Sold","Cost of Goods Sold / Average Inventory","Net Sales / Average Inventory"],1,
- "متوسط المخزون ÷ تكلفة المبيعات اليومية. (C ده Inventory turnover)","Avg inventory / daily COGS."),
-MC("The Acid-Test (Quick) Ratio is considered a more rigorous test of liquidity than the Current Ratio because it:",["Includes all current assets","Focuses only on long-term investments","Excludes inventory and prepaid expenses","Uses total liabilities in the denominator"],2,
- "أصرم لأنه بيشيل المخزون والمصروفات المدفوعة مقدمًا.","Excludes inventory & prepaid expenses."),
-MC("Which ratio measures how efficiently a company uses its property, plant, and equipment to generate sales?",["Fixed Assets Turnover","Inventory Turnover","Ratio of Fixed Assets to Long-Term Liabilities","Current Ratio"],0,
- "Fixed assets turnover = المبيعات ÷ متوسط صافي الأصول الثابتة.","Fixed assets turnover."),
-MC("The “Number of Times Interest Charges Earned” ratio is calculated by dividing:",["Net Income by Interest Expense","Income Before Income Tax by Interest Expense","(Income Before Income Tax + Interest Expense) by Interest Expense","Income Before Income Tax by Long-Term Liabilities"],2,
- "(الربح قبل الضريبة + الفوايد) ÷ الفوايد. لازم ترجّع الفوايد للبسط.","(Income before tax + interest) / interest."),
-MC("A company has current assets of $800,000 and current liabilities of $400,000. If it uses $100,000 of cash to pay off $100,000 of long-term debt, the new current ratio is:",["1.75","2.0","2.25","2.5"],0,
- "الأصول المتداولة نزلت لـ 700,000، والخصوم المتداولة زي ما هي (الدين طويل الأجل). 700 ÷ 400 = 1.75.","700k / 400k = 1.75."),
-MC("If a company has a Times Interest Earned (TIE) ratio of 0.8, this indicates that:",["The company is excellent at covering its interest payments","The company's earnings are insufficient to cover its interest expenses","The company has no debt","The company has a very low level of debt"],1,
- "TIE أقل من 1 = الأرباح قبل الفوايد والضرايب أقل من الفوايد نفسها.","TIE < 1 → earnings don't cover interest."),
-MC("A Debt-to-Asset ratio of 0.75 means that:",["75% of the company's assets are financed by equity","The company has $0.75 in assets for every $1 of debt","75% of the company's assets are financed by debt","The company has a low level of financial risk"],2,
- "75% من الأصول ممولة بالديون → مخاطرة مالية عالية.","75% of assets financed by debt."),
-MC("Which of the following is a key difference between solvency and liquidity ratios?",["Solvency ratios focus on short-term obligations, while liquidity ratios focus on long-term obligations","Solvency ratios are only used by stockholders, while liquidity ratios are only used by creditors","Solvency ratios focus on long-term financial health, while liquidity ratios focus on short-term debt-paying ability","Solvency ratios measure profitability, while liquidity ratios measure efficiency"],2,
- "Solvency = طويل الأجل، Liquidity = قصير الأجل. (الاختيار A عكسها — فخ)","Solvency = long-term; liquidity = short-term."),
-MC("A company has an Equity Multiplier of 3.0. This implies that:",["For every $1 of equity, the company has $3 in assets","For every $1 of assets, the company has $3 in equity","The company is entirely funded by equity","The company has a very low level of financial leverage"],0,
- "Equity multiplier = الأصول ÷ حقوق الملكية = 3 → كل 1 جنيه ملكية قصاده 3 جنيه أصول.","$3 of assets per $1 of equity."),
-MC("Gross sales are $1,250,000 and sales returns and allowances are $50,000. Net sales equal:",["$1,200,000","$1,300,000","$1,250,000","$1,150,000"],0,
- "1,250,000 − 50,000 = 1,200,000.","1,250k − 50k = 1,200k."),
-MC("Net sales are $1,200,000; AR was $150,000 on Jan. 1 and $250,000 on Dec. 31. The Accounts Receivable Turnover is:",["6 times","4.8 times","8 times","5 times"],0,
- "متوسط المدينين = 200,000 → 1,200,000 ÷ 200,000 = 6 مرات.","Avg AR 200k → 6 times."),
-MC("Using the same data (net sales $1,200,000; average AR $200,000; 365 days), the number of days' sales in receivables is about:",["61 days","46 days","30 days","73 days"],0,
- "المبيعات اليومية = 3,287.67 → 200,000 ÷ 3,287.67 ≈ 60.8 ≈ 61 يوم.","≈ 60.8 ≈ 61 days."),
-MC("COGS is $720,000; inventory was $80,000 on Jan. 1 and $100,000 on Dec. 31. The Inventory Turnover is:",["8 times","7.2 times","9 times","6 times"],0,
- "متوسط المخزون = 90,000 → 720,000 ÷ 90,000 = 8 مرات.","Avg inventory 90k → 8 times."),
-MC("Using the same data (COGS $720,000; average inventory $90,000; 365 days), the number of days' sales in inventory is about:",["46 days","40 days","61 days","8 days"],0,
- "COGS اليومية = 1,972.60 → 90,000 ÷ 1,972.60 ≈ 45.6 ≈ 46 يوم.","≈ 45.6 ≈ 46 days."),
-MC("Nova Inc.: Cash $40,000, Temporary investments $30,000, AR $110,000, Inventory $150,000, Current liabilities $120,000. Working capital is:",["$210,000","$330,000","$60,000","$180,000"],0,
- "الأصول المتداولة = 330,000 → 330,000 − 120,000 = 210,000.","330k − 120k = 210k."),
-MC("Using Nova Inc.'s data, the current ratio is:",["2.75","1.5","2.0","3.3"],0,
- "330,000 ÷ 120,000 = 2.75.","330k / 120k = 2.75."),
-MC("Using Nova Inc.'s data, the quick (acid-test) ratio is:",["1.5","2.75","1.25","0.58"],0,
- "الأصول السريعة = 40 + 30 + 110 = 180,000 (من غير المخزون) → 180 ÷ 120 = 1.5.","Quick assets 180k / 120k = 1.5."),
-MC("Orion: Income before income tax $200,000 and interest expense $25,000. Number of times interest charges earned is:",["9 times","8 times","7 times","10 times"],0,
- "(200,000 + 25,000) ÷ 25,000 = 9 مرات. (لو نسيت ترجّع الفوايد هيطلع 8 — ده فخ)","225k / 25k = 9 times."),
-MC("Orion: COGS $730,000, beginning inventory $70,000, ending inventory $90,000. Number of days' sales in inventory is:",["40 days","45 days","36 days","9 days"],0,
- "متوسط المخزون 80,000، COGS اليومية = 2,000 → 80,000 ÷ 2,000 = 40 يوم.","80k / 2k = 40 days."),
-MC("The Ratio of Liabilities to Stockholders' Equity measures:",["The proportion of debt-to-equity financing","The ability to pay short-term debts","How quickly inventory is sold","The return on shareholders' investment"],0,
- "نسبة التمويل بالدين مقابل الملكية — نسبة ملاءة (Solvency).","Proportion of debt vs equity financing."),
-TF("The Current Ratio is generally considered a stricter test of liquidity than the Quick Ratio.",false,
- "غلط — الـ Quick Ratio هو الأصرم لأنه بيشيل المخزون.","The quick ratio is stricter."),
-TF("A high Inventory Turnover ratio generally indicates that the company is selling its inventory quickly.",true,
- "صح.","Correct."),
-TF("Working Capital is calculated by adding Total Current Assets and Total Current Liabilities.",false,
- "غلط — بالطرح: الأصول المتداولة − الخصوم المتداولة.","It's CA minus CL."),
-TF("Daily Net Sales is calculated by dividing Net Sales by 365 days.",true,
- "صح.","Correct."),
-TF("The Ratio of Liabilities to Stockholders' Equity measures a company's ability to pay its short-term debts.",false,
- "غلط — دي نسبة ملاءة طويلة الأجل (Solvency) مش سيولة.","It's a solvency (long-term) ratio."),
-TF("A higher Accounts Receivable Turnover generally means the company collects its receivables faster.",true,
- "صح.","Correct."),
-TF("The Number of Days' Sales in Receivables is also called Days Sales Outstanding.",true,
- "صح — DSO.","Correct — DSO."),
-TF("Inventory Turnover is calculated as Net Sales divided by Average Inventory.",false,
- "غلط — بنستخدم تكلفة البضاعة المباعة (COGS) مش المبيعات.","It uses COGS, not net sales."),
-TF("Quick assets include merchandise inventory and prepaid expenses.",false,
- "غلط — الاتنين دول بالظبط اللي بيتشالوا.","Those are exactly what's excluded."),
-TF("The Number of Times Interest Charges Earned measures a company's ability to meet its interest payments.",true,
- "صح.","Correct."),
-TF("The Ratio of Fixed Assets to Long-Term Liabilities is a solvency ratio.",true,
- "صح — بيوضح الأصول الثابتة ممولة بديون طويلة قد إيه.","Correct."),
-TF("Using cash to pay off long-term debt leaves the current ratio unchanged.",false,
- "غلط — الأصول المتداولة بتقل والخصوم المتداولة ثابتة، فالنسبة بتتغير (من 2.0 لـ 1.75 في المثال).","CA falls while CL stays → ratio changes (2.0 → 1.75)."),
-TF("Daily Cost of Goods Sold is calculated by dividing COGS by 365 days.",true,
- "صح.","Correct."),
-TF("Efficiency (activity) ratios measure how effectively a company manages its assets to generate sales.",true,
- "صح.","Correct."),
-TF("Average Accounts Receivable is calculated as (Beginning AR + Ending AR) ÷ 2.",true,
- "صح.","Correct."),
-],
-};
-
-const SECTIONS = [
-{ id:'s1', n:'01', c:'var(--s1)',
-  title:{ar:'مقدمة في التحليل المالي', en:'Introduction to Financial Analysis'},
-  desc:{ar:'يعني إيه تحليل مالي، بيركز على إيه، مين بيستخدمه، مصادر المعلومات، وأنواع التحليل والنسب.', en:'What financial analysis is, its focus, its users, sources of information and types of analysis.'},
-  topics:['Definition','Focus','Debt vs Equity','Sources','Ratio types'],
-  lesson:(L)=>`
-  <div class="blk"><h2><span class="n">1</span>${L('يعني إيه تحليل مالي؟','What is financial analysis?')}</h2>
-   <p class="sub">${L('أول سؤال في المادة — وأسئلة صح وغلط كتير بتلعب على كلمة <b>solely</b>.','The first idea in the course — many T/F questions play on the word <b>solely</b>.')}</p>
-   <div class="g2">
-    <div class="tile hl"><h4>📖 ${L('التعريف','Definition')}</h4><p>${L('هو <b>فحص نقدي</b> للمعلومات المحاسبية في القوايم المالية، وتقييم <b>العلاقات بين مكوناتها</b> عشان نفهم المركز المالي للشركة وأداءها.','<b>Critically examining</b> accounting information in the statements and evaluating the <b>relationships between components</b> to understand position and performance.')}</p></div>
-    <div class="tile hl"><h4>🌍 ${L('مش في الفراغ','Not in isolation')}</h4><p>${L('التحليل بيتعمل <b>في سياق البيئة الاقتصادية</b> اللي الشركة شغالة فيها — مش أرقام وحسابات وبس.','It is done <b>within the economic environment</b> — not just maths on numbers.')}</p></div>
-   </div>
-   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>فخ الامتحان:</b> أي جملة بتقول إن التحليل "<b>solely mathematical</b>" أو إن الإجابة بتعتمد على "<b>الأرقام بس</b>" من غير تفسير المحلل → <b>غلط</b>. الإجابة = أرقام + تفسير.','<b>Exam trap:</b> “solely mathematical” or “numbers only, no interpretation” → <b>False</b>. Answer = numbers + interpretation.')}</div></div>
-   <div class="call tip"><span class="ci">🎯</span><div>${L('<b>الدور الأساسي:</b> إننا <b>نتوقع</b> أداء الشركة ومركزها المالي ومخاطرها في المستقبل — مش حساب الضرايب ولا عمل الميزانية التقديرية.','<b>Primary role:</b> to <b>predict</b> future performance, financial position and risk — not taxes or budgeting.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">2</span>${L('التحليل بيركز على إيه؟ (3 حاجات)','The primary focus (3 abilities)')}</h2>
-   <div class="g3">
-    <div class="tile"><div class="ic">💹</div><h4>${L('عائد ≥ تكلفة رأس المال','Return ≥ cost of capital')}</h4><p class="en">Generate a return on capital at least equal to its cost of capital</p></div>
-    <div class="tile"><div class="ic">📈</div><h4>${L('نمو مربح','Profitable growth')}</h4><p class="en">Grow its operations profitably</p></div>
-    <div class="tile"><div class="ic">💵</div><h4>${L('تدفق نقدي كافي','Enough cash flow')}</h4><p class="en">Generate sufficient cash flow to meet obligations and seize opportunities</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">3</span>${L('مين بيستخدم التحليل؟ وكل واحد عايز إيه؟','Who uses it, and what do they want?')}</h2>
-   <div class="vsbox">
-    <div class="side a"><h3 class="en">Debt Investors</h3><div class="q">${L('المقرضين: هترجّعلي فلوسي؟','Lenders: will I get paid back?')}</div>
-     <ul class="ck">
-      <li>${L('قدرة الشركة تسدد <b>الفوايد وأصل الدين</b>','Ability to repay <b>interest & principal</b>')}</li>
-      <li>${L('اهتمامهم: <b>الأمان المالي</b> (financial safety)','Focus: <b>financial safety</b>')}</li>
-     </ul></div>
-    <div class="vs">VS</div>
-    <div class="side b"><h3 class="en">Equity Investors</h3><div class="q">${L('المساهمين: هكسب قد إيه؟','Shareholders: how much will I earn?')}</div>
-     <ul class="ck">
-      <li>${L('<b>الربحية</b> و<b>قيمة السهم</b>','<b>Profitability</b> & <b>share value</b>')}</li>
-      <li>${L('اهتمامهم: <b>النمو والعوائد</b>','Focus: <b>growth & returns</b>')}</li>
-     </ul></div>
-   </div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Debt</b> = دين = "رجّعلي فلوسي" · <b>Equity</b> = ملكية = "كبّرلي فلوسي".','<b>Debt</b> = “pay me back” · <b>Equity</b> = “grow my money”.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">4</span>${L('مصادر المعلومات','Sources of information')}</h2>
-   <p class="sub">${L('التحليل <b>بيبدأ</b> من التقارير المالية بتاعة الشركة نفسها:','Analysis <b>begins</b> with the company’s own financial reports:')}</p>
-   <div class="flow">
-    <div class="fx"><b>✅ ${L('قوايم مالية مراجَعة','Audited statements')}</b><small class="en">Audited financial statements</small></div>
-    <div class="ar">+</div>
-    <div class="fx"><b>📑 ${L('إفصاحات تنظيمية','Regulatory disclosures')}</b><small class="en">Additional regulatory disclosures</small></div>
-    <div class="ar">+</div>
-    <div class="fx"><b>🗣️ ${L('تعليق الإدارة','Management commentary')}</b><small class="en">Accompanying <b>(unaudited)</b> commentary</small></div>
-   </div>
-   <div class="call tip"><span class="ci">🔎</span><div>${L('وبعدين المحلل لازم <b>يكمّل</b> البيانات دي ببحث عن <b>الصناعة والشركة</b> (industry & company research) عشان يفهم البيئة الاقتصادية ونموذج البزنس. وخلي بالك: تعليق الإدارة <b>غير مراجَع</b>.','Then <b>complement</b> it with <b>industry & company research</b>. Note: management commentary is <b>unaudited</b>.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">5</span>${L('أنواع التحليل المالي','Types of financial analysis')}</h2>
-   <div class="g2">
-    <div class="tile"><h4>↔️ <span class="en">Horizontal Analysis</span></h4><p>${L('مقارنة البيانات التاريخية <b>عبر الزمن</b> (Trend).','Compare historical data <b>over time</b> (trend).')}</p></div>
-    <div class="tile"><h4>↕️ <span class="en">Vertical Analysis</span></h4><p>${L('<b>Common-size</b> — كل بند نسبة من إجمالي.','<b>Common-size</b> — each item as % of a total.')}</p></div>
-   </div>
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('أنواع النسب المالية (5)','The 5 ratio types')}</h3>
-   <div class="tblwrap"><table class="cmp"><tbody>
-    <tr><td class="en">💧 Liquidity</td><td>${L('السيولة — القدرة على السداد <b>قصير الأجل</b>','<b>Short-term</b> solvency')}</td></tr>
-    <tr><td class="en">🏦 Solvency</td><td>${L('الملاءة — الديون <b>طويلة الأجل</b>','<b>Long-term</b> debt')}</td></tr>
-    <tr><td class="en">💰 Profitability</td><td>${L('الربحية — القدرة على تحقيق أرباح','Earning ability')}</td></tr>
-    <tr><td class="en">⚙️ Efficiency</td><td>${L('الكفاءة — استغلال الأصول','Asset utilization')}</td></tr>
-    <tr><td class="en">🏷️ Valuation</td><td>${L('التقييم — القيمة السوقية','Market value')}</td></tr>
-   </tbody></table></div>
-   <div class="call warn"><span class="ci">🚫</span><div>${L('<b class="en">Historical Cost Ratios</b> <b>مش</b> من الأنواع — سؤال "Which is NOT" مشهور.','<b>Historical Cost Ratios</b> is <b>NOT</b> a type — classic “Which is NOT”.')}</div></div>
-  </div>
-
-  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة في 5 نقط','Recap in 5 points')}</h2><ol>
-   <li>${L('التحليل = فحص نقدي للقوايم + علاقات بين البنود، <b>في سياق البيئة الاقتصادية</b>.','Analysis = critical examination + relationships, <b>in economic context</b>.')}</li>
-   <li>${L('بيركز على: عائد ≥ تكلفة رأس المال، نمو مربح، كاش كفاية.','Focus: return ≥ cost of capital, profitable growth, enough cash.')}</li>
-   <li>${L('Debt = السداد · Equity = الربحية وقيمة السهم.','Debt = repayment · Equity = profit & share value.')}</li>
-   <li>${L('بيبدأ من تقارير الشركة، ويتكمّل ببحث عن الصناعة.','Starts with company reports, complemented by industry research.')}</li>
-   <li>${L('أفقي، رأسي، و5 أنواع نسب — ومفيش Historical Cost Ratios.','Horizontal, vertical, 5 ratio types — no historical cost ratios.')}</li></ol></div>`
-},
-{ id:'s2', n:'02', c:'var(--s2)',
-  title:{ar:'مستويات التحليل والتحليل الأفقي', en:'Levels of Analysis & Horizontal Analysis'},
-  desc:{ar:'مستويات التحليل التلاتة، أدوات التحليل، التحليل الأفقي: المعادلات، الاعتبارات، المزايا، وأمثلة محلولة.', en:'The 3 levels, the 3 tools, and horizontal analysis: formulas, considerations, advantages and solved examples.'},
-  topics:['Intra · Inter · Industry','Amount change','% change','Base year 100%','Covenants'],
-  lesson:(L)=>`
-  <div class="blk"><h2><span class="n">1</span>${L('مستويات التحليل التلاتة','The 3 levels of analysis')}</h2>
-   <p class="sub">${L('بنقارن الشركة بمين؟ — التلاتة أساميهم قريبة جدًا، ركّز.','Compare the company with whom? — the names are close, focus.')}</p>
-   <div class="g3">
-    <div class="tile hl"><div class="ic">🔁</div><h4><span class="en">Intra-company</span></h4><p>${L('<b>نفس الشركة</b>: السنة دي قصاد السنة اللي فاتت.','<b>Same company</b>: this year vs last year.')}</p></div>
-    <div class="tile hl"><div class="ic">🏢</div><h4><span class="en">Inter-company</span></h4><p>${L('الشركة قصاد شركات تانية في <b>نفس المجموعة الأم</b> (corporate group).','Company vs others in the <b>same parent group</b>.')}</p></div>
-    <div class="tile hl"><div class="ic">📊</div><h4><span class="en">Industry average</span></h4><p>${L('الشركة قصاد <b>متوسط الصناعة</b> اللي بتنشره شركات المعلومات والإحصاء.','Company vs the <b>industry average</b> published by statistics companies.')}</p></div>
-   </div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Intra</b> = جوه (inside) الشركة · <b>Inter</b> = بين (between) شركات المجموعة · <b>Industry</b> = متوسط القطاع كله.','<b>Intra</b> = inside · <b>Inter</b> = between group companies · <b>Industry</b> = sector average.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">2</span>${L('أدوات التحليل التلاتة','The 3 tools of analysis')}</h2>
-   <div class="flow">
-    <div class="fx"><b>① <span class="en">Horizontal</span></b><small>${L('أفقي (Trend) — السكشن ده','Trend — this section')}</small></div><div class="ar">→</div>
-    <div class="fx"><b>② <span class="en">Vertical</span></b><small>${L('رأسي (Common-size) — سكشن 3','Common-size — section 3')}</small></div><div class="ar">→</div>
-    <div class="fx"><b>③ <span class="en">Ratio</span></b><small>${L('النسب — سكشن 4 و 5','Ratios — sections 4 & 5')}</small></div>
-   </div>
-   <div class="call warn"><span class="ci">⚠️</span><div>${L('متخلطش: <b>Intra/Inter/Industry</b> = <b>مستويات</b>. <b>Horizontal/Vertical/Ratio</b> = <b>أدوات</b>.','Don’t mix: Intra/Inter/Industry = <b>levels</b>; Horizontal/Vertical/Ratio = <b>tools</b>.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">3</span>${L('التحليل الأفقي (Trend analysis)','Horizontal (trend) analysis')}</h2>
-   <p>${L('بيقيّم سلسلة من بيانات القوايم المالية <b>على مدار فترة زمنية</b>، وهدفه نعرف <b>التغير</b> (زيادة أو نقص). والتغير بيتكتب <b>كمبلغ</b> أو <b>كنسبة</b>. وممكن يتطبق كمان على <b>النسب المالية</b> نفسها.','Evaluates a series of statement data <b>over time</b> to find the <b>change</b>, as an <b>amount</b> or a <b>percentage</b>. It can also apply to <b>ratios</b>.')}</p>
-   <div class="fm">Amount change = Current year − Base year</div>
-   <div class="fm">% change = Amount change ÷ <u>Base year</u></div>
-   <div class="g2" style="margin-top:12px">
-    <div class="tile"><h4>📌 <span class="en">Baseline year = 100%</span></h4><p>${L('سنة الأساس بتتكتب <b>100%</b> (مش 0%)، وكل سنة بعدها بتتنسب ليها.','The base year is <b>100%</b> (not 0%); later years are a % of it.')}</p></div>
-    <div class="tile"><h4>🧮 ${L('مثال سريع','Quick example')}</h4><p>${L('إيرادات من 400,000 لـ 500,000 → (100,000 ÷ <b>400,000</b>) = <b>25%</b>. لو قسمت على 500,000 هيطلع 20% وده <b>غلط</b>.','400k → 500k: 100k ÷ <b>400k</b> = <b>25%</b> (not 20%).')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">4</span>${L('اعتبارات مهمة في التحليل الأفقي','Key considerations')}</h2>
-   <div class="g3">
-    <div class="tile"><div class="ic">🧩</div><h4><span class="en">Analyze all statements together</span></h4><p>${L('حلل كل القوايم <b>مع بعض</b> مش كل واحدة لوحدها. قايمة دخل ممتازة ممكن تخبّي إن الميزانية فيها مشكلة في تمويل النمو (كاش بيقل، دائنين وديون بتزيد).','Analyze <b>all together</b>. A great income statement can hide balance-sheet trouble funding growth.')}</p></div>
-    <div class="tile"><div class="ic">💡</div><h4><span class="en">Illuminating calculations</span></h4><p>${L('مفيد جدًا مع النسب والهوامش: current ratio، interest coverage، gross margin، net profit margin.','Very useful for ratios & margins.')}</p></div>
-    <div class="tile"><div class="ic">📜</div><h4><span class="en">Covenants</span></h4><p>${L('راقب <b>اتجاه</b> المقاييس اللي في شروط القرض (loan covenants) عشان تلحق قبل ما يحصل <b>covenant breach</b>.','Monitor <b>trends</b> in covenant measures to catch a possible <b>breach</b>.')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">5</span>${L('المزايا والعيوب والتنبؤ','Advantages, limits & forecasting')}</h2>
-   <div class="g2">
-    <div class="tile"><h4 style="color:var(--ok)">✔ ${L('المزايا','Advantages')}</h4><ul class="ck">
-     <li>${L('<b>Trend analysis</b>: تشوف الشذوذ عن الاتجاه بالعين','<b>Trend analysis</b>: spot anomalies visually')}</li>
-     <li>${L('<b>Trend projection</b>: أسهل تمد الاتجاه للمستقبل','<b>Trend projection</b> into the future')}</li>
-     <li>${L('<b>Competitor analysis</b>: تقارن بالمنافسين أو متوسط الصناعة','<b>Competitor analysis</b> vs rivals or industry')}</li>
-     <li>${L('<b>Minimal experience</b>: محتاج خبرة <b>قليلة</b>','<b>Minimal experience</b> required')}</li>
-    </ul></div>
-    <div class="tile"><h4 style="color:var(--bad)">✘ ${L('خلي بالك','Watch out')}</h4><ul class="ck no">
-     <li>${L('ممكن يتشوّه بسبب <b>أحداث غير عادية</b> (irregular events)','Can be <b>distorted by irregular events</b>')}</li>
-     <li>${L('<b>مش</b> بياخد العوامل الخارجية (الاقتصاد، الصناعة) في اعتباره','Does <b>not</b> consider external factors')}</li>
-     <li>${L('<b>مش كل زيادة كويسة</b> — زيادة المصروفات وحشة','<b>Not every increase is good</b> (expenses)')}</li>
-    </ul></div>
-   </div>
-   <div class="call tip"><span class="ci">🔮</span><div>${L('<b>Forecasting:</b> بنحسب معدلات نمو سنوية أو ربع سنوية من البيانات التاريخية، ونبني عليها <b>افتراضات</b> للمستقبل (نمو المبيعات، تكلفة البضاعة…). هو <b>مش</b> بيتوقع الرقم بالظبط.','<b>Forecasting:</b> compute growth rates and build <b>assumptions</b> — it does <b>not</b> predict exact numbers.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">6</span>${L('مثال محلول: ميزانية (سنة الأساس 2017)','Solved example: balance sheet (base 2017)')}</h2>
-   <div class="tblwrap"><table class="cmp en">
-    <thead><tr><th>Item</th><th>2018</th><th>2017</th><th>Amount change</th><th>% change</th></tr></thead><tbody>
-    <tr><td>Current assets</td><td>1,020,000</td><td>945,000</td><td>75,000</td><td>7.9%</td></tr>
-    <tr><td>Long-term assets (net)</td><td>800,000</td><td>632,500</td><td>167,500</td><td>26.5%</td></tr>
-    <tr><td>Intangible assets</td><td>15,000</td><td>17,500</td><td>(2,500)</td><td>(14.3)%</td></tr>
-    <tr><td><b>Total assets</b></td><td><b>1,835,000</b></td><td><b>1,595,000</b></td><td><b>240,000</b></td><td><b>15%</b></td></tr>
-    <tr><td>Current liabilities</td><td>344,500</td><td>303,000</td><td>41,500</td><td>13.7%</td></tr>
-    <tr><td>Long-term liabilities</td><td>487,500</td><td>497,000</td><td>(9,500)</td><td>(1.9)%</td></tr>
-    <tr><td><b>Total liabilities</b></td><td><b>832,000</b></td><td><b>800,000</b></td><td><b>32,000</b></td><td><b>4%</b></td></tr>
-    <tr><td>Common stock</td><td>275,400</td><td>270,000</td><td>5,400</td><td>2%</td></tr>
-    <tr><td>Retained earnings</td><td>727,600</td><td>525,000</td><td>202,600</td><td>38.6%</td></tr>
-    <tr><td><b>Total equity</b></td><td><b>1,003,000</b></td><td><b>795,000</b></td><td><b>208,000</b></td><td><b>26.2%</b></td></tr>
-    <tr><td><b>Total L &amp; E</b></td><td><b>1,835,000</b></td><td><b>1,595,000</b></td><td><b>240,000</b></td><td><b>15%</b></td></tr>
-   </tbody></table></div>
-   <div class="call warn"><span class="ci">📝</span><div>${L('<b>تنبيه:</b> السلايد فيه 3 غلطات مطبعية وأنا صححتها هنا: الخصوم طويلة الأجل 487,500 (مش 4,875,000)، تغير الخصوم المتداولة 41,500 (مش 415,000)، وتغير الأرباح المحتجزة 202,600 = 38.6% (مش 207,600 = 38.2%). والنقص بيتكتب <b>بين قوسين</b>.','<b>Note:</b> 3 typos in the slide are corrected here (LTL 487,500; CL change 41,500; RE change 202,600 = 38.6%). Decreases go in <b>parentheses</b>.')}</div></div>
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('مثال قايمة دخل (2024 ← 2025)','Income statement example (2024 → 2025)')}</h3>
-   <div class="money">
-    <div><small>${L('الإيرادات','Revenues')}</small><b>+20%</b></div>
-    <div><small>${L('تكلفة البضاعة المباعة','COGS')}</small><b>+30%</b></div>
-    <div><small>${L('صافي الربح','Net income')}</small><b>0%</b></div>
-   </div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>التفسير:</b> الإيرادات زادت 20% بس التكلفة زادت <b>أسرع</b> (30%) → الهوامش اتضغطت، والمصروفات التشغيلية زادت 10% بس. صافي الربح ثابت رغم النمو → <b>كفاءة أقل في إدارة التكاليف</b>.','<b>Interpretation:</b> costs grew faster than revenue → squeezed margins → <b>reduced cost efficiency</b>.')}</div></div>
-  </div>
-
-  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة','Recap')}</h2><ol>
-   <li>${L('المستويات: Intra (نفس الشركة)، Inter (نفس المجموعة)، Industry (متوسط الصناعة).','Levels: intra, inter, industry average.')}</li>
-   <li>${L('الأدوات: أفقي، رأسي، نسب.','Tools: horizontal, vertical, ratio.')}</li>
-   <li>${L('% التغير = مقدار التغير ÷ <b>سنة الأساس</b> — وسنة الأساس = 100%.','% change = amount ÷ <b>base year</b>; base = 100%.')}</li>
-   <li>${L('حلل القوايم مع بعض، وراقب الـ covenants.','Analyze statements together; watch covenants.')}</li>
-   <li>${L('مزاياه: trend، projection، منافسين، خبرة قليلة — وعيبه: الأحداث غير العادية.','Pros: trend, projection, competitors, little skill — con: irregular events.')}</li></ol></div>`
-},
-{ id:'s3', n:'03', c:'var(--s3)',
-  title:{ar:'التحليل الرأسي (Common-size)', en:'Vertical (Common-Size) Analysis'},
-  desc:{ar:'الأساس اللي بننسب ليه في كل قايمة، القوايم ذات الحجم المشترك، الفرق بين الأفقي والرأسي، وحالة Pixar.', en:'Base amounts per statement, common-size statements, horizontal vs vertical, and the Pixar case.'},
-  topics:['Base = 100%','Net sales','Total assets','Common-size','Pixar case'],
-  lesson:(L)=>`
-  <div class="blk"><h2><span class="n">1</span>${L('يعني إيه تحليل رأسي؟','What is vertical analysis?')}</h2>
-   <p>${L('بنعبّر عن كل بند في القايمة <b>كنسبة مئوية من رقم أساس</b> جوه نفس القايمة. اسمه "رأسي" لأنه بيوضح علاقة كل بند بالإجمالي <b>في قايمة واحدة وفترة واحدة</b>.','Each item is a <b>% of a base amount</b> in the same statement — relationships within <b>a single statement and period</b>.')}</p>
-   <div class="vsbox">
-    <div class="side a"><h3 class="en">Income Statement</h3><div class="q">${L('الأساس = صافي المبيعات (100%)','Base = Net sales (100%)')}</div>
-     <div class="fm">% = Item ÷ Net sales (Revenue)</div>
-     <ul class="ck"><li>${L('تكلفة البضاعة، المصروفات، الإهلاك، صافي الربح… كله ÷ المبيعات','COGS, expenses, depreciation, net income… ÷ sales')}</li></ul></div>
-    <div class="vs">VS</div>
-    <div class="side b"><h3 class="en">Balance Sheet</h3><div class="q">${L('الأساس = إجمالي الأصول (100%)','Base = Total assets (100%)')}</div>
-     <div class="fm">% = Item ÷ Total assets</div>
-     <ul class="ck"><li>${L('والخصوم وحقوق الملكية ممكن ÷ Total liabilities &amp; equity (نفس الرقم)','L&amp;E items may use total L&amp;E (same figure)')}</li></ul></div>
-   </div>
-   <div class="call tip"><span class="ci">🧮</span><div>${L('<b>مثال:</b> كاش 50,000 وإجمالي أصول 1,000,000 → الكاش = <b>5%</b> من الأصول.','<b>Example:</b> cash 50,000 / total assets 1,000,000 = <b>5%</b>.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">2</span>${L('البند ده أساسه إيه؟ (أسئلة مضمونة)','What is the base for this item?')}</h2>
-   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('البند','Item')}</th><th>${L('القايمة','Statement')}</th><th>${L('الأساس الصح','Correct base')}</th></tr></thead><tbody>
-    <tr><td class="en">Depreciation expense</td><td>${L('دخل','Income')}</td><td class="en"><b>Net sales</b></td></tr>
-    <tr><td class="en">COGS / Operating expenses</td><td>${L('دخل','Income')}</td><td class="en"><b>Net sales</b></td></tr>
-    <tr><td class="en">Current assets</td><td>${L('ميزانية','Balance sheet')}</td><td class="en"><b>Total assets</b></td></tr>
-    <tr><td class="en">Current liabilities</td><td>${L('ميزانية','Balance sheet')}</td><td class="en"><b>Total assets</b> (${L('مش Total liabilities','not total liabilities')})</td></tr>
-    <tr><td class="en">Inventory</td><td>${L('ميزانية','Balance sheet')}</td><td class="en"><b>Total liabilities &amp; equity</b> (= Total assets)</td></tr>
-   </tbody></table></div>
-   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>القاعدة الذهبية:</b> اسأل نفسك البند ده في أنهي قايمة؟ <b>دخل → المبيعات</b>، <b>ميزانية → إجمالي الأصول</b>. الاختيارات زي "Total current assets" أو "Total liabilities" أو "Fixed assets" فخ.','<b>Golden rule:</b> income statement → sales; balance sheet → total assets. “Total current assets / total liabilities / fixed assets” are traps.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">3</span>${L('القوايم ذات الحجم المشترك','Common-size statements')}</h2>
-   <p>${L('لما نطبق التحليل الرأسي، القوايم اللي بتطلع اسمها <b>Common-Size Statements</b> — كل البنود فيها <b>نسب مئوية</b>.','Applying vertical analysis produces <b>common-size statements</b> — all items in <b>percentages</b>.')}</p>
-   <div class="g3">
-    <div class="tile"><div class="ic">⚖️</div><h4>${L('مقارنة شركات مختلفة الحجم','Compare different sizes')}</h4><p>${L('لأن كله نسب، الحجم مبقاش فارق — دي <b>أهم ميزة</b>.','Percentages remove size — the <b>key benefit</b>.')}</p></div>
-    <div class="tile"><div class="ic">🗓️</div><h4>${L('مقارنة فترات','Compare periods')}</h4><p>${L('ممكن نقارن هيكل التكاليف من فترة لفترة.','Compare cost structure across periods.')}</p></div>
-    <div class="tile"><div class="ic">🎯</div><h4>${L('الغرض','Purpose')}</h4><p>${L('يوضح <b>علاقة كل بند بالإجمالي</b> جوه قايمة واحدة.','Show each <b>component’s relationship to the total</b>.')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">4</span>${L('الأفقي ضد الرأسي','Horizontal vs Vertical')}</h2>
-   <div class="tblwrap"><table class="cmp">
-    <thead><tr><th></th><th class="fs en">Horizontal</th><th class="bp en">Vertical</th></tr></thead><tbody>
-    <tr><td>${L('الاسم التاني','Also called')}</td><td class="en">Trend analysis</td><td class="en">Common-size analysis</td></tr>
-    <tr><td>${L('بيقارن','Compares')}</td><td>${L('نفس البند <b>عبر سنين</b>','Same item <b>across years</b>')}</td><td>${L('كل بند <b>بالإجمالي</b> في نفس السنة','Each item <b>to the total</b>, same year')}</td></tr>
-    <tr><td>${L('الأساس','Base')}</td><td>${L('سنة الأساس','Base year')}</td><td>${L('المبيعات / إجمالي الأصول','Net sales / total assets')}</td></tr>
-    <tr><td>${L('الفترات','Periods')}</td><td>${L('كذا فترة','Multiple periods')}</td><td>${L('فترة واحدة','Single period')}</td></tr>
-   </tbody></table></div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>أفقي ↔️</b> = بتمشي بعينك يمين وشمال على السنين. <b>رأسي ↕️</b> = بتمشي فوق وتحت جوه نفس العمود.','<b>Horizontal ↔️</b> = across years. <b>Vertical ↕️</b> = down one column.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">5</span>${L('مثال محلول (2024 و 2025)','Solved example (2024 & 2025)')}</h2>
-   <div class="tblwrap"><table class="cmp en">
-    <thead><tr><th>Item</th><th>2024</th><th>%</th><th>2025</th><th>%</th></tr></thead><tbody>
-    <tr><td>Revenue</td><td>1,000,000</td><td><b>100%</b></td><td>1,200,000</td><td><b>100%</b></td></tr>
-    <tr><td>Cost of goods sold</td><td>600,000</td><td>60%</td><td>780,000</td><td>65%</td></tr>
-    <tr><td>Operating expenses</td><td>200,000</td><td>20%</td><td>220,000</td><td>18.3%</td></tr>
-    <tr><td>Net income</td><td>200,000</td><td>20%</td><td>200,000</td><td>16.7%</td></tr>
-   </tbody></table></div>
-   <div class="call tip"><span class="ci">💡</span><div>${L('تكلفة البضاعة بقت بتاكل <b>65%</b> من كل جنيه مبيعات بدل 60% → صافي الربح نزل من 20% لـ <b>16.7%</b>. ولو مصروف زاد <b>أسرع</b> من الإيرادات، نسبته الرأسية <b>بتزيد</b>.','COGS now takes <b>65%</b> → net income fell to <b>16.7%</b>. An expense growing faster than revenue → its % <b>rises</b>.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">6</span>${L('حالة Pixar (2003 ← 2004)','Pixar case (2003 → 2004)')}</h2>
-   <div class="money">
-    <div><small>${L('نمو الإيرادات (أفقي)','Revenue growth (horizontal)')}</small><b>+4.19%</b></div>
-    <div><small>${L('R&amp;D كنسبة من الإيرادات','R&amp;D as % of revenue')}</small><b>5.8% → 6.4%</b></div>
-    <div><small>${L('هامش مجمل الربح','Gross profit margin')}</small><b>85.5% → 89.1%</b></div>
-   </div>
-   <div class="g2" style="margin-top:12px">
-    <div class="tile"><h4>🔬 ${L('ليه نسبة R&amp;D زادت؟','Why did R&amp;D % rise?')}</h4><p>${L('R&amp;D زاد <b>13.7%</b> (من 15.3 لـ 17.4 مليون) والإيرادات زادت <b>4.19%</b> بس → المصروف نمي أسرع → نسبته زادت.','R&amp;D grew <b>13.7%</b> vs revenue <b>4.19%</b> → its share rose.')}</p></div>
-    <div class="tile"><h4>🟢 ${L('نقلق من الـ Gross margin؟','Worry about gross margin?')}</h4><p>${L('<b>لأ</b> — الهامش <b>اتحسن</b> لـ 89.1%: كل جنيه إيراد بيفضل منه 89.1 قرش بعد التكاليف المباشرة، والتكلفة نزلت من 14.5% لـ 10.9% → تحكم أفضل في التكاليف أو قوة تسعير.','<b>No</b> — it <b>improved</b> to 89.1%; COGS fell from 14.5% to 10.9%.')}</p></div>
-   </div>
-   <div class="call mem"><span class="ci">🎬</span><div>${L('<b class="en">Blockbuster Strategy</b> = تكاليف <b>كبيرة في الأول</b> (up-front) وتكاليف إضافية <b>قليلة</b> بعد الإطلاق — مش العكس.','<b>Blockbuster Strategy</b> = <b>large up-front</b> costs, <b>few</b> costs after launch.')}</div></div>
-  </div>
-
-  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة','Recap')}</h2><ol>
-   <li>${L('رأسي = Common-size = كل بند ÷ رقم أساس في نفس القايمة.','Vertical = common-size = item ÷ base in the same statement.')}</li>
-   <li>${L('قايمة دخل → <b>المبيعات</b> 100% · ميزانية → <b>إجمالي الأصول</b> 100%.','Income → <b>sales</b> 100% · balance sheet → <b>total assets</b> 100%.')}</li>
-   <li>${L('أهم ميزة: مقارنة شركات <b>مختلفة الحجم</b>.','Key benefit: compare <b>different sizes</b>.')}</li>
-   <li>${L('رأسي = فترة واحدة · أفقي = كذا فترة.','Vertical = one period · horizontal = many.')}</li>
-   <li>${L('مصروف بينمو أسرع من الإيرادات → نسبته الرأسية بتزيد (Pixar R&amp;D).','Expense outgrowing revenue → its % rises.')}</li></ol></div>`
-},
-{ id:'s4', n:'04', c:'var(--s4)',
-  title:{ar:'تحليل النسب ونسب الربحية', en:'Ratio Analysis & Profitability'},
-  desc:{ar:'يعني إيه نسبة، نسب الربحية الخمسة، ROE و ROA، تحليل DuPont، والرافعة المالية مع تمارين محلولة.', en:'Ratios, the 5 profitability ratios, ROE & ROA, DuPont analysis and financial leverage with solved exercises.'},
-  topics:['ROE','ROA','Margins','DuPont','Leverage'],
-  lesson:(L)=>`
-  <div class="blk"><h2><span class="n">1</span>${L('يعني إيه تحليل نسب؟','What is ratio analysis?')}</h2>
-   <p>${L('بيوضح <b>العلاقة الرياضية</b> بين بندين من القوايم المالية، عشان نعرف السيولة والكفاءة التشغيلية والربحية. وهو <b>مش مقياس واحد</b> — ده مجموعة كبيرة من المقاييس.','Expresses the <b>mathematical relationship</b> between statement items to learn about liquidity, efficiency and profitability — <b>not a single metric</b>.')}</p>
-   <p class="sub">${L('مثال Nike: أصول متداولة 13,626 مليون وخصوم متداولة 3,926 مليون — العلاقة ممكن تتكتب 3 طرق:','Nike: CA $13,626M, CL $3,926M — three ways to express it:')}</p>
-   <div class="money">
-    <div><small>Percentage</small><b>347%</b></div>
-    <div><small>Rate</small><b>3.47 times</b></div>
-    <div><small>Proportion</small><b>3.47 : 1</b></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">2</span>${L('نسب الربحية الخمسة','The 5 profitability ratios')}</h2>
-   <p class="sub">${L('بتقيس قدرة الشركة تحقق ربح — وفيها كلها <b>الأعلى أحسن</b>.','Measure ability to generate profit — <b>higher is better</b>.')}</p>
-   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('النسبة','Ratio')}</th><th>${L('المعادلة','Formula')}</th><th>${L('بتقيس إيه','Meaning')}</th></tr></thead><tbody>
-    <tr><td class="en">ROE</td><td class="en">Net Income ÷ Equity</td><td>${L('العائد على فلوس المساهمين — الإدارة بتستخدم التمويل بالملكية كويس؟','Return on shareholders’ money')}</td></tr>
-    <tr><td class="en">ROA</td><td class="en">Net Income ÷ Total Assets</td><td>${L('ربح كل جنيه أصول — كفاءة استخدام الأصول','Profit per dollar of assets')}</td></tr>
-    <tr><td class="en">Net Profit Margin</td><td class="en">Net Income ÷ Revenues</td><td>${L('اللي بيفضل بعد <b>كل</b> المصاريف (حتى الفوايد والضرايب) — <b>المقياس النهائي</b>','After <b>all</b> expenses — the <b>ultimate</b> measure')}</td></tr>
-    <tr><td class="en">Gross Profit Margin</td><td class="en">Gross Profit ÷ Revenues</td><td>${L('بعد تكلفة البضاعة — كفاءة الإنتاج والتسعير','After COGS — production & pricing')}</td></tr>
-    <tr><td class="en">Operating Profit Margin</td><td class="en">EBIT ÷ Sales</td><td>${L('بعد المصروفات التشغيلية، <b>قبل</b> الفوايد والضرايب','After operating costs, <b>before</b> interest & tax')}</td></tr>
-   </tbody></table></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">3</span>${L('ROE و ROA بالتفصيل','ROE & ROA in depth')}</h2>
-   <div class="fm">Average = (Beginning + Ending) ÷ 2</div>
-   <div class="g2" style="margin-top:12px">
-    <div class="tile hl"><h4><span class="en">ROE = NI ÷ Average Equity</span></h4><p>${L('ROE مستقر وبيزيد = إدارة كويسة وقيمة للمساهمين، ويتقارن بـ <b>تكلفة حقوق الملكية</b>. ROE بينزل مع الوقت ممكن يعني قرارات إعادة استثمار وحشة.','Stable, rising ROE = good management; compare to <b>cost of equity</b>. Declining ROE may mean poor reinvestment.')}</p></div>
-    <div class="tile hl"><h4><span class="en">ROA = NI ÷ Average Total Assets</span></h4><p>${L('<b>بيعتمد جدًا على الصناعة</b> — قارنه جوه نفس الصناعة بس. (مقارنة شركة كهربا بشركة استشارات = مضللة)','<b>Highly industry-dependent</b> — compare within one industry only.')}</p></div>
-   </div>
-   <div class="g3 lights" style="margin-top:12px">
-    <div class="tile light-b"><div class="ic">🏭</div><h4 class="en">ROA &lt; 5%</h4><p>${L('صناعات كثيفة الأصول (كهربا، تصنيع)','Asset-intensive (utilities, manufacturing)')}</p></div>
-    <div class="tile light-g"><div class="ic">📊</div><h4 class="en">5% – 20%</h4><p>${L('أداء متوسط لقوي','Average to strong')}</p></div>
-    <div class="tile" style="--c:var(--ok)"><div class="ic">💻</div><h4 class="en" style="color:var(--ok)">ROA &gt; 20%</h4><p>${L('ممتاز — شركات خفيفة الأصول (سوفتوير، استشارات)','Excellent — asset-light (software, consulting)')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">4</span>${L('تحليل DuPont','DuPont analysis')}</h2>
-   <p class="sub">${L('بيفكك الـ ROE عشان نعرف هو جاي منين: ربحية؟ كفاءة؟ ولا رافعة مالية؟','Breaks ROE down: profitability, efficiency or leverage?')}</p>
-   <div class="mnemo"><span>NPM<small>Margin</small></span><span>×</span><span>AT<small>Turnover</small></span><span>×</span><span>EM<small>Leverage</small></span></div>
-   <div class="fm">ROE = Net Profit Margin × Assets Turnover × Equity Multiplier</div>
-   <div class="g3" style="margin-top:12px">
-    <div class="tile"><h4 class="en">Net Profit Margin</h4><p class="en">Net Income ÷ Net Sales</p><p>${L('الربحية','Profitability')}</p></div>
-    <div class="tile"><h4 class="en">Assets Turnover</h4><p class="en">Net Sales ÷ Avg Total Assets</p><p>${L('كفاءة الأصول','Asset efficiency')}</p></div>
-    <div class="tile"><h4 class="en">Equity Multiplier</h4><p class="en">Avg Total Assets ÷ Avg Equity</p><p>${L('الرافعة المالية (Leverage)','Financial leverage')}</p></div>
-   </div>
-   <div class="fm" style="margin-top:12px">ROA = Profit Margin × Assets Turnover &nbsp;&nbsp;|&nbsp;&nbsp; ROE = ROA × Leverage</div>
-   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>Current Ratio مش من مكونات دوبونت</b> (دي نسبة سيولة). والرافعة العالية <b>بتكبّر</b> الـ ROE (لو ROA موجب) — مش "دايمًا بتقلله".','<b>Current ratio is not in DuPont.</b> High leverage <b>magnifies</b> ROE (if ROA &gt; 0) — never “always lower”.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">5</span>${L('تمارين محلولة','Solved exercises')}</h2>
-   <h3 style="margin:4px 0 10px;font-size:17px">${L('تمرين 1 — المتوسطات','Exercise 1 — averages')}</h3>
-   <div class="money">
-    <div><small>Avg assets (1.2M + 1.8M) ÷ 2</small><b>1,500,000</b></div>
-    <div><small>ROA = 150k ÷ 1.5M</small><b>10%</b></div>
-    <div><small>ROE = 150k ÷ 800k</small><b>18.75%</b></div>
-   </div>
-   <p style="margin-top:10px">${L('وبالمبيعات 1,500,000: Margin = 10% و Turnover = 1 → ROA = 10% × 1 = <b>10%</b> ✔ نفس الإجابة.','With sales of 1.5M: margin 10% × turnover 1 = <b>10%</b> ✔')}</p>
-
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 2 — أثر الرافعة المالية','Exercise 2 — financial leverage')}</h3>
-   <div class="tblwrap"><table class="cmp en"><thead><tr><th></th><th>Company A (no debt)</th><th>Company B (debt 1.2M)</th></tr></thead><tbody>
-    <tr><td>EBIT</td><td>300,000</td><td>300,000</td></tr>
-    <tr><td>Interest (8%)</td><td>0</td><td>(96,000)</td></tr>
-    <tr><td>Income before tax</td><td>300,000</td><td>204,000</td></tr>
-    <tr><td>Tax (30%)</td><td>(90,000)</td><td>(61,200)</td></tr>
-    <tr><td>Net income</td><td>210,000</td><td>142,800</td></tr>
-    <tr><td>Equity</td><td>2,000,000</td><td>800,000</td></tr>
-    <tr><td><b>ROE</b></td><td><b>10.5%</b></td><td><b>17.85%</b></td></tr>
-   </tbody></table></div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('B صافي ربحه <b>أقل</b> بس الـ ROE <b>أعلى</b> → ده <b>Positive financial leverage</b>: الدين كبّر عائد المساهمين، بس معاه <b>مخاطرة أعلى</b> لو الأرباح نزلت.','B earns <b>less</b> but has <b>higher</b> ROE → <b>positive leverage</b>, with <b>higher risk</b>.')}</div></div>
-
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 3 — نموذج البزنس من دوبونت','Exercise 3 — business models')}</h3>
-   <div class="tblwrap"><table class="cmp en"><thead><tr><th></th><th>Net margin</th><th>Assets turnover</th><th>Equity multiplier</th><th>ROE</th></tr></thead><tbody>
-    <tr><td>Retail Corp</td><td>4%</td><td>2.5</td><td>1.67</td><td>16.7%</td></tr>
-    <tr><td>Tech Innovators</td><td>8%</td><td>2.0</td><td>1.67</td><td>26.7%</td></tr>
-   </tbody></table></div>
-   <p style="margin-top:10px">${L('التجزئة = <b>هامش قليل + حجم مبيعات عالي</b>. التكنولوجيا = <b>ربح أعلى في كل بيعة</b> بس دوران أقل. والاتنين نفس الرافعة.','Retail = <b>low margin, high volume</b>; tech = <b>higher margin</b>, lower turnover; same leverage.')}</p>
-
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 4 و 5','Exercises 4 & 5')}</h3>
-   <div class="g2">
-    <div class="tile"><h4>${L('تمرين 4','Exercise 4')}</h4><p class="en">ROE = 150k ÷ 500k = <b>30%</b><br>DuPont = 15% × 1.33 × 1.5 ≈ <b>30%</b> ✔</p></div>
-    <div class="tile"><h4>${L('تمرين 5 — Firm X ضد Y','Exercise 5 — Firm X vs Y')}</h4><p>${L('نفس الهامش (6%) ونفس الرافعة (2)، بس X دوران أصوله <b>2</b> و Y <b>1.25</b> → ROE لـ X = 24% و Y = 15%. السبب: <b>دوران الأصول</b>.','Same margin & leverage; X turnover <b>2</b> vs <b>1.25</b> → ROE 24% vs 15%. Driver: <b>turnover</b>.')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk recap"><h2><span class="n">★</span>${L('5 حاجات لازم تفتكرها','5 things to remember')}</h2><ol>
-   <li>${L('النسبة ممكن تتكتب: % أو مرات أو تناسب (347% = 3.47 = 3.47:1).','A ratio: %, rate or proportion.')}</li>
-   <li>${L('نسب الربحية: ROE، ROA، Net/Gross/Operating margin — الأعلى أحسن.','Profitability ratios — higher is better.')}</li>
-   <li>${L('المتوسط = (أول + آخر) ÷ 2، والـ ROA بيتقارن جوه نفس الصناعة.','Average = (begin + end)/2; compare ROA within an industry.')}</li>
-   <li>${L('DuPont: ROE = Margin × Turnover × Equity Multiplier — من غير Current ratio.','DuPont: margin × turnover × multiplier — no current ratio.')}</li>
-   <li>${L('الرافعة بتكبّر الـ ROE وبتزود المخاطرة.','Leverage magnifies ROE and risk.')}</li></ol></div>`
-},
-{ id:'s5', n:'05', c:'var(--s5)',
-  title:{ar:'نسب الكفاءة والسيولة والملاءة', en:'Efficiency, Liquidity & Solvency Ratios'},
-  desc:{ar:'معدلات الدوران وعدد الأيام، رأس المال العامل والنسبة السريعة، نسب الملاءة وتغطية الفوايد، مع تمارين محلولة.', en:'Turnovers and days, working capital and quick ratio, solvency and interest coverage, with solved exercises.'},
-  topics:['AR Turnover','Inventory days','Current · Quick','TIE','Debt / Equity'],
-  lesson:(L)=>`
-  <div class="blk"><h2><span class="n">1</span>${L('3 عيلات من النسب','3 families of ratios')}</h2>
-   <div class="g3">
-    <div class="tile hl"><div class="ic">⚙️</div><h4><span class="en">Efficiency (Activity)</span></h4><p>${L('الشركة بتدير أصولها كويس عشان تبيع؟','How well assets generate sales')}</p></div>
-    <div class="tile hl"><div class="ic">💧</div><h4><span class="en">Liquidity</span></h4><p>${L('تقدر تسدد التزاماتها <b>قصيرة الأجل</b>؟','Pay <b>short-term</b> obligations?')}</p></div>
-    <div class="tile hl"><div class="ic">🏦</div><h4><span class="en">Solvency (Leverage)</span></h4><p>${L('تقدر تسدد ديونها <b>طويلة الأجل</b>؟ وهيكل تمويلها إيه؟','<b>Long-term</b> debt-paying ability & structure')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">2</span>${L('نسب الكفاءة (Efficiency)','Efficiency ratios')}</h2>
-   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('النسبة','Ratio')}</th><th>${L('المعادلة','Formula')}</th><th>${L('بتقيس','Measures')}</th></tr></thead><tbody>
-    <tr><td class="en">AR Turnover</td><td class="en">Net Sales ÷ Avg Net AR</td><td>${L('بنحصّل المدينين كام مرة في السنة','Times AR is collected per year')}</td></tr>
-    <tr><td class="en">Days’ Sales in Receivables</td><td class="en">Avg Net AR ÷ Daily Net Sales</td><td>${L('متوسط أيام التحصيل (DSO)','Average days to collect (DSO)')}</td></tr>
-    <tr><td class="en">Inventory Turnover</td><td class="en"><b>COGS</b> ÷ Avg Inventory</td><td>${L('بنبيع ونجدد المخزون كام مرة','Times inventory is sold & replaced')}</td></tr>
-    <tr><td class="en">Days’ Sales in Inventory</td><td class="en">Avg Inventory ÷ Daily COGS</td><td>${L('المخزون بياخد كام يوم عشان يتباع','Days to sell average inventory')}</td></tr>
-    <tr><td class="en">Fixed Assets Turnover</td><td class="en">Net Sales ÷ Avg Net Fixed Assets</td><td>${L('كفاءة استخدام الأصول الثابتة (PP&amp;E)','Efficiency of PP&amp;E')}</td></tr>
-   </tbody></table></div>
-   <div class="fm" style="margin-top:12px">Daily Net Sales = Net Sales ÷ 365 &nbsp;&nbsp;|&nbsp;&nbsp; Daily COGS = COGS ÷ 365</div>
-   <div class="call warn"><span class="ci">⚠️</span><div>${L('<b>فخ مشهور:</b> المدينين → <b>المبيعات</b>. المخزون → <b>تكلفة البضاعة المباعة (COGS)</b>. ودايمًا استخدم <b>المتوسط</b> مش رصيد آخر المدة.','<b>Trap:</b> receivables → <b>sales</b>; inventory → <b>COGS</b>. Always use the <b>average</b>.')}</div></div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Turnover عالي</b> = سريع وكويس (بيحصّل أو بيبيع بسرعة). <b>عدد أيام قليل</b> = كويس.','<b>High turnover</b> = fast = good. <b>Fewer days</b> = good.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">3</span>${L('نسب السيولة (Liquidity)','Liquidity ratios')}</h2>
-   <div class="g3">
-    <div class="tile"><h4 class="en">Working Capital</h4><p class="en">CA − CL</p><p>${L('بالطرح مش بالجمع!','Subtraction, not addition!')}</p></div>
-    <div class="tile"><h4 class="en">Current Ratio</h4><p class="en">CA ÷ CL</p><p>${L('كل الأصول المتداولة','All current assets')}</p></div>
-    <div class="tile hl"><h4 class="en">Quick (Acid-Test) Ratio</h4><p class="en">Quick Assets ÷ CL</p><p>${L('<b>أصرم</b> من الـ Current','<b>Stricter</b> than current')}</p></div>
-   </div>
-   <div class="vsbox" style="margin-top:14px">
-    <div class="side a" style="--s1:var(--ok)"><h3>✅ ${L('Quick assets (بتدخل)','Quick assets (in)')}</h3>
-     <ul class="ck"><li class="en">Cash</li><li class="en">Marketable securities</li><li class="en">Temporary investments</li><li class="en">Accounts receivable</li><li class="en">Notes receivable</li></ul></div>
-    <div class="vs">≠</div>
-    <div class="side b" style="--sx:var(--bad)"><h3>❌ ${L('بتتشال','Excluded')}</h3>
-     <ul class="ck no"><li class="en">Merchandise inventory</li><li class="en">Prepaid expenses</li></ul>
-     <p style="margin-top:8px;font-size:14px">${L('لأنهم مش سهل يتحولوا لكاش بسرعة.','Not quickly convertible to cash.')}</p></div>
-   </div>
-  </div>
-
-  <div class="blk"><h2><span class="n">4</span>${L('نسب الملاءة (Solvency)','Solvency ratios')}</h2>
-   <div class="tblwrap"><table class="cmp"><thead><tr><th>${L('النسبة','Ratio')}</th><th>${L('المعادلة','Formula')}</th><th>${L('بتقيس','Measures')}</th></tr></thead><tbody>
-    <tr><td class="en">Fixed Assets to LT Liabilities</td><td class="en">Net Fixed Assets ÷ LT Liabilities</td><td>${L('الأصول الثابتة ممولة بديون طويلة قد إيه','Fixed assets vs long-term debt')}</td></tr>
-    <tr><td class="en">Liabilities to Equity</td><td class="en">Total Liabilities ÷ Total Equity</td><td>${L('نسبة التمويل بالدين مقابل الملكية','Debt vs equity financing')}</td></tr>
-    <tr><td class="en">Times Interest Earned</td><td class="en">(Income before tax <b>+ Interest</b>) ÷ Interest</td><td>${L('قدرة الشركة تدفع الفوايد','Ability to pay interest')}</td></tr>
-   </tbody></table></div>
-   <div class="g3" style="margin-top:12px">
-    <div class="tile"><h4 class="en">TIE = 0.8</h4><p>${L('أقل من 1 → الأرباح <b>مش مكفية</b> الفوايد 🔴','&lt; 1 → earnings <b>don’t cover</b> interest 🔴')}</p></div>
-    <div class="tile"><h4 class="en">Debt-to-Assets = 0.75</h4><p>${L('<b>75% من الأصول ممولة بديون</b> → مخاطرة عالية','<b>75% of assets financed by debt</b>')}</p></div>
-    <div class="tile"><h4 class="en">Equity Multiplier = 3</h4><p>${L('كل <b>1 جنيه ملكية</b> قصاده <b>3 جنيه أصول</b>','<b>$3 assets</b> per <b>$1 equity</b>')}</p></div>
-   </div>
-   <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Liquidity = قصير</b> الأجل · <b>Solvency = طويل</b> الأجل. أي سؤال بيقول إن Liabilities/Equity بتقيس الديون قصيرة الأجل → غلط.','<b>Liquidity = short</b> · <b>Solvency = long</b> term.')}</div></div>
-  </div>
-
-  <div class="blk"><h2><span class="n">5</span>${L('تمارين محلولة','Solved exercises')}</h2>
-   <h3 style="margin:4px 0 10px;font-size:17px">${L('تمرين 1 — Apex Trading','Exercise 1 — Apex Trading')}</h3>
-   <div class="tblwrap"><table class="cmp en"><tbody>
-    <tr><td>Net sales</td><td>1,250,000 − 50,000</td><td><b>1,200,000</b></td></tr>
-    <tr><td>Average AR</td><td>(150,000 + 250,000) ÷ 2</td><td>200,000</td></tr>
-    <tr><td>AR turnover</td><td>1,200,000 ÷ 200,000</td><td><b>6 times</b></td></tr>
-    <tr><td>Days’ sales in AR</td><td>200,000 ÷ (1,200,000 ÷ 365 = 3,287.67)</td><td><b>≈ 61 days</b></td></tr>
-    <tr><td>Average inventory</td><td>(80,000 + 100,000) ÷ 2</td><td>90,000</td></tr>
-    <tr><td>Inventory turnover</td><td>720,000 ÷ 90,000</td><td><b>8 times</b></td></tr>
-    <tr><td>Days’ sales in inventory</td><td>90,000 ÷ (720,000 ÷ 365 = 1,972.60)</td><td><b>≈ 46 days</b></td></tr>
-   </tbody></table></div>
-
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 2 — Nova Inc.','Exercise 2 — Nova Inc.')}</h3>
-   <div class="money">
-    <div><small>Working capital = 330k − 120k</small><b>210,000</b></div>
-    <div><small>Current ratio = 330k ÷ 120k</small><b>2.75</b></div>
-    <div><small>Quick ratio = 180k ÷ 120k</small><b>1.5</b></div>
-   </div>
-
-   <h3 style="margin:22px 0 10px;font-size:17px">${L('تمرين 3 — Orion','Exercise 3 — Orion')}</h3>
-   <div class="money">
-    <div><small>Inventory turnover = 730k ÷ 80k</small><b>9.125×</b></div>
-    <div><small>Days in inventory = 80k ÷ 2,000</small><b>40 days</b></div>
-    <div><small>TIE = (200k + 25k) ÷ 25k</small><b>9×</b></div>
-   </div>
-
-   <div class="call tip"><span class="ci">🎯</span><div>${L('<b>سؤال الـ Current ratio المشهور:</b> CA = 800k و CL = 400k (النسبة 2.0). استخدمنا 100k كاش نسدد دين <b>طويل الأجل</b> → CA تبقى 700k والـ CL <b>زي ما هي</b> (الدين مش متداول) → 700 ÷ 400 = <b>1.75</b>.','<b>Classic:</b> paying 100k of <b>long-term</b> debt with cash → CA 700k, CL unchanged → <b>1.75</b>.')}</div></div>
-  </div>
-
-  <div class="blk recap"><h2><span class="n">★</span>${L('الخلاصة','Recap')}</h2><ol>
-   <li>${L('المدينين ÷ <b>المبيعات</b>، المخزون ÷ <b>COGS</b>، واستخدم المتوسط والـ 365 يوم.','AR uses <b>sales</b>, inventory uses <b>COGS</b>; use averages & 365.')}</li>
-   <li>${L('Working capital = CA − CL، و Current = CA ÷ CL.','WC = CA − CL; current = CA ÷ CL.')}</li>
-   <li>${L('Quick أصرم: من غير المخزون والمصروفات المقدمة.','Quick is stricter: no inventory or prepaids.')}</li>
-   <li>${L('TIE = (ربح قبل الضريبة + الفوايد) ÷ الفوايد، وأقل من 1 = خطر.','TIE = (EBT + interest) ÷ interest; &lt; 1 = danger.')}</li>
-   <li>${L('Liquidity قصير الأجل · Solvency طويل الأجل.','Liquidity short-term · solvency long-term.')}</li></ol></div>`
-},
+const RULES=[
+[/big four|grant thornton/,"الـ Big Four = Deloitte · PwC · EY (Ernst & Young) · KPMG. وGrant Thornton مش منهم.","Big Four: Deloitte, PwC, EY, KPMG."],
+[/three es/,"الـ 3 E’s للـ CPA: Education · Examination · Experience. (Employment مش منهم).","3 Es: Education, Examination, Experience."],
+[/stands for/,"اختصارات لازم تتحفظ: CPA · AICPA · PCAOB · IAASB · IFAC.","Memorize the acronyms."],
+[/primary responsibility for the fairness/,"الإدارة هي المسؤولة الأولى عن عدالة القوائم. المراجع بيبدي رأي بس.","Management is responsible; the auditor gives an opinion."],
+[/relationship (among|between)/,"Assurance (الأوسع) ← Attest جزء منها ← Auditing نوع من الـ Attest.","Assurance ⊃ Attest ⊃ Auditing."],
+[/best defines auditing/,"Auditing = تجميع وتقييم الأدلة عن معلومات مقارنةً بمعايير محددة.","Accumulating & evaluating evidence against criteria."],
+[/egypt|uniform cpa|cpa exam|computerized/,"امتحان الـ CPA بيجهزه ويصححه AICPA، ومتاح كمبيوتر عند الطلب. وفي مصر المشرف لازم يكون مسجل في وزارة المالية.","CPA exam: prepared by AICPA, computerized on demand."],
+[/forensic/,"Forensic = كشف ومنع الغش والفساد والاختلاس وغسيل الأموال.","Forensic = fraud, corruption, embezzlement."],
+[/operational/,"Operational = كفاءة وفعالية (Efficiency & Effectiveness) استخدام الموارد.","Operational = efficiency & effectiveness."],
+[/tax return|compliance audit/,"Compliance = الالتزام بالقوانين واللوائح (زي الإقرار الضريبي).","Compliance = laws & regulations (e.g. tax return)."],
+[/fair presentation|financial statement audit/,"Financial statement audit = رأي في عدالة الميزانية وقائمة الدخل والتدفقات النقدية.","Fair presentation of the financial statements."],
+[/internal auditors|lack of independence|government|gao|external auditors/,"External = مستقل وبيراجع قوائم الشركات. Internal = موظف عند الشركة (عيبه قلة الاستقلال). Government = زي GAO. Forensic = غش.","External independent; Internal lacks independence; GAO = government."],
+[/informative disclosure|reporting|opinion|follow gaap/,"Reporting standards: GAAP · consistency · adequate disclosure · expression of opinion.","Reporting standards."],
+[/field work|evidence|internal control|planning/,"Field work: planning & supervision · فهم الـ internal control · sufficient appropriate evidence.","Field work: planning, internal control, evidence."],
+[/general standard|independence standard|technical training|due professional/,"General: technical training · independence · due professional care.","General standards."],
+[/1947|10 generally|categor/,"الـ 10 GAAS اتصدروا 1947 وهما 3 فئات: General (3) · Field work (3) · Reporting (4).","10 GAAS, issued 1947."],
+[/ifac|international federation/,"IFAC منظمة عالمية لمهنة المحاسبة، والـ IAASB تابع ليها.","IFAC is the global accountancy body; IAASB operates under it."],
+[/iaasb|international auditing|international standards on auditing|outside the united states|\bisas?\b/,"IAASB (تحت IFAC) بيصدر ISAs وبتتطبق برا أمريكا.","IAASB issues ISAs, used outside the US."],
+[/asb|gaas|aicpa/,"AICPA’s ASB بيصدر GAAS (U.S. GAAS) للشركات الخاصة (private).","AICPA’s ASB issues GAAS for private entities."],
+[/pcaob|sarbanes|oversight board|public company accounting/,"PCAOB اتعمل بقانون SOX 2002: رقابة + معايير (auditing, attestation, QC) + inspections، على الـ public companies بس. مش بيحط GAAP.","PCAOB: SOX 2002, public companies only, no GAAP."],
+[/standards|quality|credibility|risk/,"المعايير = مقياس جودة أداء المراجع: جودة واتساق، مصداقية، تقييم مخاطر وغش، أخلاقيات والتزام قانوني.","Standards measure audit quality and build trust."]
+];
+const OVR={"s5-7":["الصح PCAOB بس مش موجود بين الاختيارات، فالإجابة None of the above.","PCAOB is the answer but isn’t listed."],"s5-8":["الصح IAASB بس مش موجود بين الاختيارات (فيه IASB بدلها)، فالإجابة None of the above.","IAASB isn’t listed (IASB is not it)."]};
+const B=(x)=>`<span class="en">${x}</span>`;
+const ESSAYS=[
+{q:"Define the Public Company Accounting Oversight Board (PCAOB) and explain its functions.",g:["اتعمل بقانون SOX 2002 يراقب مراجعي الشركات العامة الأمريكية ويحط معايير ويفتش على مكاتب المراجعة.","Created by SOX 2002 to oversee auditors of US public companies."],rows:[
+["التعريف","Definition","A nonprofit corporation / regulatory body established by the <b>Sarbanes-Oxley Act of 2002</b> in the United States to oversee the audits of public companies, protecting investors and furthering the public interest in informative, accurate and independent audit reports."],
+["الوظائف","Functions","<ol><li><b>Provides oversight</b> for auditors of public companies.</li><li><b>Establishes</b> auditing, attestation and quality control standards.</li><li><b>Performs inspections</b> of the quality control at registered audit firms.</li></ol>"],
+["النطاق","Scope","Its standards apply <b>only</b> to audits of <b>U.S. public companies</b> and other SEC registrants (including broker-dealers)."]]},
+{q:"Define the American Institute of Certified Public Accountants (AICPA) and explain its functions.",g:["جمعية مهنية خاصة للـ CPAs، والـ ASB بتاعها بيصدر GAAS للشركات الخاصة.","Private CPA association; its ASB issues GAAS."],rows:[
+["التعريف","Definition","A private professional association of over <b>400,000 CPAs in 145 countries</b>. Its Auditing Standards Board (ASB) develops <b>Generally Accepted Auditing Standards (GAAS)</b> used in audits of U.S. private entities."],
+["وظائف المعايير","Standard-setting","<ol><li>Auditing standards.</li><li>Preparation, compilation and review standards.</li><li>Other attestation standards.</li><li>Code of Professional Conduct.</li></ol>"],
+["وظائف تانية","Other functions","Prepares and grades the <b>CPA examination</b>, research and grants; publishes a variety of materials; provides seminars and continuing education."]]},
+{q:"Define the International Auditing and Assurance Standards Board (IAASB) and explain its functions.",g:["تابع لـ IFAC وبيصدر ISAs المطبقة برا أمريكا.","Under IFAC; issues ISAs used outside the US."],rows:[
+["التعريف","Definition","A standard-setting body under the <b>International Federation of Accountants (IFAC)</b>; the predominantly recognized international auditing standard setter <b>outside the United States</b>."],
+["الوظائف","Functions","<ol><li>Develops and issues <b>International Standards on Auditing (ISAs)</b>.</li><li>Works to improve <b>uniformity</b> of auditing practices and related services throughout the world.</li><li>Issues standards for <b>assurance engagements</b> and related services.</li></ol>"],
+["النطاق","Scope","ISAs apply to entities <b>outside the United States</b>."]]},
+{q:"List the three categories of GAAS and briefly describe each. (Section 4)",g:["الـ 10 GAAS: General 3 · Field work 3 · Reporting 4.","10 standards in 3 categories."],rows:[
+["General","General","Auditor qualities: adequate <b>technical training and proficiency</b>, <b>independence</b> in mental attitude, <b>due professional care</b>."],
+["Field work","Field work","Planning and gathering evidence: adequate <b>planning and supervision</b>, understanding of <b>internal control</b>, <b>sufficient appropriate evidence</b>."],
+["Reporting","Reporting","The audit report: <b>GAAP</b> conformity, consistency, <b>adequate disclosures</b>, and <b>expression of an opinion</b>."]]}
+];
+const SECTIONS=[
+{id:'s2',n:'02',c:'var(--s1)',title:{ar:'أساسيات المراجعة وأنواعها',en:'Auditing Basics & Types'},
+ desc:{ar:'يعني إيه Auditing، الفرق بين Assurance وAttest، أنواع المراجعة، أنواع المراجعين، والـ CPA.',en:'What auditing is, assurance vs attest, types of audits and auditors, and the CPA.'},
+ topics:['Definition','Assurance','4 Audit Types','Auditors','CPA'],
+ lesson:(L)=>`
+ <div class="blk"><h2><span class="n">1</span>${L('يعني إيه Auditing؟','What is auditing?')}</h2>
+  <div class="flow"><div class="fx"><b>🏢 ${L('الإدارة','Management')}</b><small>${L('بتجهز القوائم وهي المسؤولة عنها','Prepares the statements')}</small></div><div class="ar">→</div><div class="fx"><b>🔍 ${L('المراجع','Auditor')}</b><small>${L('بيجمع أدلة ويقيّمها','Collects & evaluates evidence')}</small></div><div class="ar">→</div><div class="fx"><b>📝 ${L('رأي','Opinion')}</b><small>${L('بيقول القوائم عادلة ولا لأ','Fair or not')}</small></div></div>
+  <div class="call mem"><span class="ci">🧠</span><div>${L('<b>Auditing</b> = تجميع وتقييم الأدلة عن معلومات مقارنةً بمعايير محددة. والمسؤول الأول عن عدالة القوائم هو <b>إدارة العميل</b> مش المراجع.','<b>Auditing</b> = accumulating & evaluating evidence about information against established criteria. <b>Client management</b> is responsible for the statements.')}</div></div></div>
+ <div class="blk"><h2><span class="n">2</span>Assurance · Attest · Auditing</h2>
+  <div class="flow"><div class="fx"><b>Assurance</b><small>${L('الأوسع','Broadest')}</small></div><div class="ar">⊃</div><div class="fx"><b>Attest</b><small>${L('جزء من Assurance','Subset')}</small></div><div class="ar">⊃</div><div class="fx"><b>Auditing</b><small>${L('نوع من Attest','A type of attest')}</small></div></div>
+  <div class="call tip"><span class="ci">💡</span><div>${L('<b>Attestation</b> = الـ CPA بيقرر مدى الاعتماد على ادعاء (assertion) صادر من طرف تاني.','<b>Attestation</b>: the CPA reports on the reliability of another party’s assertion.')}</div></div></div>
+ <div class="blk"><h2><span class="n">3</span>${L('أنواع المراجعة الـ 4','The 4 types of audit')}</h2>
+  <div class="g2"><div class="tile hl"><div class="ic">📊</div><h4>${B('Financial statement audit')}</h4><p>${L('عدالة الميزانية وقائمة الدخل والتدفقات النقدية.','Fair presentation of balance sheet, income & cash flows.')}</p></div>
+  <div class="tile"><div class="ic">📜</div><h4>${B('Compliance audit')}</h4><p>${L('الالتزام بقوانين ولوائح، زي مراجعة <b>الإقرار الضريبي</b>.','Laws & rules, e.g. auditing a <b>tax return</b>.')}</p></div>
+  <div class="tile"><div class="ic">⚙️</div><h4>${B('Operational audit')}</h4><p>${L('<b>كفاءة وفعالية</b> استخدام الموارد، زي قسم الكمبيوتر.','<b>Efficiency & effectiveness</b>, e.g. the computer department.')}</p></div>
+  <div class="tile"><div class="ic">🕵️</div><h4>${B('Forensic audit')}</h4><p>${L('فحص السجلات لاكتشاف <b>الفساد أو الغش</b>.','Records examined for <b>corruption or fraud</b>.')}</p></div></div></div>
+ <div class="blk"><h2><span class="n">4</span>${L('أنواع المراجعين','Types of auditors')}</h2>
+  <div class="g4"><div class="tile"><h4>${B('External')}</h4><p>${L('مكاتب CPA، مستقلين، بيراجعوا القوائم التاريخية المنشورة.','CPA firms; independent; published historical statements.')}</p></div>
+  <div class="tile"><h4>${B('Internal')}</h4><p>${L('موظفين عند الشركة. عيبهم: <b>قلة الاستقلال</b>.','Employees; main weakness: <b>lack of independence</b>.')}</p></div>
+  <div class="tile"><h4>${B('Government')}</h4><p>${L('زي <b>GAO</b> بيراجع للكونجرس.','e.g. <b>GAO</b>, audits for Congress.')}</p></div>
+  <div class="tile"><h4>${B('Forensic')}</h4><p>${L('متخصص في الغش والاختلاس وغسيل الأموال.','Fraud, embezzlement, money laundering.')}</p></div></div></div>
+ <div class="blk"><h2><span class="n">5</span>CPA & Big Four</h2>
+  <div class="mnemo"><span>Deloitte</span><span>PwC</span><span>EY</span><span>KPMG</span></div>
+  <div class="call warn"><span class="ci">🚫</span><div>${L('<b>Grant Thornton</b> مش من الـ Big Four.','<b>Grant Thornton</b> is NOT a Big Four firm.')}</div></div>
+  <div class="g3" style="margin-top:12px"><div class="tile hl"><h4>3 Es</h4><p>Education · Examination · Experience</p></div><div class="tile"><h4>CPA</h4><p>Certified Public Accountant</p></div><div class="tile"><h4>${L('الامتحان','The exam')}</h4><p>${L('بيجهزه AICPA، كمبيوتر عند الطلب. في مصر: الخبرة 3 سنين كحد أدنى تحت مشرف مسجل في وزارة المالية.','Prepared by AICPA, computerized. Egypt: min. 3 years supervised by a Ministry of Finance-registered accountant.')}</p></div></div></div>`},
+{id:'s3',n:'03',c:'var(--s2)',title:{ar:'معايير المراجعة والجهات المنظمة',en:'Auditing Standards & Bodies'},
+ desc:{ar:'ليه المعايير مهمة، PCAOB وSOX، AICPA وIAASB، والاختصارات.',en:'Why standards matter, PCAOB & SOX, AICPA and IAASB, and the acronyms.'},
+ topics:['Importance','PCAOB','SOX 2002','AICPA','IAASB'],
+ lesson:(L)=>`
+ <div class="blk"><h2><span class="n">1</span>${L('ليه المعايير مهمة؟','Why standards matter')}</h2>
+  <p>${L('معايير المراجعة هي <b>الدليل ومقياس جودة أداء المراجع</b>:','Standards are the <b>guideline and measure of the auditor’s quality</b>:')}</p>
+  <div class="g3"><div class="tile"><div class="ic">✅</div><h4>${L('جودة واتساق','Quality & consistency')}</h4></div><div class="tile"><div class="ic">🤝</div><h4>${L('مصداقية وثقة','Credibility & trust')}</h4></div><div class="tile"><div class="ic">🚨</div><h4>${L('تقييم مخاطر وكشف غش','Risk assessment & fraud')}</h4></div><div class="tile"><div class="ic">⚖️</div><h4>${L('أخلاقيات واستقلال','Ethics & independence')}</h4></div><div class="tile"><div class="ic">📑</div><h4>${L('التزام قانوني','Legal compliance')}</h4></div></div>
+  <div class="call warn"><span class="ci">🚫</span><div>${L('<b>مش</b> من المعايير: الميزانيات السنوية، التوظيف، أو حساب ضريبة موظفي العميل.','NOT standards’ role: budgets, hiring, employees’ tax liability.')}</div></div></div>
+ <div class="blk"><h2><span class="n">2</span>${L('3 جهات لازم تفرق بينهم','3 bodies to tell apart')}</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th></th><th>PCAOB</th><th>AICPA (ASB)</th><th>IAASB</th></tr></thead><tbody>
+  <tr><td>${L('إيه هو','What')}</td><td>${L('هيئة رقابة، اتعملت بقانون <b>SOX 2002</b>','Regulator created by <b>SOX 2002</b>')}</td><td>${L('جمعية مهنية خاصة للـ CPAs','Private CPA association')}</td><td>${L('تابع لـ <b>IFAC</b>','Under <b>IFAC</b>')}</td></tr>
+  <tr><td>${L('بيصدر','Issues')}</td><td>Auditing · Attestation · QC</td><td>GAAS</td><td>ISAs</td></tr>
+  <tr><td>${L('بتتطبق على','Applies to')}</td><td>${L('شركات أمريكا العامة بس','US public companies only')}</td><td>${L('الشركات الخاصة في أمريكا','US private entities')}</td><td>${L('برا أمريكا','Outside the US')}</td></tr></tbody></table></div></div>
+ <div class="blk"><h2><span class="n">3</span>PCAOB</h2>
+  <div class="g3"><div class="tile"><h4>1. Oversight</h4><p>${L('رقابة على مراجعي الشركات العامة','Oversees auditors of public companies')}</p></div><div class="tile"><h4>2. Standards</h4><p>Auditing · Attestation · Quality control</p></div><div class="tile"><h4>3. Inspections</h4><p>${L('بيفتش على جودة مكاتب المراجعة','Inspects audit firms’ quality control')}</p></div></div>
+  <div class="call warn"><span class="ci">🚫</span><div>${L('<b>مش</b> وظيفته يحط GAAP أو IFRS (دول معايير محاسبة).','It does <b>not</b> set GAAP/IFRS (accounting standards).')}</div></div></div>
+ <div class="blk"><h2><span class="n">4</span>${L('الاختصارات','Acronyms')}</h2>
+  <div class="g2"><div class="tile"><h4>PCAOB</h4><p>Public Company Accounting Oversight Board</p></div><div class="tile"><h4>AICPA</h4><p>American Institute of Certified Public Accountants</p></div><div class="tile"><h4>IAASB</h4><p>International Auditing and Assurance Standards Board</p></div><div class="tile"><h4>IFAC</h4><p>International Federation of Accountants</p></div></div></div>`},
+{id:'s4',n:'04',c:'var(--s4)',title:{ar:'IFAC وISA وGAAS',en:'IFAC, ISAs & GAAS'},
+ desc:{ar:'سلسلة IFAC ← IAASB ← ISAs، معايير AICPA، ونطاق PCAOB، والـ 10 GAAS.',en:'IFAC → IAASB → ISAs, AICPA standards, PCAOB scope and the 10 GAAS.'},
+ topics:['IFAC','ISAs','ASB','GAAS','10 Standards'],
+ lesson:(L)=>`
+ <div class="blk"><h2><span class="n">1</span>${L('السلسلة الدولية','The international chain')}</h2>
+  <div class="flow"><div class="fx"><b>IFAC</b><small>${L('منظمة عالمية للمهنة','Global accountancy body')}</small></div><div class="ar">→</div><div class="fx"><b>IAASB</b><small>${L('تابع ليها','Operates under it')}</small></div><div class="ar">→</div><div class="fx"><b>ISAs</b><small>${L('معايير دولية، برا أمريكا','International, outside the US')}</small></div></div></div>
+ <div class="blk"><h2><span class="n">2</span>US vs International</h2>
+  <div class="vsbox"><div class="side a"><h3 class="en">🇺🇸 US</h3><div class="q">PCAOB · AICPA</div><ul class="ck"><li>${L('<b>PCAOB</b>: شركات أمريكا العامة بس','<b>PCAOB</b>: US public companies only')}</li><li>${L('<b>ASB</b> ← GAAS للشركات الخاصة','<b>ASB</b> → GAAS for private entities')}</li></ul></div><div class="vs">VS</div>
+  <div class="side b"><h3 class="en">🌍 International</h3><div class="q">IAASB</div><ul class="ck"><li>${L('<b>ISAs</b> بتتطبق <b>برا</b> أمريكا','<b>ISAs</b> apply <b>outside</b> the US')}</li><li>${L('بيصدرها IAASB','Issued by IAASB')}</li></ul></div></div>
+  <div class="call tip"><span class="ci">💡</span><div>${L('فخ: <b>ISAs مش بتتطبق جوه أمريكا بس</b> غلط! هي برا أمريكا.','Trap: ISAs are <b>not</b> US-only; they apply outside the US.')}</div></div></div>
+ <div class="blk"><h2><span class="n">3</span>${L('الـ 10 GAAS (اتصدروا 1947)','The 10 GAAS (issued 1947)')}</h2>
+  <div class="g3"><div class="tile hl"><h4>General (3)</h4><p>Technical training · Independence · Due professional care</p></div><div class="tile hl"><h4>Field work (3)</h4><p>Planning & supervision · Internal control · Evidence</p></div><div class="tile hl"><h4>Reporting (4)</h4><p>GAAP · Consistency · Disclosure · Opinion</p></div></div>
+  <div class="call warn"><span class="ci">🚫</span><div>${L('<b>GAAS</b> = معايير مراجعة. <b>GAAP</b> = مبادئ محاسبة. و"Standards of Accounting" مش فئة من الـ GAAS.','<b>GAAS</b> = auditing; <b>GAAP</b> = accounting. “Standards of Accounting” is not a GAAS category.')}</div></div></div>`},
+{id:'s5',n:'05',c:'var(--s5)',title:{ar:'مراجعة شاملة',en:'Final Review'},
+ desc:{ar:'ملخص سريع لكل حاجة + أهم الفخاخ.',en:'A quick cheat sheet and the biggest traps.'},
+ topics:['Cheat sheet','Traps','Mixed'],
+ lesson:(L)=>`
+ <div class="blk"><h2><span class="n">1</span>${L('الملخص السريع','Cheat sheet')}</h2>
+  <div class="tblwrap"><table class="cmp"><thead><tr><th></th><th>${L('بيعمل إيه','Role')}</th><th>${L('بيصدر','Issues')}</th></tr></thead><tbody>
+  <tr><td>PCAOB</td><td>${L('رقابة + inspections (SOX 2002)','Oversight + inspections (SOX 2002)')}</td><td>Auditing · Attestation · QC</td></tr>
+  <tr><td>AICPA</td><td>${L('جمعية CPAs + امتحان CPA','CPA association + CPA exam')}</td><td>GAAS (ASB)</td></tr>
+  <tr><td>IAASB</td><td>${L('تابع لـ IFAC','Under IFAC')}</td><td>ISAs</td></tr></tbody></table></div></div>
+ <div class="blk recap"><h2><span class="n">2</span>${L('أهم الفخاخ','Top traps')}</h2><ol>
+  <li>${L('Grant Thornton مش Big Four، وEmployment مش من الـ 3 Es.','Grant Thornton isn’t Big Four; Employment isn’t a CPA “E”.')}</li>
+  <li>${L('المسؤول عن القوائم هو الإدارة.','Management is responsible for the statements.')}</li>
+  <li>${L('PCAOB للشركات العامة بس ومش بيحط GAAP.','PCAOB: public companies only, no GAAP.')}</li>
+  <li>${L('IAASB مش IASB. وISAs برا أمريكا.','IAASB ≠ IASB; ISAs are outside the US.')}</li>
+  <li>${L('لو الإجابة الصح مش مكتوبة، اختار None of the above.','If the true answer isn’t listed, choose None of the above.')}</li></ol></div>`}
 ];
 
+const QUESTIONS={"s2": [{"t": "mc", "q": "The Big Four firms include all EXCEPT:", "o": ["Deloitte", "KPMG", "Ernst & Young", "Grant Thornton"], "a": 3}, {"t": "mc", "q": "Which of the following is NOT one of the \"Three Es\" for CPA certification?", "o": ["Education", "Examination", "Experience", "Employment"], "a": 3}, {"t": "mc", "q": "An operational audit focuses mainly on:", "o": ["Fraud detection and deterrence", "Financial position", "Efficiency and effectiveness", "None of the previous."], "a": 2}, {"t": "mc", "q": "Which of the following best defines auditing?", "o": ["Recording and summarizing business transactions", "The accumulation and evaluation of evidence about information against established criteria", "Preparing and presenting financial statements", "None of the previous."], "a": 1}, {"t": "mc", "q": "CPA stands for", "o": ["Certified Professional Auditor", "Certified Public Accountant", "Chartered Public Advisor", "Certified Private Accountant"], "a": 1}, {"t": "mc", "q": "AICPA stands for", "o": ["American Institute of Certified Public Accountants", "Association of Independent Certified Professional Auditors", "American International Council of Professional Accountants", "Accounting Institute for Chartered Public Auditors"], "a": 0}, {"t": "mc", "q": "Which of the following has primary responsibility for the fairness of the representations made in financial statements?", "o": ["Client’s management", "Independent auditor.", "Audit committee.", "American Institute of Certified Public Accountants"], "a": 0}, {"t": "mc", "q": "Internal auditors ( )", "o": ["must be independent of the entity that employs them", "generally report to the accounting department", "are employed by all types of organizations", "must be CPAs"], "a": 2}, {"t": "mc", "q": "In a financial statement audit, the auditor ( )", "o": ["gathers evidence to determine whether the statements contain material errors or other misstatements", "must have a thorough understanding of the entity and its environment.", "determines whether the financial statements are stated in accordance with specified criteria", "all of the above"], "a": 3}, {"t": "mc", "q": "Which of the following best describes the relationship between auditing and attestation engagements?", "o": ["Auditing is a subset of attestation engagements that focuses on the certification of financial statements.", "Attestation is a subset of auditing that provides lower assurance than that provided by an audit engagement.", "Auditing is a subset of attestation engagements that focuses on providing clients with advice and decision support.", "Attestation is a subset of auditing that improves the quality of information or its context for decision makers."], "a": 0}, {"t": "mc", "q": "Which type of audit is characterized by determining the fair presentation of a company’s balance sheet, income statement, and statement of cash flows?", "o": ["Compliance audit", "Financial statement audit", "Operational audit", "Forensic audit"], "a": 1}, {"t": "mc", "q": "Which type of audit involves examining financial records to determine if any corruption or fraud have occurred?", "o": ["Compliance audit", "Financial statement audit", "Operational audit", "Forensic audit"], "a": 3}, {"t": "mc", "q": "Which type of audit involves evaluating a department (like computer services) in terms of the efficient and effective use of corporate resources?", "o": ["Compliance audit", "Financial statement audit", "Operational audit", "Forensic audit"], "a": 2}, {"t": "mc", "q": "Auditing the tax return of a real estate development company is an example of which type of audit?", "o": ["Compliance audit", "Financial statement audit", "Operational audit", "Forensic audit"], "a": 0}, {"t": "mc", "q": "What is the major associated with Internal Auditors compared to CPA firms (External Auditors)?", "o": ["Lack of experience in compliance auditing.", "Lack of independence.", "Inability to evaluate computer systems.", "Working only at the local level."], "a": 1}, {"t": "mc", "q": "Which type of auditor is a specialist in fraud detection, investigation, and prevention", "o": ["External Auditors.", "Internal Auditors.", "Forensic Auditors.", "Government Auditors."], "a": 2}, {"t": "mc", "q": "Which entity conducts audits and investigations for Congress, and is an example of a Government Auditor?", "o": ["Certified Public Accounting firms.", "GAO (Government Accountability Office).", "The Chief Executive Officer (CEO) of a company.", "The Association of Certified Fraud Examiners (ACFE)."], "a": 1}, {"t": "mc", "q": "Which auditor’s primary responsibility is to audit the published historical financial statements of publicly traded companies?", "o": ["Internal Auditors", "Forensic Auditors", "External Auditors", "Government Auditors"], "a": 2}, {"t": "mc", "q": "A specialist who is primarily called in to investigate embezzlement and money laundering is known as a", "o": ["Internal Auditor", "CPA Auditor", "Forensic Auditor", "Operational Auditor"], "a": 2}, {"t": "mc", "q": "The Uniform CPA Examination is prepared and graded by which organization?", "o": ["The Government Accountability Office", "The Association of Certified Fraud Examiners", "The American Institute of Certified Public Accountants", "The Financial Accounting Standards Board"], "a": 2}, {"t": "mc", "q": "The CPA exam is described as being:", "o": ["Computerized and given on demand.", "Paper-based and given annually.", "Administered only once a year at designated centers.", "Graded by individual state boards of accountancy."], "a": 0}, {"t": "mc", "q": "To satisfy the practical experience requirement for a licensed CPA in Egypt, the supervisor must be a licensed public accountant registered with which entity?", "o": ["The Central Bank of Egypt.", "The Egyptian Stock Exchange.", "The Ministry of Commerce.", "The Ministry of Finance."], "a": 3}], "s3": [{"t": "mc", "q": "Auditing standards serve as guidelines and measures of the:", "o": ["Stock market performance of the audited entity.", "Efficiency of the client’s internal controls.", "Quality of the auditor’s performance.", "Total revenue generated by the auditing firm."], "a": 2}, {"t": "mc", "q": "Which of the following activities is the importance of professional standards?", "o": ["Setting annual budgets for client companies.", "Risk Assessment and Fraud Detection.", "Hiring new staff for the client’s accounting department.", "Determining the tax liability for a client’s employees."], "a": 1}, {"t": "mc", "q": "Which of the following is not the importance of auditing standards;", "o": ["Enhancing Credibility and Trust in Financial Reporting.", "Enhancing Ethical Conduct and Independence.", "Assisting Compliance with Legal and Regulatory Requirements.", "Determining the tax liability for a client’s employees."], "a": 3}, {"t": "mc", "q": "Which organization sets auditing standards and is represented by the acronym IAASB?", "o": ["American Institute of Certified Public Accountants", "Public Company Accounting Oversight Board", "International Auditing and Assurance Standards Board", "Federal Accounting Standards Board"], "a": 2}, {"t": "mc", "q": "which body is primarily responsible for setting auditing standards for publicly traded companies?", "o": ["AICPA", "PCAOB", "IAASB", "SEC"], "a": 1}, {"t": "mc", "q": "What is the foundational U.S. law that established the Public Company Accounting Oversight Board (PCAOB)?", "o": ["The Securities Exchange Act of 1934.", "The Financial Services Modernization Act of 1999.", "The Sarbanes-Oxley Act of 2002.", "The Dodd-Frank Act of 2010."], "a": 2}, {"t": "mc", "q": "The PCAOB is responsible for establishing all of the following types of standards EXCEPT:", "o": ["Auditing standards.", "Attestation standards.", "Quality control standards.", "Financial Accounting Standards (GAAP/IFRS)."], "a": 3}, {"t": "mc", "q": "Which of the following is NOT a stated function of the Public Company Accounting Oversight Board ?", "o": ["Performing inspections of the quality control at audit firms.", "Establishing auditing standards for public company audits.", "Providing oversight for auditors of public companies.", "Setting Generally Accepted Accounting Principles (GAAP) for public companies."], "a": 3}, {"t": "mc", "q": "When the PCAOB performs inspections of the quality control at audit firms, the ultimate goal is to enhance the audit quality for which sector?", "o": ["Private Businesses", "Government Agencies", "Public Companies", "Non-profit Organizations"], "a": 2}, {"t": "mc", "q": "PCAOB stands for:", "o": ["Public Company Auditing Outreach Bureau", "Private Corporate Accounting Outcome Board", "Public Company Accounting Oversight Board", "Professional Certification and Auditing Obligations Body"], "a": 2}, {"t": "mc", "q": "AICPA stands for:", "o": ["Association for International Certified Professional Accountants", "American Institute of Certified Public Accountants", "Auditing and Internal Controls Professional Association", "Accounting Information and Compliance Procedures Authority"], "a": 1}, {"t": "mc", "q": "IAASB stands for:", "o": ["Internal Accounting and Audit Standards Bureau", "Independent Auditing and Accountability Standards Board", "International Association for Assurance and Standards Body", "International Auditing and Assurance Standards Board"], "a": 3}], "s4": [{"t": "mc", "q": "The IAASB operates under which international organization?", "o": ["AICPA", "IFAC (International Federation of Accountants)", "PCAOB", "IASB"], "a": 1}, {"t": "mc", "q": "IFAC stands for:", "o": ["International Federation of Accountants", "Internal Finance and Accounting Committee", "International Fiscal Advisory Council", "Institute for Accounting Control"], "a": 0}, {"t": "mc", "q": "The IFAC is best described as:", "o": ["A global organization for the accountancy profession", "A U.S. accounting authority", "A private auditing firm", "A financial advisory board"], "a": 0}, {"t": "mc", "q": "The International Standards on Auditing (ISAs) are issued by:", "o": ["AICPA", "PCAOB", "IAASB", "IFRS Foundation"], "a": 2}, {"t": "mc", "q": "What is the main responsibility of the IAASB?", "o": ["Preparing company financial statements", "Developing International Standards on Auditing (ISAs)", "Issuing tax regulations", "Setting accounting standards for public companies"], "a": 1}, {"t": "mc", "q": "The IAASB is primarily recognized as the international standard setter for auditing:", "o": ["Inside the United States", "Outside the United States", "Only in Europe", "In private companies only"], "a": 1}, {"t": "mc", "q": "Which of the following is not true about ISAs?", "o": ["They are international auditing standards", "They are issued by IAASB", "They apply only inside the United States", "They provide guidance for external auditors"], "a": 2}, {"t": "mc", "q": "The auditing standards issued by the PCAOB apply to:", "o": ["All companies worldwide", "Only U.S. public companies", "Only private companies", "Nonprofit organizations"], "a": 1}, {"t": "mc", "q": "The standards issued by the ASB are called:", "o": ["International Standards on Auditing (ISAs)", "Internal Audit Regulations", "Generally Accepted Accounting Principles (GAAP)", "Statements on Auditing Standards (SASs)"], "a": 3}, {"t": "mc", "q": "The AICPA auditing standards are also known as:", "o": ["U.S. GAAS", "IFRS", "ISAs", "PCAOB Rules"], "a": 0}, {"t": "mc", "q": "Which group primarily uses the AICPA auditing standards?", "o": ["Public companies", "Private companies and other entities", "Government agencies only", "International firms"], "a": 1}, {"t": "mc", "q": "The International Standards on Auditing (ISAs) apply to:", "o": ["U.S. public companies", "Private entities in the U.S.", "Government agencies only", "Entities outside the United States"], "a": 3}, {"t": "mc", "q": "The 10 Generally Accepted Auditing Standards (GAAS) were first issued in:", "o": ["1932", "1947", "1956", "1965"], "a": 1}, {"t": "mc", "q": "Which of the following is not a category of the 10 GAAS?", "o": ["General Standards", "Standards of Field Work", "Standards of Reporting", "Standards of Accounting"], "a": 3}, {"t": "mc", "q": "Which of the following is not part of the General Standards?", "o": ["Independence", "Due professional care", "Planning and supervision", "Technical training and proficiency"], "a": 2}, {"t": "mc", "q": "Which category includes obtaining an understanding of internal control?", "o": ["General Standards", "Standards of Field Work", "Standards of Reporting", "Ethical Standards"], "a": 1}, {"t": "mc", "q": "Which standard requires the auditor to state whether financial statements follow GAAP?", "o": ["Field Work", "General", "Reporting", "Ethical"], "a": 2}, {"t": "mc", "q": "Which of the following is part of the Reporting Standards?", "o": ["Independence", "Understanding internal control", "Expression of opinion", "Due professional care"], "a": 2}, {"t": "mc", "q": "The predominantly recognized international auditing standard setter outside the United States is?", "o": ["American Institute of Certified Public Accountants.", "Financial Accounting Standards Board.", "International Auditing and Assurance Standards Board.", "Public Company Accounting Oversight Board."], "a": 2}, {"t": "mc", "q": "A board established by the Sarbanes-Oxley Act of 2002 to provide oversight of accounting firms?", "o": ["Auditing Standards Board.", "Public Company Accounting Oversight Board.", "International Federation of Accountants.", "American Institute of Certified Public Accountants."], "a": 1}, {"t": "mc", "q": "Standards issued by the Public Company Accounting Oversight Board must be followed by CPAs who audit?", "o": ["Both private and public companies.", "Public companies only.", "Private companies, public companies, and nonprofit entities.", "Private companies only."], "a": 1}, {"t": "mc", "q": "Which organization is responsible for issuing international auditing standards?", "o": ["AICPA.", "PCAOB.", "IAASB.", "FASB."], "a": 2}, {"t": "mc", "q": "Auditing standards issued by the AICPA’s Auditing Standards Board (ASB)?", "o": ["Code of Professional Conduct.", "Generally accepted accounting principles (GAAP).", "Generally accepted auditing standards (GAAS).", "None of the previous."], "a": 2}, {"t": "mc", "q": "Guidelines for and measures of the quality of the auditor’s performance are provided by:", "o": ["Auditing standards.", "Professional ethics.", "Accounting principles.", "Internal control policies."], "a": 0}], "s5": [{"t": "mc", "q": "The organization that is responsible for providing oversight for auditors of public companies is called the:", "o": ["Auditing Standards Board", "American Institute of Certified Public Accountants", "Public Oversight Board", "Public Company Accounting Oversight Board (PCAOB)"], "a": 3}, {"t": "mc", "q": "Standards issued by the Public Company Accounting Oversight Board must be followed by CPAs who audit:", "o": ["Both private and public companies", "Public companies only", "Private companies, public companies, and nonprofit entities", "Private companies only"], "a": 1, "g": "s4-20"}, {"t": "mc", "q": "Which organization is responsible for issuing international auditing standards?", "o": ["AICPA", "PCAOB", "IAASB", "FASB"], "a": 2, "g": "s4-21"}, {"t": "mc", "q": "Which standard ensures that informative disclosures in the financial statements are reasonably adequate?", "o": ["General Standard", "Standard of Field Work", "Standard of Reporting", "Independence Standard"], "a": 2}, {"t": "mc", "q": "The requirement that the auditor obtain sufficient appropriate evidence relates to which category of standards?", "o": ["General Standard", "Standard of Field Work", "Standard of Reporting", "Independence Standard"], "a": 1}, {"t": "mc", "q": "Which of the following best describes the general character of the three standards classified as standards of field work?", "o": ["Auditor competence, independence, and professional care", "Criteria for auditor report content and footnote disclosures", "Criteria for audit planning and evidence gathering", "Need to maintain independence of mental attitude in all matters"], "a": 2}, {"t": "mc", "q": "Auditing standards issued by the AICPA’s Auditing Standards Board (ASB) are called:", "o": ["Code of Professional Conduct", "Generally Accepted Accounting Principles (GAAP)", "International Standards on Auditing (ISA)", "Generally Accepted Auditing Standards (GAAS)"], "a": 3, "g": "s4-22"}, {"t": "mc", "q": "A board established by the Sarbanes-Oxley Act of 2002 to provide oversight of accounting firms is:", "o": ["AICPA", "IAASB", "International Federation of Accountants (IFAC)", "None of the above"], "a": 3, "g": "s4-19"}, {"t": "mc", "q": "Which entity is the predominantly recognized international auditing standard setter outside the United States?", "o": ["AICPA", "IASB (International Accounting Standards Board)", "PCAOB", "None of the above"], "a": 3, "g": "s4-18"}, {"t": "mc", "q": "Professional standards in auditing are important because they help in:", "o": ["Ensuring audit quality and consistency", "Enhancing credibility and trust in financial reporting", "Strengthening risk assessment and fraud detection", "All of the above"], "a": 3}, {"t": "mc", "q": "Which of these organizations has the responsibility to perform inspections of auditors of public companies?", "o": ["AICPA", "IAASB", "PCAOB (Public Company Accounting Oversight Board)", "None of the above"], "a": 2}, {"t": "mc", "q": "The 10 Generally Accepted Auditing Standards (GAAS) were first issued in:", "o": ["1932", "1947", "1956", "1965"], "a": 1, "g": "s4-12"}, {"t": "mc", "q": "Which of the following is not a category of the 10 GAAS?", "o": ["General Standards", "Standards of Field Work", "Standards of Reporting", "Standards of Accounting"], "a": 3, "g": "s4-13"}, {"t": "mc", "q": "Which of the following is not part of the General Standards?", "o": ["Independence", "Due professional care", "Planning and supervision", "Technical training and proficiency"], "a": 2, "g": "s4-14"}, {"t": "mc", "q": "Which category includes obtaining an understanding of internal control?", "o": ["General Standards", "Standards of Field Work", "Standards of Reporting", "Ethical Standards"], "a": 1, "g": "s4-15"}, {"t": "mc", "q": "Which standard requires the auditor to state whether financial statements follow GAAP?", "o": ["Field Work", "General", "Reporting", "Ethical"], "a": 2, "g": "s4-16"}, {"t": "mc", "q": "Which of the following is part of the Reporting Standards?", "o": ["Independence", "Understanding internal control", "Expression of opinion", "Due professional care"], "a": 2, "g": "s4-17"}, {"t": "mc", "q": "The predominantly recognized international auditing standard setter outside the United States is?", "o": ["American Institute of Certified Public Accountants.", "Financial Accounting Standards Board.", "International Auditing and Assurance Standards Board.", "Public Company Accounting Oversight Board."], "a": 2, "g": "s4-18"}, {"t": "mc", "q": "A board established by the Sarbanes-Oxley Act of 2002 to provide oversight of accounting firms?", "o": ["Auditing Standards Board.", "Public Company Accounting Oversight Board.", "International Federation of Accountants.", "American Institute of Certified Public Accountants."], "a": 1, "g": "s4-19"}, {"t": "mc", "q": "Guidelines for and measures of the quality of the auditor’s performance are provided by:", "o": ["Auditing standards.", "Professional ethics.", "Accounting principles.", "Internal control policies."], "a": 0, "g": "s4-23"}]};
+Object.values(QUESTIONS).forEach(a=>a.forEach(q=>{q.ex={ar:'الإجابة الصح مذكورة فوق، وراجع الشرح لو محتاج تفاصيل.',en:'See the lesson for details.'};const tx=(q.q+' | '+q.o[q.a]).toLowerCase();const r=RULES.find(x=>x[0].test(tx));if(r)q.ex={ar:r[1],en:r[2]}}));
+Object.keys(QUESTIONS).forEach(k=>QUESTIONS[k].forEach((q,i)=>{const o=OVR[k+'-'+i];if(o)q.ex={ar:o[0],en:o[1]}}));
 
 /* ================= i18n ================= */
 const T = {
-  ar:{brand:'مراجعة التحليل المالي',brandSub:'Financial Statements Analysis · 2026/2027',home:'الرئيسية',sec:'سكشن',
-    heroEyebrow:'مراجعة تفاعلية شاملة',heroA:'ذاكر',heroB:'التحليل المالي',heroC:'وامتحن نفسك صح',
-    heroLead:'السكاشن الخمسة في مكان واحد: شرح مبسّط ومترتب بالمعادلات والتمارين المحلولة، وبعدين بنك أسئلة تفاعلي — تختار إجابتك وتعرف فورًا صح ولا غلط وليه.',
-    stSec:'سكاشن',stQ:'سؤال',stTF:'صح وغلط',stMC:'اختيار من متعدد',
+  ar:{brand:'مراجعة Corporate Finance',brandSub:'Corporate Finance · Dr. Waleed El-Bolok',home:'الرئيسية',sec:'محاضرة',
+    heroEyebrow:'مراجعة ليلة الامتحان',heroA:'ذاكر',heroB:'Corporate Finance',heroC:'وامتحن نفسك صح',
+    heroLead:'الـ 4 محاضرات في مكان واحد: شرح بسيط ومترتب بالأمثلة والقوانين، وبعدين أسئلة السكاشن والتيست بانك بس — تختار إجابتك وتعرف فورًا صح ولا غلط وليه.',
+    stSec:'محاضرات',stQ:'سؤال',stTF:'صح وغلط',stMC:'اختيار من متعدد',
     learn:'ذاكر الشرح',quiz:'امتحن نفسك',qcount:'سؤال',answered:'اتحل',correctPct:'صح',
-    examTitle:'🎯 الامتحان الشامل',examDesc:'أسئلة عشوائية من السكاشن اللي تختارها — زي الامتحان الحقيقي بالظبط.',
-    examSecs:'السكاشن',examCount:'عدد الأسئلة',all:'الكل',start:'ابدأ الامتحان',
+    examTitle:'🎯 الامتحان الشامل',examDesc:'أسئلة عشوائية من المحاضرات اللي تختارها — زي الامتحان الحقيقي بالظبط.',
+    examSecs:'المحاضرات',examCount:'عدد الأسئلة',all:'الكل',start:'ابدأ الامتحان',
     lesson:'الشرح',practice:'الأسئلة',
     fAll:'الكل',fTF:'صح وغلط',fMC:'اختيار متعدد',
     q:'سؤال',of:'من',tf:'صح أو غلط',mc:'اختيار من متعدد',T:'True',F:'False',Tar:'صح',Far:'غلط',
@@ -1132,17 +479,17 @@ const T = {
     resSub:'جاوبت صح على {c} من {t} سؤال',
     retryAll:'أعيد كل الأسئلة',retryWrong:'أعيد الغلط بس',backLesson:'ارجع للشرح',goHome:'الرئيسية',
     reviewWrong:'راجع الأسئلة اللي غلطت فيها',yourAns:'إجابتك:',corrAns:'الصح:',
-    ctaT:'خلصت الشرح؟',ctaP:'يلا اختبر نفسك على أسئلة السكشن ده',ctaB:'ابدأ الأسئلة',
+    ctaT:'خلصت الشرح؟',ctaP:'يلا اختبر نفسك على أسئلة المحاضرة دي',ctaB:'ابدأ الأسئلة',
     keys:'اختصارات:',noQ:'مفيش أسئلة هنا',notAnswered:'لسه مجاوبتش على {n} سؤال — تحب تنهي؟',
-    footer:'Financial Statements Analysis · Sections 1–5 · Dr. Moustafa AL-saman · TA Ahmed Hamed',
+    footer:'Corporate Finance · Lectures 1–4 · الأسئلة من السكاشن والتيست بانك بس',
     langBtn:'EN',resetDone:'تم المسح'},
-  en:{brand:'Financial Statements Analysis Review',brandSub:'Academic Year 2026/2027',home:'Home',sec:'Section',
-    heroEyebrow:'Complete interactive review',heroA:'Study',heroB:'Financial Analysis',heroC:'and test yourself',
-    heroLead:'All five sections in one place: clear lessons with formulas and solved exercises, then an interactive question bank — pick your answer and instantly see if you are right, and why.',
-    stSec:'Sections',stQ:'Questions',stTF:'True / False',stMC:'Multiple choice',
+  en:{brand:'Corporate Finance Review',brandSub:'Dr. Waleed El-Bolok',home:'Home',sec:'Lecture',
+    heroEyebrow:'Night-before-the-exam review',heroA:'Study',heroB:'Corporate Finance',heroC:'and test yourself',
+    heroLead:'All 4 lectures in one place: clear lessons with formulas and worked examples, then only the section & test-bank questions — answer and instantly see why.',
+    stSec:'Lectures',stQ:'Questions',stTF:'True / False',stMC:'Multiple choice',
     learn:'Study lesson',quiz:'Take quiz',qcount:'questions',answered:'answered',correctPct:'correct',
-    examTitle:'🎯 Full Exam',examDesc:'Random questions from the sections you pick — just like the real exam.',
-    examSecs:'Sections',examCount:'Questions',all:'All',start:'Start exam',
+    examTitle:'🎯 Full Exam',examDesc:'Random questions from the lectures you pick — just like the real exam.',
+    examSecs:'Lectures',examCount:'Questions',all:'All',start:'Start exam',
     lesson:'Lesson',practice:'Questions',
     fAll:'All',fTF:'True/False',fMC:'MCQ',
     q:'Question',of:'of',tf:'True or False',mc:'Multiple choice',T:'True',F:'False',Tar:'',Far:'',
@@ -1155,15 +502,19 @@ const T = {
     resSub:'You got {c} of {t} right',
     retryAll:'Retry all',retryWrong:'Retry wrong only',backLesson:'Back to lesson',goHome:'Home',
     reviewWrong:'Review your mistakes',yourAns:'Your answer:',corrAns:'Correct:',
-    ctaT:'Done with the lesson?',ctaP:'Test yourself on this section',ctaB:'Start questions',
+    ctaT:'Done with the lesson?',ctaP:'Test yourself on this lecture',ctaB:'Start questions',
     keys:'Shortcuts:',noQ:'No questions here',notAnswered:'{n} questions unanswered — finish anyway?',
-    footer:'Financial Statements Analysis · Sections 1–5 · Dr. Moustafa AL-saman · TA Ahmed Hamed',
+    footer:'Corporate Finance · Lectures 1–4 · questions from sections & test banks only',
     langBtn:'ع',resetDone:'Cleared'}
 };
 
+Object.assign(T.ar,{brand:'مراجعة Auditing',brandSub:'Auditing · د. محسن أنور · EELU',sec:'سكشن',heroA:'ذاكر',heroB:'Auditing',stSec:'سكاشن',stQ:'سؤال اختيارات',examSecs:'السكاشن',
+ heroLead:'الشرح من ملف الريفجن، وبعدين أسئلة الاختيارات بس من الـ 4 سكاشن — تختار وتعرف فورًا صح ولا غلط وليه. وفيه خانة مقالي لوحدها.',ctaP:'يلا اختبر نفسك على أسئلة السكشن ده',footer:'Auditing · Sections 2–5 · الاختيارات من السكاشن · المقالي من الريفجن',examDesc:'أسئلة عشوائية من كل السكاشن (التكرار بيظهر مرة واحدة) — زي الامتحان الحقيقي.'});
+Object.assign(T.en,{brand:'Auditing Review',brandSub:'Auditing · Dr. Mohsen Anwar · EELU',sec:'Section',heroB:'Auditing',stSec:'Sections',stQ:'MCQs',examSecs:'Sections',
+ heroLead:'Lessons from the revision file, then MCQs only from the 4 sections: answer and instantly see why. Plus a separate Essay box.',footer:'Auditing · Sections 2–5 · MCQs from sections · Essay from the revision',examDesc:'Random questions from all sections (repeats appear once) — like the real exam.'});
 /* ================= storage ================= */
-const store={get(k,d){try{const v=localStorage.getItem('fsa_'+k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){try{localStorage.setItem('fsa_'+k,JSON.stringify(v))}catch(e){}}};
+const store={get(k,d){try{const v=localStorage.getItem('aud_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('aud_'+k,JSON.stringify(v))}catch(e){}}};
 
 /* ================= state ================= */
 const ALLQ={}; // id -> question
@@ -1171,7 +522,7 @@ SECTIONS.forEach(s=>QUESTIONS[s.id].forEach((q,i)=>{q.id=s.id+'-'+i;q.sec=s.id;A
 const sysDark=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
 const S={
   lang:store.get('lang','ar'),
-  theme:store.get('theme',sysDark?'dark':'light'),
+  theme:store.get('theme','light'),
   view:{name:'home'},
   stats:store.get('stats',{}), // qid -> 1 correct / 0 wrong (latest)
   shuffleQ:store.get('shuffleQ',false),
@@ -1223,7 +574,7 @@ function startSectionQuiz(id,filter='all'){
   go({name:'sec',id,tab:'quiz'});
 }
 function startExam(){
-  const pool=[];S.exam.secs.forEach(id=>QUESTIONS[id].forEach(q=>pool.push(q.id)));
+  const pool=[],seen=new Set();shuffle(S.exam.secs.flatMap(id=>QUESTIONS[id])).forEach(q=>{const k=q.g||q.id;if(!seen.has(k)){seen.add(k);pool.push(q.id)}});
   if(!pool.length) return;
   const n=S.exam.count==='all'?pool.length:Math.min(S.exam.count,pool.length);
   const ids=shuffle(pool).slice(0,n);
@@ -1237,7 +588,7 @@ function renderTop(){
   const v=S.view;
   const navBtns=[`<button class="${v.name==='home'?'on':''}" data-go="home">${t('home')}</button>`]
     .concat(SECTIONS.map(s=>`<button class="${v.id===s.id?'on':''}" data-go="sec" data-id="${s.id}">${t('sec')} ${+s.n}</button>`))
-    .concat([`<button class="${v.name==='exam'?'on':''}" data-act="exam-home">${L('الامتحان الشامل','Full exam')}</button>`]).join('');
+    .concat([`<button class="${v.name==='exam'?'on':''}" data-act="exam-home">${L('الامتحان الشامل','Full exam')}</button>`,`<button class="${v.name==='essay'?'on':''}" data-go="essay">${L('مقالي','Essay')}</button>`]).join('');
   return `<header class="top"><div class="wrap">
     <div class="logo"><div class="logo-mark">${I.logo}</div><div>${t('brand')}<small>${t('brandSub')}</small></div></div>
     <nav class="nav">${navBtns}</nav>
@@ -1269,10 +620,10 @@ function renderHome(){
     <p class="lead">${t('heroLead')}</p>
     <div class="stats"><div class="stat"><b>${SECTIONS.length}</b><span>${t('stSec')}</span></div>
      <div class="stat"><b>${tot}</b><span>${t('stQ')}</span></div>
-     <div class="stat"><b>${tf}</b><span>${t('stTF')}</span></div>
-     <div class="stat"><b>${tot-tf}</b><span>${t('stMC')}</span></div></div>
+     <div class="stat"><b>${ESSAYS.length}</b><span>${L('مقالي','Essay')}</span></div></div>
    </section>
    <section class="secgrid">${cards}</section>
+   ${renderEssayCard()}
    ${renderExamCard()}
   </main>`;
 }
@@ -1320,7 +671,7 @@ function renderQuiz(){
   const nOk=list.filter(x=>s.ans[x]!==undefined&&s.ans[x]===ALLQ[x].a).length;
   const nBad=list.filter(x=>s.ans[x]!==undefined&&s.ans[x]!==ALLQ[x].a).length;
   const nLeft=list.length-nOk-nBad;
-  const letters='ABCD';
+  const letters='ABCDE';
   let opts='';
   if(q.t==='tf'){
     opts=`<div class="opts2 tf">${[0,1].map(i=>{let cls='';if(answered){if(i===q.a)cls='ok';else if(i===ans)cls='bad';else cls='dim'}
@@ -1337,12 +688,12 @@ function renderQuiz(){
      <p>${esc(q.ex[S.lang])}</p></div></div>`}
   const last=s.idx===list.length-1;
   const secTag=s.exam?`<span class="badge gray">${t('sec')} ${secById(q.sec).n}</span>`:'';
-  const filters=s.exam?'':`<div class="filters">${[['all','fAll'],['tf','fTF'],['mc','fMC']].map(([f,k])=>`<button class="${s.filter===f?'on':''}" data-act="filter" data-f="${f}">${t(k)}</button>`).join('')}</div>`;
+  const filters=true?'':`<div class="filters">${[['all','fAll'],['tf','fTF'],['mc','fMC']].map(([f,k])=>`<button class="${s.filter===f?'on':''}" data-act="filter" data-f="${f}">${t(k)}</button>`).join('')}</div>`;
   const dots=list.map((x,i)=>{let c='';if(s.ans[x]!==undefined)c=s.ans[x]===ALLQ[x].a?'ok':'bad';return `<button class="dot ${c} ${i===s.idx?'cur':''}" data-act="jump" data-i="${i}">${i+1}</button>`}).join('');
   const pct=Math.round((nOk+nBad)/list.length*100);
   return `<div class="qz">
    <div>
-    <div class="qbar">${filters}<span class="kbd">${t('keys')} ${q.t==='tf'?'<kbd>T</kbd><kbd>F</kbd>':'<kbd>A</kbd>–<kbd>D</kbd>'} · <kbd>Enter</kbd> ${t('next')}</span></div>
+    <div class="qbar">${filters}<span class="kbd">${t('keys')} ${q.t==='tf'?'<kbd>T</kbd><kbd>F</kbd>':'<kbd>A</kbd>–<kbd>'+(q.o.length>4?'E':'D')+'</kbd>'} · <kbd>Enter</kbd> ${t('next')}</span></div>
     <div class="topprog"><i style="width:${pct}%"></i></div>
     <div class="qcard fade" id="qcard">
      <div class="meta"><span class="qno">${t('q')} <b>${s.idx+1}</b> ${t('of')} ${list.length}</span><span class="badge">${q.t==='tf'?t('tf'):t('mc')}</span>${secTag}</div>
@@ -1390,6 +741,10 @@ function renderResult(){
   </div>`;
 }
 
+function renderEssayCard(){return `<article class="scard ecard fade"><div class="num">✍️</div><span class="tag">${L('مقالي','Essay')}</span><h3>${L('أسئلة المقالي (Essay)','Essay questions')}</h3><p>${L('مستقلة عن السكاشن: تعريف PCAOB وAICPA وIAASB ووظايفهم، وكمان الـ GAAS. حاول تجاوب في دماغك وبعدين اظهر الإجابة.','Separate from the sections: PCAOB, AICPA, IAASB and GAAS. Try answering first, then reveal.')}</p><div class="row"><button class="btn pri" data-go="essay">${I.pen}${L('افتح المقالي','Open essay')} · ${ESSAYS.length}</button></div></article>`}
+function renderEssay(){
+ const items=ESSAYS.map((x,i)=>`<details class="es"><summary><span class="qn">Q${i+1}</span><span>${esc(x.q)}</span></summary><div class="bd"><div class="tblwrap"><table class="cmp"><tbody>${x.rows.map(r=>`<tr><td>${L(r[0],r[1])}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div><div class="call mem"><span class="ci">🧠</span><div>${L(x.g[0],x.g[1])}</div></div></div></details>`).join('');
+ return `<main class="wrap" style="--c:var(--sx)"><div class="phead fade"><div class="crumbs"><button data-go="home">${t('home')}</button><span>›</span><span>${L('مقالي','Essay')}</span></div><h1>✍️ ${L('مقالي (Essay)','Essay questions')}</h1><p>${L('دوس على السؤال عشان تشوف الإجابة النموذجية.','Tap a question to reveal the model answer.')}</p></div><div class="lesson fade">${items}</div></main>`}
 /* ================= main render ================= */
 function render(){
   document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
@@ -1399,6 +754,7 @@ function render(){
   if(v.name==='home') main=renderHome();
   else if(v.name==='sec') main=renderSection();
   else if(v.name==='exam') main=renderExamPage();
+  else if(v.name==='essay') main=renderEssay();
   document.getElementById('app').innerHTML=renderTop()+main+`<footer>${t('footer')}</footer>`;
   const ring=document.getElementById('ringc');
   if(ring) requestAnimationFrame(()=>requestAnimationFrame(()=>ring.style.strokeDashoffset=ring.dataset.off));
@@ -1457,7 +813,7 @@ document.addEventListener('keydown',e=>{
   const s=S.sess;if(!s||s.done)return;if(!document.getElementById('qcard'))return;
   const list=sessView();const id=list[s.idx];const q=ALLQ[id];const k=e.key.toLowerCase();
   if(q.t==='tf'){if(k==='t'||k==='1'){answer(0);return}if(k==='f'||k==='2'){answer(1);return}}
-  else{const m={a:0,b:1,c:2,d:3,'1':0,'2':1,'3':2,'4':3}[k];if(m!==undefined&&m<q.o.length){answer(s.orders[id][m]);return}}
+  else{const m={a:0,b:1,c:2,d:3,e:4,'1':0,'2':1,'3':2,'4':3,'5':4}[k];if(m!==undefined&&m<q.o.length){answer(s.orders[id][m]);return}}
   if(k==='enter'){e.preventDefault();if(s.idx===list.length-1){if(s.ans[id]!==undefined)finish()}else{s.idx++;rerenderQuiz(true)}}
   const nextKey=S.lang==='ar'?'arrowleft':'arrowright',prevKey=S.lang==='ar'?'arrowright':'arrowleft';
   if(k===nextKey&&s.idx<list.length-1){s.idx++;rerenderQuiz(true)}
